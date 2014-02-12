@@ -1,0 +1,51 @@
+doctrine_cache:
+    providers:
+
+        configurable_memcached_provider:
+            memcached:
+                servers:
+                    memcached01.ss: ~
+                    memcached02.ss: ~
+
+        configurable_memcache_provider:
+            memcache:
+                servers:
+                    memcache01.ss: ~
+                    memcache02.ss: ~
+
+        configurable_redis_provider:
+            redis:
+                host: localhost
+                port: 11211
+
+        configurable_couchbase_provider:
+            couchbase:
+                hostnames: [ 127.0.0.1:809 ]
+                bucket_name: my_bucket
+                username: Administrator
+                password: password
+
+        configurable_phpfile_provider:
+            phpfile:
+                extension: phpc
+                directory: "%kernel.cache_dir%/configurable-phpfile-provider"
+
+        configurable_filesystem_provider:
+            filesystem:
+                extension: fsc
+                directory: "%kernel.cache_dir%/configurable-filesystem-provider"
+
+        configurable_mongodb_provider:
+            mongodb:
+                server: localhost:11211
+                database_name: my_database
+                collection_name: my_collection
+
+        configurable_riak_provider:
+            riak:
+                host: localhost
+                port: 8087
+                bucket_name: my_bucket
+                bucket_property_list:
+                    allow_multiple: false
+                    n_value: 1

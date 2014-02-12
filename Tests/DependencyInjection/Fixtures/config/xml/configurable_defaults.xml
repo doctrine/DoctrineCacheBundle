@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<srv:container xmlns="http://doctrine-project.org/schemas"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+
+     <doctrine-cache>
+         <provider name="configurable_memcached_provider" namespace="memcached_ns">
+             <memcached />
+         </provider>
+
+         <provider name="configurable_memcache_provider">
+             <memcache />
+         </provider>
+
+         <provider name="configurable_redis_provider">
+             <redis />
+         </provider>
+
+         <provider name="configurable_mongodb_provider">
+             <mongodb />
+         </provider>
+
+         <provider name="configurable_riak_provider">
+             <riak />
+         </provider>
+
+         <provider name="configurable_filesystem_provider">
+             <filesystem />
+         </provider>
+
+         <provider name="configurable_phpfile_provider">
+             <phpfile />
+         </provider>
+
+         <provider name="configurable_couchbase_provider">
+             <couchbase />
+         </provider>
+    </doctrine-cache>
+</srv:container>

@@ -1,0 +1,8 @@
+doctrine_cache:
+    providers:
+        foo_namespace_provider:
+            type: array
+            namespace: foo_namespace
+        barNamespaceProvider:
+            type: array
+            namespace: barNamespace

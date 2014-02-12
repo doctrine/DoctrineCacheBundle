@@ -1,0 +1,15 @@
+doctrine_cache:
+    providers:
+        basic_apc_provider:
+            type: apc
+        basic_array_provider:
+            type: array
+        basic_xcache_provider:
+            type: xcache
+        basic_wincache_provider:
+            type: wincache
+        basic_zenddata_provider:
+            type: zenddata
+        basic_ns_zenddata_provider:
+            type: zenddata
+            namespace: zenddata_ns

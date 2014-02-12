@@ -1,0 +1,25 @@
+doctrine_cache:
+    providers:
+        configurable_memcached_provider:
+            memcached: ~
+
+        configurable_memcache_provider:
+            memcache: ~
+
+        configurable_redis_provider:
+            redis: ~
+
+        configurable_couchbase_provider:
+            couchbase: ~
+
+        configurable_phpfile_provider:
+            phpfile: ~
+
+        configurable_filesystem_provider:
+            filesystem: ~
+
+        configurable_mongodb_provider:
+            mongodb: ~
+
+        configurable_riak_provider:
+            riak: ~

@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<srv:container xmlns="http://doctrine-project.org/schemas"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+
+     <doctrine-cache>
+         <provider name="configurable_memcached_provider">
+             <memcached>
+                 <server host="memcached01.ss"/>
+                 <server host="memcached02.ss"/>
+             </memcached>
+         </provider>
+
+         <provider name="configurable_memcache_provider">
+             <memcache>
+                 <server host="memcached01.ss"/>
+                 <server host="memcached02.ss"/>
+             </memcache>
+         </provider>
+
+         <provider name="configurable_redis_provider">
+             <redis host="localhost" port="11211" />
+         </provider>
+
+         <provider name="configurable_mongodb_provider">
+             <mongodb server="localhost:11211" >
+                 <database-name>my_database</database-name>
+                 <collection-name>my_collection</collection-name>
+             </mongodb>
+         </provider>
+
+         <provider name="configurable_riak_provider">
+             <riak host="localhost" port="8087">
+                 <bucket-name>my_bucket</bucket-name>
+                 <bucket-property-list>
+                     <allow-multiple>false</allow-multiple>
+                     <n-value>1</n-value>
+                 </bucket-property-list>
+             </riak>
+         </provider>
+
+         <provider name="configurable_filesystem_provider">
+             <filesystem extension="fsc">
+                 <directory>%kernel.cache_dir%/configurable-filesystem-provider</directory>
+             </filesystem>
+         </provider>
+
+         <provider name="configurable_phpfile_provider">
+             <phpfile extension="phpc">
+                 <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
+             </phpfile>
+         </provider>
+
+         <provider name="configurable_couchbase_provider">
+             <couchbase username="Administrator" password="password">
+                 <bucket-name>my_bucket</bucket-name>
+                 <hostname>127.0.0.1:809</hostname>
+             </couchbase>
+         </provider>
+    </doctrine-cache>
+</srv:container>
