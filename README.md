@@ -71,7 +71,7 @@ Installing this bundle can be done through these simple steps:
 # ...
 doctrine_cache:
     providers:
-        my_memcached_cache:
+        my_apc_cache:
             type: apc
             namespace: my_apc_ns
         my_memcached_cache:
