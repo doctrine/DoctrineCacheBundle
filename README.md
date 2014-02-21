@@ -1,7 +1,7 @@
 DoctrineCacheBundle
 ===================
 
-Symfony2 Bundle for Doctrine Cache  http://www.doctrine-project.org/jira
+Symfony2 Bundle for Doctrine Cache
 
 Master: [![Build Status](https://secure.travis-ci.org/doctrine/DoctrineCacheBundle.png?branch=master)](http://travis-ci.org/doctrine/DoctrineCacheBundle)
 
