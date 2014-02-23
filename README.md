@@ -105,4 +105,48 @@ $memCache   = $this->container->get('doctrine_cache.providers.my_memcached_cache
 
 ```
 
+## Cache providers
+
+- apc
+- array
+- xcache
+- wincache
+- zenddata
+- memcache
+    - servers ``# server list``
+        - server
+            - host ``# memcache host``
+            - port ``# memcache port``
+- memcached
+    - servers ``# server list``
+        - server
+            - host ``# memcached host``
+            - port ``# memcached port``
+- redis
+    - host ``# redis host``
+    - port ``# redis port``
+- couchbase
+    - hostnames    ``# couchbase hostname list``
+    - bucket_name  ``# couchbase bucket name``
+    - username     ``# couchbase username``
+    - password     ``# couchbase password``
+- phpfile
+    - extension    ``# file extension``
+    - directory    ``# cache directory``
+- filesystem
+    - extension    ``# file extension``
+    - directory    ``# cache directory``
+- mongodb
+    - server            ``# mongodb server uri``
+    - database_name     ``# mongodb database name``
+    - collection_name   ``# mongodb collection name``
+- riak
+    - host                          ``# riak host``
+    - port                          ``# riak port``
+    - bucket_name                   ``# riak bucket name``
+    - bucket_property_list          ``# riak bucket configuration (property list)``
+        - allow_multiple: false     ``# riak bucket allow multiple configuration``
+        - n_value: 1                ``# riak bucket n-value configuration``
+
+
 Check the [doctrine-cache documentation Page](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html) for a better undestanding.
