@@ -42,6 +42,8 @@ Installing this bundle can be done through these simple steps:
 <?xml version="1.0" ?>
 <!-- ... -->
 <doctrine-cache>
+     <alias key="apc">my_apc_cache</alias>
+
      <provider name="my_apc_cache" type="apc" namespace="my_apc_ns"/>
 
      <provider name="my_memcached_cache">
@@ -62,6 +64,8 @@ Installing this bundle can be done through these simple steps:
                  <n-value>1</n-value>
              </bucket-property-list>
          </riak>
+         <alias>riak</alias>
+         <alias>riak_cache</alias>
      </provider>
 </doctrine-cache>
 ```
@@ -70,6 +74,8 @@ Installing this bundle can be done through these simple steps:
 ```yml
 # ...
 doctrine_cache:
+    aliases:
+        apc: my_apc_cache
     providers:
         my_apc_cache:
             type: apc
@@ -81,6 +87,9 @@ doctrine_cache:
                     memcached02.ss: 
                         port: 11211
         my_riak_cache:
+            aliases:
+                - riak
+                - riak_cache
             riak:
                 host: localhost
                 port: 8087
@@ -103,6 +112,12 @@ $apcCache   = $this->container->get('doctrine_cache.providers.my_apc_cache');
 $riakCache  = $this->container->get('doctrine_cache.providers.my_riak_cache');
 $memCache   = $this->container->get('doctrine_cache.providers.my_memcached_cache');
 
+```
+
+You can also access the cache providers by using created aliases:
+
+```php
+$riakCache  = $this->container->get('riak_cache');
 ```
 
 ## Cache providers
@@ -130,10 +145,10 @@ $memCache   = $this->container->get('doctrine_cache.providers.my_memcached_cache
     - bucket_name  ``# couchbase bucket name``
     - username     ``# couchbase username``
     - password     ``# couchbase password``
-- phpfile
+- php_file
     - extension    ``# file extension``
     - directory    ``# cache directory``
-- filesystem
+- file_system
     - extension    ``# file extension``
     - directory    ``# cache directory``
 - mongodb
