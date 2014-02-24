@@ -30,7 +30,7 @@ abstract class BaseCacheTest extends FunctionalTestCase
     /**
      * @return \Doctrine\Common\Cache\Cache
      */
-    protected abstract function createCacheDriver();
+    abstract protected function createCacheDriver();
 
     public function testCacheDriver()
     {

@@ -31,16 +31,16 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function createContainer(array $bundles = array('YamlBundle'), $vendor = null)
     {
-        $mapings = array();
+        $mappings = array();
 
         foreach ($bundles as $bundle) {
             require_once __DIR__.'/DependencyInjection/Fixtures/Bundles/'.($vendor ? $vendor.'/' : '').$bundle.'/'.$bundle.'.php';
-            $mapings[$bundle] = 'DependencyInjection\\Fixtures\\Bundles\\'.($vendor ? $vendor.'\\' : '').$bundle.'\\'.$bundle;
+            $mappings[$bundle] = 'DependencyInjection\\Fixtures\\Bundles\\'.($vendor ? $vendor.'\\' : '').$bundle.'\\'.$bundle;
         }
 
         return new ContainerBuilder(new ParameterBag(array(
             'kernel.debug'       => false,
-            'kernel.bundles'     => $mapings,
+            'kernel.bundles'     => $mappings,
             'kernel.environment' => 'test',
             'kernel.root_dir'    => __DIR__.'/../',
             'kernel.cache_dir'   => sys_get_temp_dir(),

@@ -149,4 +149,4 @@ $memCache   = $this->container->get('doctrine_cache.providers.my_memcached_cache
         - n_value: 1                ``# riak bucket n-value configuration``
 
 
-Check the [doctrine-cache documentation Page](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html) for a better undestanding.
+Check the [doctrine-cache documentation Page](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html) for a better understanding.
