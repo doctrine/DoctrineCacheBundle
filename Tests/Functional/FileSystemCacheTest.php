@@ -22,16 +22,16 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
 /**
  * @group Functional
- * @group Filesystem
+ * @group FileSystem
  */
-class FilesystemCacheTest extends BaseCacheTest
+class FileSystemCacheTest extends BaseCacheTest
 {
     /**
      * {@inheritDoc}
      */
     protected function createCacheDriver()
     {
-        $container = $this->compileContainer('filesystem');
+        $container = $this->compileContainer('file_system');
         $cache     = $container->get('doctrine_cache.providers.my_filesystem_cache');
 
         return $cache;

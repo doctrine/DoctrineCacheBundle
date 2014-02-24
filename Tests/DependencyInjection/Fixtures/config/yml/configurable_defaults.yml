@@ -13,10 +13,10 @@ doctrine_cache:
             couchbase: ~
 
         configurable_phpfile_provider:
-            phpfile: ~
+            php_file: ~
 
         configurable_filesystem_provider:
-            filesystem: ~
+            file_system: ~
 
         configurable_mongodb_provider:
             mongodb: ~

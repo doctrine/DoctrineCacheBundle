@@ -7,9 +7,9 @@
 
     <doctrine-cache>
         <provider name="my_filesystem_cache">
-             <filesystem extension="fsc">
+             <file-system extension="fsc">
                  <directory>%kernel.cache_dir%/configurable-filesystem-provider</directory>
-             </filesystem>
+             </file-system>
          </provider>
     </doctrine-cache>
 </srv:container>

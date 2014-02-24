@@ -26,12 +26,12 @@ doctrine_cache:
                 password: password
 
         configurable_phpfile_provider:
-            phpfile:
+            php_file:
                 extension: phpc
                 directory: "%kernel.cache_dir%/configurable-phpfile-provider"
 
         configurable_filesystem_provider:
-            filesystem:
+            file_system:
                 extension: fsc
                 directory: "%kernel.cache_dir%/configurable-filesystem-provider"
 

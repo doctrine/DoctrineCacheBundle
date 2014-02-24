@@ -7,9 +7,9 @@
 
     <doctrine-cache>
         <provider name="my_phpfile_cache">
-             <phpfile extension="phpc">
+             <php-file extension="phpc">
                  <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
-             </phpfile>
+             </php-file>
          </provider>
     </doctrine-cache>
 </srv:container>

@@ -25,6 +25,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 /**
  * Cache Bundle Configuration
  *
+ * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class Configuration implements ConfigurationInterface
@@ -65,8 +66,8 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addMemcachedNode())
                             ->append($this->addMemcacheNode())
                             ->append($this->addCouchbaseNode())
-                            ->append($this->addFilesystemNode())
-                            ->append($this->addPhpfileNode())
+                            ->append($this->addFileSystemNode())
+                            ->append($this->addPhpFileNode())
                             ->append($this->addMongoNode())
                             ->append($this->addRedisNode())
                             ->append($this->addRiakNode())
@@ -258,14 +259,14 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Build phpfile node configuration definition
+     * Build php_file node configuration definition
      *
      * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
      */
-    private function addPhpfileNode()
+    private function addPhpFileNode()
     {
         $builder = new TreeBuilder();
-        $node    = $builder->root('phpfile');
+        $node    = $builder->root('php_file');
 
         $node
             ->children()
@@ -278,14 +279,14 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Build filesystem node configuration definition
+     * Build file_system node configuration definition
      *
      * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
      */
-    private function addFilesystemNode()
+    private function addFileSystemNode()
     {
         $builder = new TreeBuilder();
-        $node    = $builder->root('filesystem');
+        $node    = $builder->root('file_system');
 
         $node
             ->children()

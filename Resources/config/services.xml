@@ -7,8 +7,8 @@
     <parameters>
         <parameter key="doctrine_cache.apc.class">Doctrine\Common\Cache\ApcCache</parameter>
         <parameter key="doctrine_cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
-        <parameter key="doctrine_cache.filesystem.class">Doctrine\Common\Cache\FilesystemCache</parameter>
-        <parameter key="doctrine_cache.phpfile.class">Doctrine\Common\Cache\PhpFileCache</parameter>
+        <parameter key="doctrine_cache.file_system.class">Doctrine\Common\Cache\FilesystemCache</parameter>
+        <parameter key="doctrine_cache.php_file.class">Doctrine\Common\Cache\PhpFileCache</parameter>
         <parameter key="doctrine_cache.mongodb.class">Doctrine\Common\Cache\MongoDBCache</parameter>
         <parameter key="doctrine_cache.mongodb.collection.class">MongoCollection</parameter>
         <parameter key="doctrine_cache.mongodb.connection.class">MongoClient</parameter>
@@ -42,8 +42,8 @@
     <services>
         <service id="doctrine_cache.abstract.apc" class="%doctrine_cache.apc.class%" abstract="true" />
         <service id="doctrine_cache.abstract.array" class="%doctrine_cache.array.class%" abstract="true" />
-        <service id="doctrine_cache.abstract.filesystem" class="%doctrine_cache.filesystem.class%" abstract="true" />
-        <service id="doctrine_cache.abstract.phpfile" class="%doctrine_cache.phpfile.class%" abstract="true" />
+        <service id="doctrine_cache.abstract.file_system" class="%doctrine_cache.file_system.class%" abstract="true" />
+        <service id="doctrine_cache.abstract.php_file" class="%doctrine_cache.php_file.class%" abstract="true" />
         <service id="doctrine_cache.abstract.memcache" class="%doctrine_cache.memcache.class%" abstract="true" />
         <service id="doctrine_cache.abstract.memcached" class="%doctrine_cache.memcached.class%" abstract="true" />
         <service id="doctrine_cache.abstract.redis" class="%doctrine_cache.redis.class%" abstract="true" />

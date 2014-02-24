@@ -42,15 +42,15 @@
          </provider>
 
          <provider name="configurable_filesystem_provider">
-             <filesystem extension="fsc">
+             <file-system extension="fsc">
                  <directory>%kernel.cache_dir%/configurable-filesystem-provider</directory>
-             </filesystem>
+             </file-system>
          </provider>
 
          <provider name="configurable_phpfile_provider">
-             <phpfile extension="phpc">
+             <php-file extension="phpc">
                  <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
-             </phpfile>
+             </php-file>
          </provider>
 
          <provider name="configurable_couchbase_provider">

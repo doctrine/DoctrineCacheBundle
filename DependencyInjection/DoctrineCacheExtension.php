@@ -19,6 +19,7 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
+use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -95,8 +96,8 @@ class DoctrineCacheExtension extends Extension
      */
     protected function getDefinitionClass($type)
     {
-        $name  = ucfirst($type) . 'Definition';
-        $class = __NAMESPACE__ . '\Definition\\' . $name;
+        $name  = Inflector::classify($type) . 'Definition';
+        $class = sprintf('%s\Definition\%s', __NAMESPACE__, $name);
 
         return $class;
     }

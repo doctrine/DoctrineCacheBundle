@@ -15,17 +15,17 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Filesystem definition.
+ * FileSystem definition.
  *
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
-class FilesystemDefinition extends CacheDefinition
+class FileSystemDefinition extends CacheDefinition
 {
     /**
      * {@inheritDoc}
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $service->setArguments(array($config['filesystem']['directory'], $config['filesystem']['extension']));
+        $service->setArguments(array($config['file_system']['directory'], $config['file_system']['extension']));
     }
 }

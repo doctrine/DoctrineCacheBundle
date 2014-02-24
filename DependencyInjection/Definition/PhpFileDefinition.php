@@ -15,17 +15,17 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
- * Phpfile definition.
+ * PhpFile definition.
  *
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
-class PhpfileDefinition extends CacheDefinition
+class PhpFileDefinition extends CacheDefinition
 {
     /**
      * {@inheritDoc}
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $service->setArguments(array($config['phpfile']['directory'], $config['phpfile']['extension']));
+        $service->setArguments(array($config['php_file']['directory'], $config['php_file']['extension']));
     }
 }

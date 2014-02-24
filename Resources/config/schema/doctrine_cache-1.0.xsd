@@ -23,8 +23,8 @@
                 <xsd:element name="redis"       type="redis_provider"/>
                 <xsd:element name="couchbase"   type="couchbase_provider"/>
                 <xsd:element name="riak"        type="riak_provider"/>
-                <xsd:element name="phpfile"     type="phpfile_provider"/>
-                <xsd:element name="filesystem"  type="filesystem_provider"/>
+                <xsd:element name="php-file"    type="phpfile_provider"/>
+                <xsd:element name="file-system" type="filesystem_provider"/>
             </xsd:choice>
         </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string" use="required" />
@@ -123,7 +123,7 @@
         <xsd:attribute name="collection-name" type="xsd:string" />
     </xsd:complexType>
 
-    <!-- filesystem -->
+    <!-- file-system -->
     <xsd:complexType name="filesystem_provider">
         <xsd:sequence>
             <xsd:element name="extension" type="xsd:string" minOccurs="0" maxOccurs="1" />
@@ -133,7 +133,7 @@
         <xsd:attribute name="directory" type="xsd:string"/>
     </xsd:complexType>
 
-    <!-- phpfile -->
+    <!-- php-file -->
     <xsd:complexType name="phpfile_provider">
         <xsd:sequence>
             <xsd:element name="extension" type="xsd:string" minOccurs="0" maxOccurs="1" />

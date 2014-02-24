@@ -27,11 +27,11 @@
          </provider>
 
          <provider name="configurable_filesystem_provider">
-             <filesystem />
+             <file-system />
          </provider>
 
          <provider name="configurable_phpfile_provider">
-             <phpfile />
+             <php-file />
          </provider>
 
          <provider name="configurable_couchbase_provider">
