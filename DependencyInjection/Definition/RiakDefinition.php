@@ -27,27 +27,64 @@ class RiakDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $host           = $config['riak']['host'];
-        $port           = $config['riak']['port'];
-        $bucketName     = $config['riak']['bucket_name'];
-        $bucketClass    = '%doctrine_cache.riak.bucket.class%';
-        $connClass      = '%doctrine_cache.riak.connection.class%';
-        $bucketId       = sprintf('doctrine_cache.services.%s.bucket', $name);
-        $connId         = sprintf('doctrine_cache.services.%s.connection', $name);
-        $connDef        = new Definition($connClass, array($host, $port));
-        $bucketDef      = new Definition($bucketClass, array($connDef, $bucketName));
+        $riakConf  = $config['riak'];
+        $bucketRef = $this->getBucketReference($name, $riakConf, $container);
 
-        $connDef->setPublic(false);
-        $bucketDef->setPublic(false);
+        $service->setArguments(array($bucketRef));
+    }
 
-        $container->setDefinition($connId, $connDef);
-        $container->setDefinition($bucketId, $bucketDef);
-
-        if ( ! empty($config['riak']['bucket_property_list'])) {
-            $this->configureBucketPropertyList($name, $config['riak']['bucket_property_list'], $bucketDef, $container);
+    /**
+     * @param string                                                    $name
+     * @param array                                                     $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference
+     */
+    private function getBucketReference($name, array $config, ContainerBuilder $container)
+    {
+        if (isset($config['bucket_id'])) {
+            return new Reference($config['bucket_id']);
         }
 
-        $service->setArguments(array($bucketDef));
+        $bucketName  = $config['bucket_name'];
+        $bucketClass = '%doctrine_cache.riak.bucket.class%';
+        $bucketId    = sprintf('doctrine_cache.services.%s.bucket', $name);
+        $connDef     = $this->getConnectionReference($name, $config, $container);
+        $bucketDef   = new Definition($bucketClass, array($connDef, $bucketName));
+
+        $bucketDef->setPublic(false);
+        $container->setDefinition($bucketId, $bucketDef);
+
+        if ( ! empty($config['bucket_property_list'])) {
+            $this->configureBucketPropertyList($name, $config['bucket_property_list'], $bucketDef, $container);
+        }
+
+        return new Reference($bucketId);
+    }
+
+    /**
+     * @param string                                                    $name
+     * @param array                                                     $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference
+     */
+    private function getConnectionReference($name, array $config, ContainerBuilder $container)
+    {
+        if (isset($config['connection_id'])) {
+            return new Reference($config['connection_id']);
+        }
+
+        $host      = $config['host'];
+        $port      = $config['port'];
+        $connClass = '%doctrine_cache.riak.connection.class%';
+        $connId    = sprintf('doctrine_cache.services.%s.connection', $name);
+        $connDef   = new Definition($connClass, array($host, $port));
+
+        $connDef->setPublic(false);
+        $container->setDefinition($connId, $connDef);
+
+        return new Reference($connId);
     }
 
     /**

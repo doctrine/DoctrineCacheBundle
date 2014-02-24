@@ -161,6 +161,38 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         }
     }
 
+    public function testServiceParameters()
+    {
+        $container = $this->compileContainer('service_parameter');
+        $providers = array(
+            'service_bucket_riak_provider' => array(
+                'Doctrine\Common\Cache\RiakCache'
+            ),
+            'service_connection_riak_provider' => array(
+                'Doctrine\Common\Cache\RiakCache'
+            ),
+            'service_connection_memcached_provider' => array(
+                'Doctrine\Common\Cache\MemcachedCache'
+            ),
+            'service_connection_memcache_provider' => array(
+                'Doctrine\Common\Cache\MemcacheCache'
+            ),
+            'service_connection_redis_provider' => array(
+                'Doctrine\Common\Cache\RedisCache'
+            ),
+            'service_connection_mongodb_provider' => array(
+                'Doctrine\Common\Cache\MongoDBCache'
+            ),
+            'service_collection_mongodb_provider' => array(
+                'Doctrine\Common\Cache\MongoDBCache'
+            ),
+        );
+
+        foreach ($providers as $id => $value) {
+            $this->assertCacheProvider($container, $id, $value[0]);
+        }
+    }
+
      /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage "unrecognized_type" is an unrecognized Doctrine cache driver.

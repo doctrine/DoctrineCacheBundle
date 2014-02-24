@@ -42,7 +42,9 @@
     <xsd:complexType name="memcached_provider">
         <xsd:sequence>
             <xsd:element name="server" type="memcached_server" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="connection-id" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="memcached_server">
@@ -50,6 +52,7 @@
             <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="connection-id" type="xsd:string"/>
         <xsd:attribute name="host" type="xsd:string"/>
         <xsd:attribute name="port" type="xsd:string"/>
     </xsd:complexType>
@@ -58,13 +61,16 @@
     <xsd:complexType name="memcache_provider">
         <xsd:sequence>
             <xsd:element name="server" type="memcached_server" minOccurs="1" maxOccurs="unbounded" />
+            <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="connection-id" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="memcache_server">
         <xsd:sequence>
             <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
         <xsd:attribute name="host" type="xsd:string"/>
         <xsd:attribute name="port" type="xsd:string"/>
@@ -101,9 +107,15 @@
     <xsd:complexType name="riak_provider">
         <xsd:sequence>
             <xsd:element name="bucket-property-list" type="memcache_bucket_property_list" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="bucket-name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="bucket-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="connection-id" type="xsd:string"/>
+        <xsd:attribute name="bucket-name" type="xsd:string"/>
+        <xsd:attribute name="bucket-id" type="xsd:string"/>
         <xsd:attribute name="host" type="xsd:string"/>
         <xsd:attribute name="port" type="xsd:string"/>
     </xsd:complexType>
@@ -123,8 +135,12 @@
             <xsd:element name="server" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="database-name" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="collection-name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="collection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
         <xsd:attribute name="server" type="xsd:string" />
+        <xsd:attribute name="database-id" type="xsd:string" />
+        <xsd:attribute name="collection-id" type="xsd:string" />
         <xsd:attribute name="database-name" type="xsd:string" />
         <xsd:attribute name="collection-name" type="xsd:string" />
     </xsd:complexType>

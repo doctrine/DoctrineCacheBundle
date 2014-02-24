@@ -13,6 +13,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * MongoDB definition.
@@ -26,24 +27,61 @@ class MongodbDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $server         = $config['mongodb']['server'];
-        $databaseName   = $config['mongodb']['database_name'];
-        $collectionName = $config['mongodb']['collection_name'];
-        $connClass      = '%doctrine_cache.mongodb.connection.class%';
+        $memcacheConf = $config['mongodb'];
+        $collRef      = $this->getCollectionReference($name, $memcacheConf, $container);
+
+        $service->setArguments(array($collRef));
+    }
+
+    /**
+     * @param string                                                    $name
+     * @param array                                                     $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference
+     */
+    private function getCollectionReference($name, array $config, ContainerBuilder $container)
+    {
+        if (isset($config['collection_id'])) {
+            return new Reference($config['collection_id']);
+        }
+
+        $databaseName   = $config['database_name'];
+        $collectionName = $config['collection_name'];
         $collClass      = '%doctrine_cache.mongodb.collection.class%';
-        $connId         = sprintf('doctrine_cache.services.%s.connection', $name);
         $collId         = sprintf('doctrine_cache.services.%s.collection', $name);
         $collDef        = new Definition($collClass, array($databaseName, $collectionName));
+        $connRef        = $this->getConnectionReference($name, $config, $container);
+
+        $container->setDefinition($collId, $collDef)
+            ->setFactoryMethod('selectCollection')
+            ->setFactoryService($connRef)
+            ->setPublic(false);
+
+        return new Reference($collId);
+    }
+
+    /**
+     * @param string                                                    $name
+     * @param array                                                     $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference
+     */
+    private function getConnectionReference($name, array $config, ContainerBuilder $container)
+    {
+        if (isset($config['connection_id'])) {
+            return new Reference($config['connection_id']);
+        }
+
+        $server         = $config['server'];
+        $connClass      = '%doctrine_cache.mongodb.connection.class%';
+        $connId         = sprintf('doctrine_cache.services.%s.connection', $name);
         $connDef        = new Definition($connClass, array($server));
 
         $connDef->addMethodCall('connect');
         $container->setDefinition($connId, $connDef);
 
-        $container->setDefinition($collId, $collDef)
-            ->setFactoryMethod('selectCollection')
-            ->setFactoryService($connId)
-            ->setPublic(false);
-
-        $service->setArguments(array($collDef));
+        return new Reference($connId);
     }
 }

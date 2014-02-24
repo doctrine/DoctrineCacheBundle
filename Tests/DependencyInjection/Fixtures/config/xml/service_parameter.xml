@@ -1,0 +1,87 @@
+<?xml version="1.0" ?>
+<srv:container xmlns="http://doctrine-project.org/schemas"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+
+     <srv:services>
+        <srv:service id="my_riak_connection_service" class="%doctrine_cache.riak.connection.class%">
+            <srv:argument>localhost</srv:argument>
+            <srv:argument>8087</srv:argument>
+        </srv:service>
+
+        <srv:service id="my_riak_bucket_service" class="%doctrine_cache.riak.bucket.class%">
+            <srv:argument type="service" id="my_riak_connection_service"/>
+            <srv:argument>my_service_bucket_name</srv:argument>
+        </srv:service>
+
+        <srv:service id="my_memcached_connection_service" class="%doctrine_cache.memcached.connection.class%">
+            <srv:call method="addServer">
+                <srv:argument>localhost</srv:argument>
+                <srv:argument>11211</srv:argument>
+            </srv:call>
+        </srv:service>
+
+        <srv:service id="my_memcache_connection_service" class="%doctrine_cache.memcache.connection.class%">
+            <srv:call method="connect">
+                <srv:argument>localhost</srv:argument>
+                <srv:argument>11211</srv:argument>
+            </srv:call>
+        </srv:service>
+
+        <srv:service id="my_redis_connection_service" class="%doctrine_cache.redis.connection.class%">
+            <srv:call method="connect">
+                <srv:argument>localhost</srv:argument>
+                <srv:argument>6379</srv:argument>
+            </srv:call>
+        </srv:service>
+
+        <srv:service id="my_mongodb_connection_service" class="%doctrine_cache.mongodb.connection.class%">
+            <srv:argument>localhost:27017</srv:argument>
+        </srv:service>
+
+        <srv:service id="my_mongodb_collection_service" class="%doctrine_cache.mongodb.collection.class%" factory-service="my_mongodb_connection_service" factory-method="selectCollection">
+            <srv:argument>my_database</srv:argument>
+            <srv:argument>my_cache_collection</srv:argument>
+        </srv:service>
+    </srv:services>
+
+    <doctrine-cache>
+        <provider  name="service_bucket_riak_provider">
+             <riak bucket-id="my_riak_bucket_service"/>
+         </provider>
+
+         <provider name="service_connection_riak_provider">
+             <riak connection-id="my_riak_connection_service">
+                 <bucket-name>my_bucket_name</bucket-name>
+             </riak>
+         </provider>
+
+         <provider name="service_connection_memcached_provider">
+             <memcached connection-id="my_memcached_connection_service"/>
+         </provider>
+
+         <provider name="service_connection_memcache_provider">
+             <memcache>
+                 <connection-id>my_memcache_connection_service</connection-id>
+             </memcache>
+         </provider>
+
+         <provider name="service_connection_redis_provider">
+             <redis connection-id="my_redis_connection_service"/>
+         </provider>
+
+         <provider name="service_collection_mongodb_provider">
+             <mongodb collection-id="my_mongodb_collection_service"/>
+         </provider>
+
+         <provider name="service_connection_mongodb_provider">
+             <mongodb>
+                 <connection-id>my_memcache_connection_service</connection-id>
+                 <database-name>my_database</database-name>
+                 <collection-name>my_cache_collection</collection-name>
+             </mongodb>
+         </provider>
+    </doctrine-cache>
+</srv:container>

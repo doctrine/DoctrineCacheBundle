@@ -1,0 +1,64 @@
+services:
+    my_riak_connection_service:
+        class: "%doctrine_cache.riak.connection.class%"
+        arguments: ["localhost", 8087]
+
+    my_riak_bucket_service:
+        class: "%doctrine_cache.riak.bucket.class%"
+        arguments: ["@my_riak_connection_service", "my_service_bucket_name"]
+
+    my_memcached_connection_service:
+        class: "%doctrine_cache.memcached.connection.class%"
+        calls:
+            - [addServer, ["localhost", 11211]]
+
+    my_memcache_connection_service:
+        class: "%doctrine_cache.memcache.connection.class%"
+        calls:
+            - [connect, ["localhost", 11211]]
+
+    my_redis_connection_service:
+        class: "%doctrine_cache.redis.connection.class%"
+        calls:
+            - [connect, ["localhost", 6379]]
+
+    service_collection_mongodb_provider:
+        class: "%doctrine_cache.mongodb.connection.class%"
+        arguments: ["localhost:27017"]
+
+    my_mongodb_collection_service:
+        class: "%doctrine_cache.mongodb.collection.class%"
+        arguments: ["my_database", "my_cache_collection"]
+
+doctrine_cache:
+    providers:
+        service_bucket_riak_provider:
+            riak:
+                bucket_id : "my_riak_bucket_service"
+
+        service_connection_riak_provider:
+            riak:
+                connection_id: "my_riak_connection_service"
+                bucket_name: "my_bucket_name"
+
+        service_connection_memcached_provider:
+            memcached:
+                connection_id: "my_memcached_connection_service"
+
+        service_connection_memcache_provider:
+            memcache:
+                connection_id: "my_memcache_connection_service"
+
+        service_connection_redis_provider:
+            redis:
+                connection_id: "my_redis_connection_service"
+
+        service_collection_mongodb_provider:
+            mongodb:
+                collection_id: "service_collection_mongodb_provider"
+
+        service_connection_mongodb_provider:
+            mongodb:
+                connection_id:   "my_memcache_connection_service"
+                collection_name: "my_cache_collection"
+                database_name:   "my_database"

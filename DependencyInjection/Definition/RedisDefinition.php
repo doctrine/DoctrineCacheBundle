@@ -13,6 +13,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Redis definition.
@@ -26,8 +27,27 @@ class RedisDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $host       = $config['redis']['host'];
-        $port       = $config['redis']['port'];
+        $memcacheConf = $config['redis'];
+        $connRef      = $this->getConnectionReference($name, $memcacheConf, $container);
+
+        $service->addMethodCall('setRedis', array($connRef));
+    }
+
+    /**
+     * @param string                                                    $name
+     * @param array                                                     $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     *
+     * @return \Symfony\Component\DependencyInjection\Reference
+     */
+    private function getConnectionReference($name, array $config, ContainerBuilder $container)
+    {
+        if (isset($config['connection_id'])) {
+            return new Reference($config['connection_id']);
+        }
+
+        $host       = $config['host'];
+        $port       = $config['port'];
         $connClass  = '%doctrine_cache.redis.connection.class%';
         $connId     = sprintf('doctrine_cache.services.%s_redis.connection', $name);
         $connDef    = new Definition($connClass);
@@ -36,6 +56,7 @@ class RedisDefinition extends CacheDefinition
         $connDef->addMethodCall('connect', array($host, $port));
 
         $container->setDefinition($connId, $connDef);
-        $service->addMethodCall('setRedis', array($container->setDefinition($connId, $connDef)));
+
+        return new Reference($connId);
     }
 }

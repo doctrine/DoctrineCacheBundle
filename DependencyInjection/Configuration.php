@@ -108,6 +108,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->fixXmlConfig('server')
             ->children()
+                ->scalarNode('connection_id')->defaultNull()->end()
                 ->arrayNode('servers')
                 ->useAttributeAsKey('host')
                     ->prototype('array')
@@ -150,6 +151,7 @@ class Configuration implements ConfigurationInterface
         $node
             ->fixXmlConfig('server')
             ->children()
+                ->scalarNode('connection_id')->defaultNull()->end()
                 ->arrayNode('servers')
                 ->useAttributeAsKey('host')
                     ->prototype('array')
@@ -189,6 +191,7 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->scalarNode('connection_id')->defaultNull()->end()
                 ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
             ->end()
@@ -212,6 +215,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('host')->defaultValue('%doctrine_cache.riak.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.riak.port%')->end()
                 ->scalarNode('bucket_name')->defaultValue('doctrine_cache')->end()
+                ->scalarNode('connection_id')->defaultNull()->end()
+                ->scalarNode('bucket_id')->defaultNull()->end()
                 ->arrayNode('bucket_property_list')
                     ->children()
                         ->scalarNode('allow_multiple')->defaultNull()->end()
@@ -262,6 +267,8 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
+                ->scalarNode('connection_id')->defaultNull()->end()
+                ->scalarNode('collection_id')->defaultNull()->end()
                 ->scalarNode('database_name')->defaultValue('doctrine_cache')->end()
                 ->scalarNode('collection_name')->defaultValue('doctrine_cache')->end()
                 ->scalarNode('server')->defaultValue('%doctrine_cache.mongodb.server%')->end()
