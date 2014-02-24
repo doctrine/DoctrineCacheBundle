@@ -145,46 +145,53 @@ $riakCache  = $this->container->get('riak_cache');
 
 ## Cache providers
 
-- apc
-- array
-- xcache
-- wincache
-- zenddata
-- memcache
-    - servers ``# server list``
+#### apc
+#### array
+#### xcache
+#### wincache
+#### zenddata
+#### memcache
+    - connection_id - Memcache connection service id
+    - servers       - Server list
         - server
-            - host ``# memcache host``
-            - port ``# memcache port``
-- memcached
-    - servers ``# server list``
+            - host - memcache host
+            - port - memcache port
+#### memcached
+    - connection_id - Memcache connection service id
+    - servers       - Server list
         - server
-            - host ``# memcached host``
-            - port ``# memcached port``
-- redis
-    - host ``# redis host``
-    - port ``# redis port``
-- couchbase
-    - hostnames    ``# couchbase hostname list``
-    - bucket_name  ``# couchbase bucket name``
-    - username     ``# couchbase username``
-    - password     ``# couchbase password``
-- php_file
-    - extension    ``# file extension``
-    - directory    ``# cache directory``
-- file_system
-    - extension    ``# file extension``
-    - directory    ``# cache directory``
-- mongodb
-    - server            ``# mongodb server uri``
-    - database_name     ``# mongodb database name``
-    - collection_name   ``# mongodb collection name``
-- riak
-    - host                          ``# riak host``
-    - port                          ``# riak port``
-    - bucket_name                   ``# riak bucket name``
-    - bucket_property_list          ``# riak bucket configuration (property list)``
-        - allow_multiple: false     ``# riak bucket allow multiple configuration``
-        - n_value: 1                ``# riak bucket n-value configuration``
+            - host - memcached host
+            - port - memcached port
+#### redis
+    - connection_id - Redis connection service id
+    - host          - redis host
+    - port          - redis port
+#### couchbase
+    - hostnames    - couchbase hostname list
+    - bucket_name  - couchbase bucket name
+    - username     - couchbase username
+    - password     - couchbase password
+#### php_file
+    - extension    - file extension
+    - directory    - cache directory
+#### file_system
+    - extension    - file extension
+    - directory    - cache directory
+#### mongodb
+    - connection_id     - MongoClient service id
+    - collection_id     - MongoCollection service id
+    - server            - mongodb server uri
+    - database_name     - mongodb database name
+    - collection_name   - mongodb collection name
+#### riak
+    - connection_id                 - Riak\Connection service id
+    - bucket_id                     - Riak\Bucket service id
+    - host                          - riak host
+    - port                          - riak port
+    - bucket_name                   - riak bucket name
+    - bucket_property_list          - riak bucket configuration (property list)
+        - allow_multiple: false     - riak bucket allow multiple configuration
+        - n_value: 1                - riak bucket n-value configuration
 
 
 Check the [doctrine-cache documentation Page](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html) for a better understanding.
