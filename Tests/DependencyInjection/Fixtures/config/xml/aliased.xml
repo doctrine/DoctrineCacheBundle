@@ -5,18 +5,18 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
                         http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
 
-     <doctrine-cache>
+    <doctrine-cache>
+        <!--aliases>
+            <alias key="foo">foo_namespace_provider</alias>
+        </aliases-->
+
         <provider name="foo_namespace_provider" type="array">
-            <aliases>
-                <alias id="fooNamespaceProvider"/>
-            </aliases>
+            <alias>fooNamespaceProvider</alias>
         </provider>
 
         <provider name="barNamespaceProvider" type="array">
-            <aliases>
-                <alias id="bar_namespace_provider"/>
-                <alias id="bar"/>
-            </aliases>
+            <alias>bar_namespace_provider</alias>
+            <alias>bar</alias>
         </provider>
     </doctrine-cache>
 </srv:container>

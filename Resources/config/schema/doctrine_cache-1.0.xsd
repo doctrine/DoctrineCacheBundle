@@ -16,6 +16,7 @@
         <xsd:sequence>
             <xsd:element name="type" type="xsd:string"/>
             <xsd:element name="namespace" type="xsd:string"/>
+            <xsd:element name="alias" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
             <xsd:choice minOccurs="0" maxOccurs="1">
                 <xsd:element name="memcached"   type="memcached_provider"/>
                 <xsd:element name="memcache"    type="memcache_provider"/>

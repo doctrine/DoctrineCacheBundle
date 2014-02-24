@@ -144,6 +144,23 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         }
     }
 
+    public function testAliasesCache()
+    {
+        $container = $this->compileContainer('aliased');
+        $providers = array(
+            'doctrine_cache.providers.foo_namespace_provider' => array('fooNamespaceProvider'),
+            'doctrine_cache.providers.barNamespaceProvider'   => array('bar_namespace_provider', 'bar'),
+        );
+
+        foreach ($providers as $key => $aliases) {
+            $this->assertTrue($container->hasDefinition($key));
+
+            foreach ($aliases as $alias) {
+                $this->assertEquals(strtolower($key), (string) $container->getAlias($alias));
+            }
+        }
+    }
+
      /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage "unrecognized_type" is an unrecognized Doctrine cache driver.
@@ -155,7 +172,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
 
     public function assertCacheProvider(ContainerBuilder $container, $name, $class, array $expectedCalls = array())
     {
-        $service = "doctrine_cache.providers.$name";
+        $service = "doctrine_cache.providers." . $name;
 
         $this->assertTrue($container->hasDefinition($service));
 

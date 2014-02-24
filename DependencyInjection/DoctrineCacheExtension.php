@@ -53,11 +53,17 @@ class DoctrineCacheExtension extends Extension
                 throw new \InvalidArgumentException(sprintf('"%s" is an unrecognized Doctrine cache driver.', $type));
             }
 
-            $service = $container
-                ->setDefinition('doctrine_cache.providers.'.$name, new DefinitionDecorator($id));
+            $serviceId = 'doctrine_cache.providers.' . $name;
+            $service   = $container->setDefinition($serviceId, new DefinitionDecorator($id));
 
             if ($config['namespace']) {
                 $service->addMethodCall('setNamespace', array($config['namespace']));
+            }
+
+            if ($config['aliases']) {
+                foreach ($config['aliases'] as $alias) {
+                    $container->setAlias($alias, $serviceId);
+                }
             }
 
             if ($this->hasDefinitionClass($type)) {
