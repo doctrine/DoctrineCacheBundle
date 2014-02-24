@@ -39,6 +39,13 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('doctrine_cache', 'array');
 
         $node
+            ->fixXmlConfig('alias', 'aliases')
+            ->children()
+                ->arrayNode('aliases')
+                ->useAttributeAsKey('key')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
             ->fixXmlConfig('provider')
             ->children()
                 ->arrayNode('providers')

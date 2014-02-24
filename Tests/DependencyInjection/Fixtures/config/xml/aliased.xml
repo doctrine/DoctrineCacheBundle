@@ -6,9 +6,7 @@
                         http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
 
     <doctrine-cache>
-        <!--aliases>
-            <alias key="foo">foo_namespace_provider</alias>
-        </aliases-->
+        <alias key="foo">foo_namespace_provider</alias>
 
         <provider name="foo_namespace_provider" type="array">
             <alias>fooNamespaceProvider</alias>

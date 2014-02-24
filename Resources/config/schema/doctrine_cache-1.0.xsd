@@ -7,10 +7,15 @@
     <xsd:element name="doctrine_cache">
         <xsd:complexType>
             <xsd:sequence>
+                <xsd:element name="alias" type="alias" minOccurs="0" maxOccurs="unbounded" />
                 <xsd:element name="provider" type="provider" minOccurs="0" maxOccurs="unbounded" />
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
+
+    <xsd:complexType name="alias">
+        <xsd:attribute name="key" type="xsd:string" use="required"/>
+    </xsd:complexType>
 
     <xsd:complexType name="provider">
         <xsd:sequence>
@@ -28,7 +33,7 @@
                 <xsd:element name="file-system" type="filesystem_provider"/>
             </xsd:choice>
         </xsd:sequence>
-        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="name" type="xsd:string" use="required"/>
         <xsd:attribute name="namespace" type="xsd:string"/>
         <xsd:attribute name="type" type="xsd:string" />
     </xsd:complexType>

@@ -148,7 +148,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
     {
         $container = $this->compileContainer('aliased');
         $providers = array(
-            'doctrine_cache.providers.foo_namespace_provider' => array('fooNamespaceProvider'),
+            'doctrine_cache.providers.foo_namespace_provider' => array('fooNamespaceProvider', 'foo'),
             'doctrine_cache.providers.barNamespaceProvider'   => array('bar_namespace_provider', 'bar'),
         );
 

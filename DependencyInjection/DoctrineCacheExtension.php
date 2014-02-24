@@ -43,9 +43,9 @@ class DoctrineCacheExtension extends Extension
 
         $loader->load('services.xml');
 
-        $config = $this->processConfiguration($configuration, $configs);
+        $rootConfig = $this->processConfiguration($configuration, $configs);
 
-        foreach ($config['providers'] as $name => $config) {
+        foreach ($rootConfig['providers'] as $name => $config) {
             $type = $config['type'];
             $id   = 'doctrine_cache.abstract.' . $type;
 
@@ -68,6 +68,12 @@ class DoctrineCacheExtension extends Extension
 
             if ($this->hasDefinitionClass($type)) {
                 $this->createCacheDefinition($type)->configure($name, $config, $service, $container);
+            }
+        }
+
+        if ($rootConfig['aliases']) {
+            foreach ($rootConfig['aliases'] as $alias => $name) {
+                $container->setAlias($alias, 'doctrine_cache.providers.' . $name);
             }
         }
     }
