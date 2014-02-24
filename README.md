@@ -41,6 +41,14 @@ Installing this bundle can be done through these simple steps:
 ```xml
 <?xml version="1.0" ?>
 <!-- ... -->
+<srv:containe>
+    <srv:services>
+        <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
+            <!-- ... -->
+        </srv:service>
+    </srv:services>
+</srv:container>
+
 <doctrine-cache>
      <alias key="apc">my_apc_cache</alias>
 
@@ -67,12 +75,23 @@ Installing this bundle can be done through these simple steps:
          <alias>riak</alias>
          <alias>riak_cache</alias>
      </provider>
+
+     <provider name="service_bucket_riak_provider">
+         <riak bucket-id="my_riak_bucket_service"/>
+     </provider>
 </doctrine-cache>
 ```
 
 #### application/config/doctrine_cache.yml
 ```yml
 # ...
+
+services:
+    my_riak_bucket_service:
+        class: "Riak\Bucket"
+        arguments: ["..."]
+
+
 doctrine_cache:
     aliases:
         apc: my_apc_cache
@@ -97,6 +116,10 @@ doctrine_cache:
                 bucket_property_list:
                     allow_multiple: false
                     n_value: 1
+
+        service_bucket_riak_provider:
+            riak:
+                bucket_id : "my_riak_bucket_service"
 ```
 
 4. Simply use `doctrine_cache.providers.{provider_name}` to inject it into the desired service.
