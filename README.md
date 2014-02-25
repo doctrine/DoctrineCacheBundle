@@ -46,11 +46,18 @@ Installing this bundle can be done through these simple steps:
         <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
             <!-- ... -->
         </srv:service>
+        <srv:service id="my_custom_provider_service" class="MyCustomType">
+            <!-- ... -->
+        </srv:service>
     </srv:services>
 </srv:container>
 
 <doctrine-cache>
      <alias key="apc">my_apc_cache</alias>
+
+     <custom-provider type="my_custom_type">
+        <prototype>my_custom_provider_service</prototype>
+     </custom-provider>
 
      <provider name="my_apc_cache" type="apc" namespace="my_apc_ns"/>
 
@@ -79,6 +86,10 @@ Installing this bundle can be done through these simple steps:
      <provider name="service_bucket_riak_provider">
          <riak bucket-id="my_riak_bucket_service"/>
      </provider>
+     
+     <provider name="my_custom_type_provider">
+        <my_custom_type/>
+     </provider>
 </doctrine-cache>
 ```
 
@@ -90,11 +101,18 @@ services:
     my_riak_bucket_service:
         class: "Riak\Bucket"
         arguments: ["..."]
+    my_custom_provider_service:
+        class: "MyCustomType"
+        # ...
 
 
 doctrine_cache:
     aliases:
         apc: my_apc_cache
+
+    my_custom_type:
+        prototype:  "my_custom_provider_service"
+
     providers:
         my_apc_cache:
             type: apc
@@ -116,10 +134,11 @@ doctrine_cache:
                 bucket_property_list:
                     allow_multiple: false
                     n_value: 1
-
         service_bucket_riak_provider:
             riak:
                 bucket_id : "my_riak_bucket_service"
+        my_custom_type_provider:
+            my_custom_type: ~
 ```
 
 4. Simply use `doctrine_cache.providers.{provider_name}` to inject it into the desired service.
