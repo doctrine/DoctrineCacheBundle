@@ -12,5 +12,22 @@
         <provider name="basic_wincache_provider"    type="wincache"/>
         <provider name="basic_zenddata_provider"    type="zenddata"/>
         <provider name="basic_ns_zenddata_provider" type="zenddata" namespace="zenddata_ns"/>
+
+        <provider name="basic_apc_provider2">
+            <apc/>
+        </provider>
+        <provider name="basic_array_provider2">
+            <array/>
+        </provider>
+        <provider name="basic_xcache_provider2">
+            <xcache/>
+        </provider>
+        <provider name="basic_wincache_provider2">
+            <wincache/>
+        </provider>
+        <provider name="basic_zenddata_provider2">
+            <zenddata/>
+        </provider>
+
     </doctrine-cache>
 </srv:container>

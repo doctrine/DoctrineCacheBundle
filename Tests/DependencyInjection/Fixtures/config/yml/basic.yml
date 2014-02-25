@@ -13,3 +13,14 @@ doctrine_cache:
         basic_ns_zenddata_provider:
             type: zenddata
             namespace: zenddata_ns
+
+        basic_apc_provider2:
+            apc: ~
+        basic_array_provider2:
+            array: ~
+        basic_xcache_provider2:
+            xcache: ~
+        basic_wincache_provider2:
+            wincache: ~
+        basic_zenddata_provider2:
+            zenddata: ~

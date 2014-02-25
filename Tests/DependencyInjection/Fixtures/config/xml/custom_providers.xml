@@ -1,0 +1,36 @@
+<?xml version="1.0" ?>
+<srv:container xmlns="http://doctrine-project.org/schemas"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:srv="http://symfony.com/schema/dic/services"
+               xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+
+    <srv:services>
+        <srv:service id="my_custom_provider_service" class="Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Cache\MyCustomType"/>
+    </srv:services>
+
+    <doctrine-cache>
+        <custom-provider type="my_custom_type">
+            <prototype>my_custom_provider_service</prototype>
+            <definition-class>Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Definition\MyCustomTypeDefinition</definition-class>
+        </custom-provider>
+
+        <custom-provider type="my_custom_type2">
+            <prototype>my_custom_provider_service</prototype>
+        </custom-provider>
+
+        <provider name="my_custom_type_provider">
+             <my_custom_type>
+                 <config-foo>foo</config-foo>
+                 <config-bar>bar</config-bar>
+             </my_custom_type>
+         </provider>
+
+         <provider name="my_custom_type_provider2">
+             <my_custom_type2>
+                 <config-foobar>foobar</config-foobar>
+             </my_custom_type2>
+         </provider>
+    </doctrine-cache>
+
+</srv:container>

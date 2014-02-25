@@ -48,6 +48,12 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             'basic_wincache_provider'    => 'Doctrine\Common\Cache\WinCacheCache',
             'basic_zenddata_provider'    => 'Doctrine\Common\Cache\ZendDataCache',
             'basic_ns_zenddata_provider' => 'Doctrine\Common\Cache\ZendDataCache',
+
+            'basic_apc_provider2'         => 'Doctrine\Common\Cache\ApcCache',
+            'basic_array_provider2'       => 'Doctrine\Common\Cache\ArrayCache',
+            'basic_xcache_provider2'      => 'Doctrine\Common\Cache\XcacheCache',
+            'basic_wincache_provider2'    => 'Doctrine\Common\Cache\WinCacheCache',
+            'basic_zenddata_provider2'    => 'Doctrine\Common\Cache\ZendDataCache'
         );
 
         foreach ($drivers as $key => $value) {
@@ -190,6 +196,28 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
 
         foreach ($providers as $id => $value) {
             $this->assertCacheProvider($container, $id, $value[0]);
+        }
+    }
+
+    public function testCustomCacheProviders()
+    {
+        $container = $this->compileContainer('custom_providers');
+        $providers = array(
+            'my_custom_type_provider' => array(
+                'Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Cache\MyCustomType',
+                array('addConfig' => array(
+                    array('config_foo', 'foo'),
+                    array('config_bar', 'bar'),
+                ))
+            ),
+            'my_custom_type_provider2' => array(
+                'Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Cache\MyCustomType',
+                array()
+            ),
+        );
+
+        foreach ($providers as $id => $value) {
+            $this->assertCacheProvider($container, $id, $value[0], $value[1]);
         }
     }
 

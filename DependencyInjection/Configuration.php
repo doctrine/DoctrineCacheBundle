@@ -21,6 +21,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
+use Symfony\Component\Config\Definition\NodeInterface;
 
 /**
  * Cache Bundle Configuration
@@ -31,14 +32,114 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 class Configuration implements ConfigurationInterface
 {
     /**
+     * @param array $parameters
+     *
+     * @return string
+     */
+    public function getProviderParameters(array $parameters)
+    {
+        if (isset($parameters['type'])) {
+            unset($parameters['type']);
+        }
+
+        if (isset($parameters['aliases'])) {
+            unset($parameters['aliases']);
+        }
+
+        if (isset($parameters['namespace'])) {
+            unset($parameters['namespace']);
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * @param array $parameters
+     *
+     * @return string
+     */
+    public function resolveNodeType(array $parameters)
+    {
+        $values = $this->getProviderParameters($parameters);
+        $type   = key($values);
+
+        return $type;
+    }
+
+    /**
+     * @param \Symfony\Component\Config\Definition\NodeInterface $tree
+     *
+     * @return array
+     */
+    public function getProviderNames(NodeInterface $tree)
+    {
+        foreach ($tree->getChildren() as $providers) {
+
+            if ($providers->getName() !== 'providers') {
+                continue;
+            }
+
+            $children  = $providers->getPrototype()->getChildren();
+            $providers =  array_diff(array_keys($children), array('type', 'aliases', 'namespace'));
+
+            return $providers;
+        }
+
+        return array();
+    }
+
+    /**
+     * @param string                                                $type
+     * @param \Symfony\Component\Config\Definition\NodeInterface    $tree
+     *
+     * @return boolean
+     */
+    public function isCustomProvider($type, NodeInterface $tree)
+    {
+        return ( ! in_array($type, $this->getProviderNames($tree)));
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function getConfigTreeBuilder()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('doctrine_cache', 'array');
+        $self            = $this;
+        $builder         = new TreeBuilder();
+        $node            = $builder->root('doctrine_cache', 'array');
+        $normalization   = function ($conf) use ($self, $builder) {
+            $conf['type'] = isset($conf['type'])
+                ? $conf['type']
+                : $self->resolveNodeType($conf);
+
+            if ($self->isCustomProvider($conf['type'], $builder->buildTree())) {
+                $params  = $self->getProviderParameters($conf);
+                $options = reset($params);
+                $conf    = array(
+                    'type'            => 'custom_provider',
+                    'custom_provider' => array(
+                        'type'      => $conf['type'],
+                        'options'   => $options ?: null,
+                    )
+                );
+            }
+
+            return $conf;
+        };
 
         $node
+            ->fixXmlConfig('custom_provider')
+            ->children()
+                ->arrayNode('custom_providers')
+                ->useAttributeAsKey('type')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('prototype')->isRequired()->cannotBeEmpty()->end()
+                            ->scalarNode('definition_class')->defaultNull()->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
             ->fixXmlConfig('alias', 'aliases')
             ->children()
                 ->arrayNode('aliases')
@@ -52,24 +153,20 @@ class Configuration implements ConfigurationInterface
                 ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->beforeNormalization()
-                            ->ifTrue(function ($v) {
-                                return ( ! isset($v['type']));
+                            ->ifTrue(function ($v) use ($self, $builder) {
+                                return ( ! isset($v['type']) || ! $self->isCustomProvider($v['type'], $builder->buildTree()));
                             })
-                            ->then(function ($val) {
-                                $copy = $val;
-
-                                if (isset($copy['namespace'])) {
-                                    unset($copy['namespace']);
-                                }
-
-                                $val['type'] = key($copy);
-
-                                return $val;
-                            })
+                            ->then($normalization)
                         ->end()
                         ->children()
                             ->scalarNode('namespace')->defaultNull()->end()
                             ->scalarNode('type')->defaultNull()->end()
+                            ->append($this->addBasicProviderNode('apc'))
+                            ->append($this->addBasicProviderNode('array'))
+                            ->append($this->addBasicProviderNode('xcache'))
+                            ->append($this->addBasicProviderNode('wincache'))
+                            ->append($this->addBasicProviderNode('zenddata'))
+                            ->append($this->addCustomProviderNode())
                             ->append($this->addMemcachedNode())
                             ->append($this->addMemcacheNode())
                             ->append($this->addCouchbaseNode())
@@ -94,9 +191,45 @@ class Configuration implements ConfigurationInterface
     }
 
     /**
+     * @param string $name
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    private function addBasicProviderNode($name)
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root($name);
+
+        return $node;
+    }
+
+    /**
+     * Build custom node configuration definition
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    private function addCustomProviderNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('custom_provider');
+
+        $node
+            ->children()
+                ->scalarNode('type')->isRequired()->cannotBeEmpty()->end()
+                ->arrayNode('options')
+                    ->useAttributeAsKey('name')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    /**
      * Build memcache node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addMemcacheNode()
     {
@@ -139,7 +272,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build memcached node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addMemcachedNode()
     {
@@ -182,7 +315,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build redis node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addRedisNode()
     {
@@ -203,7 +336,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build riak node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addRiakNode()
     {
@@ -232,7 +365,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build couchbase node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addCouchbaseNode()
     {
@@ -258,7 +391,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build mongodb node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addMongoNode()
     {
@@ -281,7 +414,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build php_file node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addPhpFileNode()
     {
@@ -301,7 +434,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build file_system node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder The bucket property list tree builder
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
      */
     private function addFileSystemNode()
     {

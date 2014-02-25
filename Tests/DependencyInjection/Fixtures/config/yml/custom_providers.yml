@@ -1,0 +1,22 @@
+services:
+    my_custom_provider_service:
+        class: "Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Cache\MyCustomType"
+
+doctrine_cache:
+    custom_providers:
+        my_custom_type:
+            prototype:  "my_custom_provider_service"
+            definition_class: "Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Definition\MyCustomTypeDefinition"
+
+        my_custom_type2:
+            prototype:  "my_custom_provider_service"
+
+    providers:
+        my_custom_type_provider:
+            my_custom_type:
+                config_foo: "foo"
+                config_bar: "bar"
+
+        my_custom_type_provider2:
+            my_custom_type2:
+                config_foobar: "foobar"

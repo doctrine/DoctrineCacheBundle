@@ -45,60 +45,139 @@ class DoctrineCacheExtension extends Extension
 
         $rootConfig = $this->processConfiguration($configuration, $configs);
 
+        $this->loadCustomProviders($rootConfig, $container);
+        $this->loadCacheProviders($rootConfig, $container);
+    }
+
+    /**
+     * @param array                                                     $rootConfig
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     */
+    protected function loadCacheProviders(array $rootConfig, ContainerBuilder $container)
+    {
         foreach ($rootConfig['providers'] as $name => $config) {
-            $type = $config['type'];
-            $id   = 'doctrine_cache.abstract.' . $type;
-
-            if ( ! $container->hasDefinition($id)) {
-                throw new \InvalidArgumentException(sprintf('"%s" is an unrecognized Doctrine cache driver.', $type));
-            }
-
-            $serviceId = 'doctrine_cache.providers.' . $name;
-            $service   = $container->setDefinition($serviceId, new DefinitionDecorator($id));
-
-            if ($config['namespace']) {
-                $service->addMethodCall('setNamespace', array($config['namespace']));
-            }
-
-            if ($config['aliases']) {
-                foreach ($config['aliases'] as $alias) {
-                    $container->setAlias($alias, $serviceId);
-                }
-            }
-
-            if ($this->hasDefinitionClass($type)) {
-                $this->createCacheDefinition($type)->configure($name, $config, $service, $container);
-            }
+            $this->loadCacheProvider($name, $config, $container);
         }
 
-        if ($rootConfig['aliases']) {
-            foreach ($rootConfig['aliases'] as $alias => $name) {
-                $container->setAlias($alias, 'doctrine_cache.providers.' . $name);
+        foreach ($rootConfig['aliases'] as $alias => $name) {
+            $container->setAlias($alias, 'doctrine_cache.providers.' . $name);
+        }
+    }
+
+    /**
+     * @param string                                                    $name
+     * @param array                                                     $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     */
+    protected function loadCacheProvider($name, array $config, ContainerBuilder $container)
+    {
+        $serviceId  = 'doctrine_cache.providers.' . $name;
+        $decorator  = $this->getProviderDecorator($container, $config);
+        $service    = $container->setDefinition($serviceId, $decorator);
+        $type       = ($config['type'] === 'custom_provider')
+            ? $config['custom_provider']['type']
+            : $config['type'];
+
+        if ($config['namespace']) {
+            $service->addMethodCall('setNamespace', array($config['namespace']));
+        }
+
+        foreach ($config['aliases'] as $alias) {
+            $container->setAlias($alias, $serviceId);
+        }
+
+        if ($this->definitionClassExists($type, $container)) {
+            $this->getCacheDefinition($type, $container)->configure($name, $config, $service, $container);
+        }
+    }
+
+    /**
+     * @param array                                                     $rootConfig
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     */
+    protected function loadCustomProviders(array $rootConfig, ContainerBuilder $container)
+    {
+        foreach ($rootConfig['custom_providers'] as $type => $rootConfig) {
+            $container->setParameter($this->getCustomProviderParameter($type), $rootConfig['prototype']);
+
+            if ($rootConfig['definition_class']) {
+                $container->setParameter($this->getCustomDefinitionClassParameter($type), $rootConfig['definition_class']);
             }
         }
     }
 
     /**
-     * @param string $type
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param array                                                     $config
+     *
+     * @return \Symfony\Component\DependencyInjection\DefinitionDecorator
+     */
+    protected function getProviderDecorator(ContainerBuilder $container, array $config)
+    {
+        $type = $config['type'];
+        $id   = 'doctrine_cache.abstract.' . $type;
+
+        if ($type === 'custom_provider') {
+            $type  = $config['custom_provider']['type'];
+            $param = $this->getCustomProviderParameter($type);
+
+            if ($container->hasParameter($param)) {
+                return new DefinitionDecorator($container->getParameter($param));
+            }
+        }
+
+        if ($container->hasDefinition($id)) {
+            return new DefinitionDecorator($id);
+        }
+
+        throw new \InvalidArgumentException(sprintf('"%s" is an unrecognized Doctrine cache driver.', $type));
+    }
+
+    /**
+     * @param string                                                    $type
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
      *
      * @return \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition\CacheDefinition
      */
-    protected function createCacheDefinition($type)
+    private function getCacheDefinition($type, ContainerBuilder $container)
     {
-        $class  = $this->getDefinitionClass($type);
+        $class  = $this->getDefinitionClass($type, $container);
         $object = new $class($type);
 
         return $object;
     }
 
     /**
-     * @param string $type
+     * @param string                                                    $type
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
      *
      * @return boolean
      */
-    protected function hasDefinitionClass($type)
+    private function definitionClassExists($type, ContainerBuilder $container)
     {
-        return class_exists($this->getDefinitionClass($type));
+        if ($container->hasParameter($this->getCustomDefinitionClassParameter($type))) {
+            return true;
+        }
+
+        return class_exists($this->getDefinitionClass($type, $container));
+    }
+
+    /**
+     * @param string                                                    $type
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     *
+     * @return string
+     */
+    protected function getDefinitionClass($type, ContainerBuilder $container)
+    {
+        if ($container->hasParameter($this->getCustomDefinitionClassParameter($type))) {
+            return $container->getParameter($this->getCustomDefinitionClassParameter($type));
+        }
+
+        $name  = Inflector::classify($type) . 'Definition';
+        $class = sprintf('%s\Definition\%s', __NAMESPACE__, $name);
+
+        return $class;
     }
 
     /**
@@ -106,12 +185,19 @@ class DoctrineCacheExtension extends Extension
      *
      * @return string
      */
-    protected function getDefinitionClass($type)
+    private function getCustomProviderParameter($type)
     {
-        $name  = Inflector::classify($type) . 'Definition';
-        $class = sprintf('%s\Definition\%s', __NAMESPACE__, $name);
+        return 'doctrine_cache.custom_provider.' . $type;
+    }
 
-        return $class;
+    /**
+     * @param string $type
+     *
+     * @return string
+     */
+    private function getCustomDefinitionClassParameter($type)
+    {
+        return 'doctrine_cache.custom_definition_class.' . $type;
     }
 
     /**

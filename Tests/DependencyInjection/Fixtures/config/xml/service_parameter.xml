@@ -48,7 +48,7 @@
     </srv:services>
 
     <doctrine-cache>
-        <provider  name="service_bucket_riak_provider">
+         <provider  name="service_bucket_riak_provider">
              <riak bucket-id="my_riak_bucket_service"/>
          </provider>
 
