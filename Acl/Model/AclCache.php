@@ -128,7 +128,8 @@ class AclCache implements AclCacheInterface
      * Unserialize a given ACL.
      *
      * @param string $serialized
-     * @return AclInterface
+     *
+     * @return \Symfony\Component\Security\Acl\Model\AclInterface
      */
     private function unserializeAcl($serialized)
     {
@@ -201,7 +202,7 @@ class AclCache implements AclCacheInterface
      */
     private function createKeyFromIdentity(ObjectIdentityInterface $oid)
     {
-        return sha1($oid->getType()) . '_' . sha1($oid->getIdentifier());
+        return $oid->getType() . '_' . $oid->getIdentifier();
     }
 
     /**
