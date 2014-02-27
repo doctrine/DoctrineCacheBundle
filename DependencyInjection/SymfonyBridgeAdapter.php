@@ -108,7 +108,7 @@ class SymfonyBridgeAdapter
             );
         }
 
-        $this->cacheExtension->loadCacheProvider($cacheName, $config, $container);
+        $this->cacheExtension->loadCacheProvider($this->getObjectManagerElementName($objectManagerName.'_'.$cacheName), $config, $container);
 
         return $id;
     }
