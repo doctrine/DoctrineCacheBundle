@@ -23,7 +23,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection;
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\TestCase;
 use Symfony\Component\DependencyInjection\Definition;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\SymfonyBridgeAdapter;
-use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\DoctrineCacheExtension;
+use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader;
 
 /**
  * @group Extension
@@ -43,7 +43,7 @@ class SymfonyBridgeAdpterTest extends TestCase
     {
         parent::setUp();
 
-        $this->adapter = new SymfonyBridgeAdapter(new DoctrineCacheExtension(), 'doctrine.orm', 'orm');
+        $this->adapter = new SymfonyBridgeAdapter(new CacheProviderLoader(), 'doctrine.orm', 'orm');
     }
 
     public function providerBasicDrivers()

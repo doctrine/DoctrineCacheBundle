@@ -31,9 +31,9 @@ use Symfony\Component\DependencyInjection\Alias;
 class SymfonyBridgeAdapter
 {
     /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\DoctrineCacheExtension
+     * @var \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader
      */
-    protected $cacheExtension;
+    private $caheProviderLoader;
 
     /**
      * @var string
@@ -46,13 +46,13 @@ class SymfonyBridgeAdapter
     protected $mappingResourceName;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\DoctrineCacheExtension   $cacheExtension
-     * @param string                                                                            $objectManagerName
-     * @param string                                                                            $mappingResourceName
+     * @param \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader  $caheProviderLoader
+     * @param string                                                                        $objectManagerName
+     * @param string                                                                        $mappingResourceName
      */
-    public function __construct(DoctrineCacheExtension $cacheExtension, $objectManagerName, $mappingResourceName)
+    public function __construct(CacheProviderLoader $caheProviderLoader, $objectManagerName, $mappingResourceName)
     {
-        $this->cacheExtension       = $cacheExtension;
+        $this->caheProviderLoader   = $caheProviderLoader;
         $this->objectManagerName    = $objectManagerName;
         $this->mappingResourceName  = $mappingResourceName;
     }
@@ -108,7 +108,7 @@ class SymfonyBridgeAdapter
             );
         }
 
-        $this->cacheExtension->loadCacheProvider($this->getObjectManagerElementName($objectManagerName.'_'.$cacheName), $config, $container);
+        $this->caheProviderLoader->loadCacheProvider($id, $config, $container);
 
         return $id;
     }
