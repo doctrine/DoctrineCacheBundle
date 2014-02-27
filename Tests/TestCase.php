@@ -19,7 +19,9 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests;
 
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 class TestCase extends \PHPUnit_Framework_TestCase
@@ -46,4 +48,20 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'kernel.cache_dir'   => sys_get_temp_dir(),
         )));
     }
+    
+    /**
+     * @param array $bundles
+     * @param string $vendor
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
+    protected function createServiceContainer(array $bundles = array('YamlBundle'), $vendor = null)
+    {
+        $container = $this->createContainer($bundles, $vendor);
+        $loader    = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $loader->load('services.xml');
+
+        return $container;
+    }
+
 }

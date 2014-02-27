@@ -69,7 +69,7 @@ class DoctrineCacheExtension extends Extension
      * @param array                                                     $config
      * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
      */
-    protected function loadCacheProvider($name, array $config, ContainerBuilder $container)
+    public function loadCacheProvider($name, array $config, ContainerBuilder $container)
     {
         $serviceId  = 'doctrine_cache.providers.' . $name;
         $decorator  = $this->getProviderDecorator($container, $config);
