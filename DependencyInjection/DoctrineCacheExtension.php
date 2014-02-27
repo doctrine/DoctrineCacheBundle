@@ -30,20 +30,30 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
  * Cache Bundle Extension
  *
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
+ * @author Kinn Coelho Julião <kinncj@php.net>
  */
 class DoctrineCacheExtension extends Extension
 {
+
+    /**
+     * {@inheritdoc}
+     */
+    public function loadServices(ContainerBuilder $container)
+    {
+        $loader        = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        $loader->load('services.xml');
+    }
+
     /**
      * {@inheritdoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader        = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $this->loadServices($container);
+
         $configuration = new Configuration();
-
-        $loader->load('services.xml');
-
-        $rootConfig = $this->processConfiguration($configuration, $configs);
+        $rootConfig    = $this->processConfiguration($configuration, $configs);
 
         $this->loadCustomProviders($rootConfig, $container);
         $this->loadCacheProviders($rootConfig, $container);
