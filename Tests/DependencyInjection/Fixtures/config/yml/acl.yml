@@ -1,0 +1,6 @@
+doctrine_cache:
+    acl_cache:
+        id: 'doctrine_cache.providers.acl_apc_provider'
+    providers:
+        acl_apc_provider:
+            type: 'apc'

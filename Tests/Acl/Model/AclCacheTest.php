@@ -33,6 +33,7 @@ class AclCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($aclWithParent->getId(), $cachedAclWithParent->getId());
         $this->assertNotNull($cachedParentAcl = $cachedAclWithParent->getParentAcl());
         $this->assertEquals($aclWithParent->getParentAcl()->getId(), $cachedParentAcl->getId());
+        $this->assertTrue($cache->clearCache());
     }
 
     protected function getAcl($depth = 0)

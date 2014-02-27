@@ -29,6 +29,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 /**
  * Cache Bundle Extension
  *
+ * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class DoctrineCacheExtension extends Extension
@@ -45,8 +46,23 @@ class DoctrineCacheExtension extends Extension
 
         $rootConfig = $this->processConfiguration($configuration, $configs);
 
+        $this->loadAcl($rootConfig, $container);
         $this->loadCustomProviders($rootConfig, $container);
         $this->loadCacheProviders($rootConfig, $container);
+    }
+
+    /**
+     * @param array                                                     $rootConfig
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     */
+    protected function loadAcl(array $rootConfig, ContainerBuilder $container)
+    {
+        if ( ! isset($rootConfig['acl_cache']['id'])) {
+            return;
+        }
+
+        $container->setParameter('doctrine_cache.acl_cache.id', $rootConfig['acl_cache']['id']);
+        $container->setAlias('security.acl.cache', 'doctrine_cache.security.acl.cache');
     }
 
     /**

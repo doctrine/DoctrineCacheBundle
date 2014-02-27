@@ -20,9 +20,13 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection;
 
+use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler\AclCacheCompilerPass;
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\TestCase;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\DoctrineCacheExtension;
 
 /**
@@ -230,6 +234,18 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $this->compileContainer('unrecognized');
     }
 
+    public function testAcl()
+    {
+        $container = $this->compileContainer('acl');
+
+        $this->assertEquals('acl_apc_provider', $container->getParameter('doctrine_cache.acl_cache.id'));
+        $this->assertTrue($container->hasDefinition('doctrine_cache.security.acl.cache'));
+
+        $definition = $container->getDefinition('doctrine_cache.security.acl.cache');
+
+        $this->assertFalse($definition->isPublic());
+    }
+
     public function assertCacheProvider(ContainerBuilder $container, $name, $class, array $expectedCalls = array())
     {
         $service = "doctrine_cache.providers." . $name;
@@ -288,11 +304,20 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
      */
     protected function compileContainer($file, ContainerBuilder $container = null)
     {
-        $container = $container ?: $this->createContainer();
-        $loader    = new DoctrineCacheExtension();
+        $container         = $container ?: $this->createContainer();
+        $cacheExtension    = new DoctrineCacheExtension();
+        $securityExtension = new SecurityExtension();
 
-        $container->registerExtension($loader);
+        $container->addCompilerPass(new AclCacheCompilerPass());
+        $container->registerExtension($cacheExtension);
+        $container->registerExtension($securityExtension);
+
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/Fixtures/config'));
+
+        $loader->load('security.yml');
+
         $this->loadFromFile($container, $file);
+
         $container->compile();
 
         return $container;
