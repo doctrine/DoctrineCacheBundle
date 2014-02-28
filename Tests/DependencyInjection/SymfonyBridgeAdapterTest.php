@@ -131,4 +131,13 @@ class SymfonyBridgeAdpterTest extends TestCase
 
         $this->adapter->loadObjectManagerCacheDriver($objectManager, $container, $cacheName);
     }
+
+    public function testLoadServicesConfiguration()
+    {
+        $container = $this->createContainer();
+
+        $this->assertFalse($container->hasParameter('doctrine_cache.array.class'));
+        $this->adapter->loadServicesConfiguration($container);
+        $this->assertTrue($container->hasParameter('doctrine_cache.array.class'));
+    }
 }

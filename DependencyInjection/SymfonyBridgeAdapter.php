@@ -19,8 +19,10 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\Config\FileLocator;
 
 /**
  * Symfony bridge adpter
@@ -55,6 +57,17 @@ class SymfonyBridgeAdapter
         $this->caheProviderLoader   = $caheProviderLoader;
         $this->objectManagerName    = $objectManagerName;
         $this->mappingResourceName  = $mappingResourceName;
+    }
+
+    /**
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     */
+    public function loadServicesConfiguration(ContainerBuilder $container)
+    {
+        $locator = new FileLocator(__DIR__ . '/../Resources/config/');
+        $loader  = new XmlFileLoader($container, $locator);
+
+        $loader->load('services.xml');
     }
 
     /**

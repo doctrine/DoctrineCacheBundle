@@ -19,9 +19,7 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
-use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -51,12 +49,13 @@ class DoctrineCacheExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader        = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $configuration = new Configuration();
+        $locator = new FileLocator(__DIR__ . '/../Resources/config/');
+        $loader  = new XmlFileLoader($container, $locator);
 
         $loader->load('services.xml');
 
-        $rootConfig = $this->processConfiguration($configuration, $configs);
+        $configuration = new Configuration();
+        $rootConfig    = $this->processConfiguration($configuration, $configs);
 
         $this->loadCustomProviders($rootConfig, $container);
         $this->loadCacheProviders($rootConfig, $container);
