@@ -36,6 +36,6 @@ class DoctrineCacheBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new AclCacheCompilerPass());
+        //$container->addCompilerPass(new AclCacheCompilerPass());
     }
 }

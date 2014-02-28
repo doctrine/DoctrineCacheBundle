@@ -308,13 +308,13 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $cacheExtension    = new DoctrineCacheExtension();
         $securityExtension = new SecurityExtension();
 
-        $container->addCompilerPass(new AclCacheCompilerPass());
+        //$container->addCompilerPass(new AclCacheCompilerPass());
         $container->registerExtension($cacheExtension);
         $container->registerExtension($securityExtension);
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/Fixtures/config'));
+        //$loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/Fixtures/config'));
 
-        $loader->load('security.yml');
+        //$loader->load('security.yml');
 
         $this->loadFromFile($container, $file);
 
