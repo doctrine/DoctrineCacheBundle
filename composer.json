@@ -53,6 +53,11 @@
     "autoload": {
         "psr-0": { "Doctrine\\Bundle\\DoctrineCacheBundle": "" }
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
     "repositories": [
         {
             "type": "git",
