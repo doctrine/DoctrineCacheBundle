@@ -38,7 +38,6 @@
         <parameter key="doctrine_cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
         <parameter key="doctrine_cache.zenddata.class">Doctrine\Common\Cache\ZendDataCache</parameter>
         <parameter key="doctrine_cache.security.acl.cache.class">Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache</parameter>
-        <!--parameter key="doctrine_cache.acl_cache.id">doctrine.orm.default_result_cache</parameter-->
     </parameters>
 
     <services>
