@@ -41,7 +41,7 @@ Installing this bundle can be done through these simple steps:
 ```xml
 <?xml version="1.0" ?>
 <!-- ... -->
-<srv:containe>
+<srv:container>
     <srv:services>
         <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
             <!-- ... -->
@@ -53,6 +53,8 @@ Installing this bundle can be done through these simple steps:
 </srv:container>
 
 <doctrine-cache>
+     <acl-cache id="doctrine_cache.providers.my_apc_cache"/>
+
      <alias key="apc">my_apc_cache</alias>
 
      <custom-provider type="my_custom_type">
@@ -107,6 +109,8 @@ services:
 
 
 doctrine_cache:
+    acl_cache: "doctrine_cache.providers.my_apc_cache"
+
     aliases:
         apc: my_apc_cache
 
