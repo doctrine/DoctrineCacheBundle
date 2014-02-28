@@ -19,14 +19,16 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle;
 
+use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler\AclCacheCompilerPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
  * Symfony2 Bundle for Doctrine Cache
  *
+ * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class DoctrineCacheBundle extends Bundle
 {
-
 }

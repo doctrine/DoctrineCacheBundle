@@ -128,6 +128,20 @@ class Configuration implements ConfigurationInterface
         };
 
         $node
+            ->children()
+                ->arrayNode('acl_cache')
+                    ->beforeNormalization()
+                        ->ifString()
+                        ->then(function ($id) {
+                            return array('id' => $id);
+                        })
+                    ->end()
+                    ->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('id')->end()
+                    ->end()
+                ->end()
+            ->end()
             ->fixXmlConfig('custom_provider')
             ->children()
                 ->arrayNode('custom_providers')

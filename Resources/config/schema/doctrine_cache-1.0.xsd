@@ -7,11 +7,16 @@
     <xsd:element name="doctrine_cache">
         <xsd:complexType>
             <xsd:sequence>
+                <xsd:element name="acl_cache" type="acl_cache" minOccurs="0" maxOccurs="1" />
                 <xsd:element name="alias" type="alias" minOccurs="0" maxOccurs="unbounded" />
                 <xsd:element name="provider" type="provider" minOccurs="0" maxOccurs="unbounded" />
             </xsd:sequence>
         </xsd:complexType>
     </xsd:element>
+
+    <xsd:complexType name="acl_cache">
+        <xsd:attribute name="id" type="xsd:string" use="required"/>
+    </xsd:complexType>
 
     <xsd:complexType name="alias">
         <xsd:attribute name="key" type="xsd:string" use="required"/>

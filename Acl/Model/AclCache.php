@@ -121,7 +121,7 @@ class AclCache implements AclCacheInterface
      */
     public function clearCache()
     {
-        $this->cache->deleteAll();
+        return $this->cache->deleteAll();
     }
 
     /**

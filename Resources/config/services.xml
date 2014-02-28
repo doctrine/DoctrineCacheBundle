@@ -37,6 +37,7 @@
         <parameter key="doctrine_cache.wincache.class">Doctrine\Common\Cache\WinCacheCache</parameter>
         <parameter key="doctrine_cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
         <parameter key="doctrine_cache.zenddata.class">Doctrine\Common\Cache\ZendDataCache</parameter>
+        <parameter key="doctrine_cache.security.acl.cache.class">Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache</parameter>
     </parameters>
 
     <services>
@@ -53,6 +54,11 @@
         <service id="doctrine_cache.abstract.mongodb" class="%doctrine_cache.mongodb.class%" abstract="true" />
         <service id="doctrine_cache.abstract.riak" class="%doctrine_cache.riak.class%" abstract="true" />
         <service id="doctrine_cache.abstract.couchbase" class="%doctrine_cache.couchbase.class%" abstract="true" />
+
+        <service id="doctrine_cache.security.acl.cache" class="%doctrine_cache.security.acl.cache.class%" public="false">
+            <argument type="service" id="%doctrine_cache.acl_cache.id%" />
+            <argument type="service" id="security.acl.permission_granting_strategy" />
+        </service>
     </services>
 
 </container>

@@ -23,6 +23,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection;
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\TestCase;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\DoctrineCacheExtension;
 
 /**
@@ -38,22 +39,44 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
 
     abstract protected function loadFromFile(ContainerBuilder $container, $file);
 
+    public function testParameters()
+    {
+        $container      = $this->createContainer();
+        $cacheExtension = new DoctrineCacheExtension();
+
+        $cacheExtension->load(array(), $container);
+
+        $this->assertTrue($container->hasParameter('doctrine_cache.apc.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.array.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.couchbase.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.file_system.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.memcached.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.memcache.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.mongodb.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.php_file.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.redis.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.riak.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.xcache.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.wincache.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.zenddata.class'));
+    }
+
     public function testBasicCache()
     {
         $container = $this->compileContainer('basic');
         $drivers   = array(
-            'basic_apc_provider'         => 'Doctrine\Common\Cache\ApcCache',
-            'basic_array_provider'       => 'Doctrine\Common\Cache\ArrayCache',
-            'basic_xcache_provider'      => 'Doctrine\Common\Cache\XcacheCache',
-            'basic_wincache_provider'    => 'Doctrine\Common\Cache\WinCacheCache',
-            'basic_zenddata_provider'    => 'Doctrine\Common\Cache\ZendDataCache',
-            'basic_ns_zenddata_provider' => 'Doctrine\Common\Cache\ZendDataCache',
+            'basic_apc_provider'         => '%doctrine_cache.apc.class%',
+            'basic_array_provider'       => '%doctrine_cache.array.class%',
+            'basic_xcache_provider'      => '%doctrine_cache.xcache.class%',
+            'basic_wincache_provider'    => '%doctrine_cache.wincache.class%',
+            'basic_zenddata_provider'    => '%doctrine_cache.zenddata.class%',
+            'basic_ns_zenddata_provider' => '%doctrine_cache.zenddata.class%',
 
-            'basic_apc_provider2'         => 'Doctrine\Common\Cache\ApcCache',
-            'basic_array_provider2'       => 'Doctrine\Common\Cache\ArrayCache',
-            'basic_xcache_provider2'      => 'Doctrine\Common\Cache\XcacheCache',
-            'basic_wincache_provider2'    => 'Doctrine\Common\Cache\WinCacheCache',
-            'basic_zenddata_provider2'    => 'Doctrine\Common\Cache\ZendDataCache'
+            'basic_apc_provider2'         => '%doctrine_cache.apc.class%',
+            'basic_array_provider2'       => '%doctrine_cache.array.class%',
+            'basic_xcache_provider2'      => '%doctrine_cache.xcache.class%',
+            'basic_wincache_provider2'    => '%doctrine_cache.wincache.class%',
+            'basic_zenddata_provider2'    => '%doctrine_cache.zenddata.class%',
         );
 
         foreach ($drivers as $key => $value) {
@@ -66,28 +89,28 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $container = $this->compileContainer('configurable');
         $drivers   = array(
             'configurable_memcached_provider' => array(
-                'Doctrine\Common\Cache\MemcachedCache', array('setMemcached' => array())
+                '%doctrine_cache.memcached.class%', array('setMemcached' => array())
             ),
             'configurable_memcache_provider' => array(
-                'Doctrine\Common\Cache\MemcacheCache', array('setMemcache' => array())
+                '%doctrine_cache.memcache.class%', array('setMemcache' => array())
             ),
             'configurable_redis_provider' => array(
-                'Doctrine\Common\Cache\RedisCache', array('setRedis' => array())
+                '%doctrine_cache.redis.class%', array('setRedis' => array())
             ),
             'configurable_mongodb_provider' => array(
-                'Doctrine\Common\Cache\MongoDBCache'
+                '%doctrine_cache.mongodb.class%'
             ),
             'configurable_riak_provider' => array(
-                'Doctrine\Common\Cache\RiakCache'
+                '%doctrine_cache.riak.class%'
             ),
             'configurable_filesystem_provider' => array(
-                'Doctrine\Common\Cache\FilesystemCache'
+                '%doctrine_cache.file_system.class%'
             ),
             'configurable_phpfile_provider' => array(
-                'Doctrine\Common\Cache\PhpFileCache'
+                '%doctrine_cache.php_file.class%'
             ),
             'configurable_couchbase_provider' => array(
-                'Doctrine\Common\Cache\CouchbaseCache'
+                '%doctrine_cache.couchbase.class%'
             ),
         );
 
@@ -101,28 +124,28 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $container = $this->compileContainer('configurable_defaults');
         $drivers   = array(
             'configurable_memcached_provider' => array(
-                'Doctrine\Common\Cache\MemcachedCache', array('setMemcached' => array())
+                '%doctrine_cache.memcached.class%', array('setMemcached' => array())
             ),
             'configurable_memcache_provider' => array(
-                'Doctrine\Common\Cache\MemcacheCache', array('setMemcache' => array())
+                '%doctrine_cache.memcache.class%', array('setMemcache' => array())
             ),
             'configurable_redis_provider' => array(
-                'Doctrine\Common\Cache\RedisCache', array('setRedis' => array())
+                '%doctrine_cache.redis.class%', array('setRedis' => array())
             ),
             'configurable_mongodb_provider' => array(
-                'Doctrine\Common\Cache\MongoDBCache'
+                '%doctrine_cache.mongodb.class%'
             ),
             'configurable_riak_provider' => array(
-                'Doctrine\Common\Cache\RiakCache'
+                '%doctrine_cache.riak.class%'
             ),
             'configurable_filesystem_provider' => array(
-                'Doctrine\Common\Cache\FilesystemCache'
+                '%doctrine_cache.file_system.class%'
             ),
             'configurable_phpfile_provider' => array(
-                'Doctrine\Common\Cache\PhpFileCache'
+                '%doctrine_cache.php_file.class%'
             ),
             'configurable_couchbase_provider' => array(
-                'Doctrine\Common\Cache\CouchbaseCache'
+                '%doctrine_cache.couchbase.class%'
             ),
         );
 
@@ -172,25 +195,25 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $container = $this->compileContainer('service_parameter');
         $providers = array(
             'service_bucket_riak_provider' => array(
-                'Doctrine\Common\Cache\RiakCache'
+                '%doctrine_cache.riak.class%'
             ),
             'service_connection_riak_provider' => array(
-                'Doctrine\Common\Cache\RiakCache'
+                '%doctrine_cache.riak.class%'
             ),
             'service_connection_memcached_provider' => array(
-                'Doctrine\Common\Cache\MemcachedCache'
+                '%doctrine_cache.memcached.class%'
             ),
             'service_connection_memcache_provider' => array(
-                'Doctrine\Common\Cache\MemcacheCache'
+                '%doctrine_cache.memcache.class%'
             ),
             'service_connection_redis_provider' => array(
-                'Doctrine\Common\Cache\RedisCache'
+                '%doctrine_cache.redis.class%'
             ),
             'service_connection_mongodb_provider' => array(
-                'Doctrine\Common\Cache\MongoDBCache'
+                '%doctrine_cache.mongodb.class%'
             ),
             'service_collection_mongodb_provider' => array(
-                'Doctrine\Common\Cache\MongoDBCache'
+                '%doctrine_cache.mongodb.class%'
             ),
         );
 
@@ -228,6 +251,18 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
     public function testUnrecognizedCacheDriverException()
     {
         $this->compileContainer('unrecognized');
+    }
+
+    public function testAcl()
+    {
+        $container = $this->compileContainer('acl');
+
+        $this->assertEquals('doctrine_cache.providers.acl_apc_provider', $container->getParameter('doctrine_cache.acl_cache.id'));
+        $this->assertTrue($container->hasDefinition('doctrine_cache.security.acl.cache'));
+
+        $definition = $container->getDefinition('doctrine_cache.security.acl.cache');
+
+        $this->assertFalse($definition->isPublic());
     }
 
     public function assertCacheProvider(ContainerBuilder $container, $name, $class, array $expectedCalls = array())
@@ -288,11 +323,18 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
      */
     protected function compileContainer($file, ContainerBuilder $container = null)
     {
-        $container = $container ?: $this->createContainer();
-        $loader    = new DoctrineCacheExtension();
+        $container      = $container ?: $this->createContainer();
+        $cacheExtension = new DoctrineCacheExtension();
 
-        $container->registerExtension($loader);
+        $container->registerExtension($cacheExtension);
+
+        $compilerPassConfig = $container->getCompilerPassConfig();
+
+        $compilerPassConfig->setOptimizationPasses(array(new ResolveDefinitionTemplatesPass()));
+        $compilerPassConfig->setRemovingPasses(array());
+
         $this->loadFromFile($container, $file);
+
         $container->compile();
 
         return $container;
