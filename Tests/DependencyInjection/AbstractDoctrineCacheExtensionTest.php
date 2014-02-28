@@ -20,14 +20,10 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection;
 
-use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler\AclCacheCompilerPass;
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\TestCase;
-use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
-use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\DoctrineCacheExtension;
 
 /**
