@@ -132,7 +132,9 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('acl_cache')
                     ->beforeNormalization()
                         ->ifString()
-                        ->then(function($id) { return array('id' => $id); })
+                        ->then(function ($id) {
+                            return array('id' => $id);
+                        })
                     ->end()
                     ->addDefaultsIfNotSet()
                     ->children()
