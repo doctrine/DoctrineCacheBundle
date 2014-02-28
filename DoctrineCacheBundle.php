@@ -31,11 +31,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class DoctrineCacheBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        //$container->addCompilerPass(new AclCacheCompilerPass());
-    }
 }

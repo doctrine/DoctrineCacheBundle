@@ -1,6 +1,0 @@
-security:
-    acl: ~
-    providers:
-        default:
-            memory:
-                users: ~
