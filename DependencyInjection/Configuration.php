@@ -437,8 +437,8 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->scalarNode('directory')->defaultNull()->end()
-                ->scalarNode('extension')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
+                ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
+                ->scalarNode('extension')->defaultNull()->end()
             ->end()
         ;
 
@@ -457,8 +457,8 @@ class Configuration implements ConfigurationInterface
 
         $node
             ->children()
-                ->scalarNode('directory')->defaultNull()->end()
-                ->scalarNode('extension')->defaultValue('%kernel.cache_dir%/doctrine/cache/filesystem')->end()
+                ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
+                ->scalarNode('extension')->defaultNull()->end()
             ->end()
         ;
 
