@@ -18,7 +18,7 @@ Installing this bundle can be done through these simple steps:
         // ...
         require: {
             // ...
-            "doctrine/doctrine-cache-bundle": "dev-master"
+            "doctrine/doctrine-cache-bundle": "~1.0"
         }
     }
 ```
