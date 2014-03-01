@@ -36,33 +36,49 @@ Installing this bundle can be done through these simple steps:
 ```
 
 3. Check if the bundle is configured correctly:
-
-#### application/config/doctrine_cache.xml
 ```xml
-<?xml version="1.0" ?>
-<!-- ... -->
-<srv:container>
-    <srv:services>
-        <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
-            <!-- ... -->
-        </srv:service>
-        <srv:service id="my_custom_provider_service" class="MyCustomType">
-            <!-- ... -->
-        </srv:service>
-    </srv:services>
-</srv:container>
+<!--  {# application/config/doctrine_cache.xml #} -->
 
 <doctrine-cache>
-     <acl-cache id="doctrine_cache.providers.my_apc_cache"/>
+     <provider name="my_apc_metadata_cache">
+        <type>apc</type>
+        <namespace>metadata_cache_ns</namespace>
+     </provider>
+    <provider name="my_apc_query_cache" namespace="query_cache_ns">
+        <apc/>
+    <provider>
+</doctrine-cache>
+```
 
-     <alias key="apc">my_apc_cache</alias>
+```yml
+# {# application/config/doctrine_cache.yml #}
 
-     <custom-provider type="my_custom_type">
-        <prototype>my_custom_provider_service</prototype>
-     </custom-provider>
+doctrine_cache:
+    providers:
+        my_apc_metadata_cache:
+            type: apc
+            namespace: metadata_cache_ns
+        my_apc_query_cache:
+            namespace: query_cache_ns
+            apc: ~
+```
 
-     <provider name="my_apc_cache" type="apc" namespace="my_apc_ns"/>
+## Usage
+Simply use `doctrine_cache.providers.{provider_name}` to inject it into the desired service.
 
+Check the following sample:
+
+```php
+$apcCache   = $this->container->get('doctrine_cache.providers.my_apc_cache');
+$arrayCache = $this->container->get('doctrine_cache.providers.my_array_cache');
+
+```
+
+## Provider configuration
+```xml
+<!--  {# application/config/doctrine_cache.xml #}  -->
+
+<doctrine-cache>
      <provider name="my_memcached_cache">
          <memcache>
              <server host="memcached01.ss" port="11211"/>
@@ -81,46 +97,15 @@ Installing this bundle can be done through these simple steps:
                  <n-value>1</n-value>
              </bucket-property-list>
          </riak>
-         <alias>riak</alias>
-         <alias>riak_cache</alias>
-     </provider>
-
-     <provider name="service_bucket_riak_provider">
-         <riak bucket-id="my_riak_bucket_service"/>
-     </provider>
-     
-     <provider name="my_custom_type_provider">
-        <my_custom_type/>
      </provider>
 </doctrine-cache>
 ```
 
-#### application/config/doctrine_cache.yml
 ```yml
-# ...
-
-services:
-    my_riak_bucket_service:
-        class: "Riak\Bucket"
-        arguments: ["..."]
-    my_custom_provider_service:
-        class: "MyCustomType"
-        # ...
-
+# {# application/config/doctrine_cache.yml #}
 
 doctrine_cache:
-    acl_cache: "doctrine_cache.providers.my_apc_cache"
-
-    aliases:
-        apc: my_apc_cache
-
-    my_custom_type:
-        prototype:  "my_custom_provider_service"
-
     providers:
-        my_apc_cache:
-            type: apc
-            namespace: my_apc_ns
         my_memcached_cache:
             memcached:
                 servers:
@@ -128,9 +113,6 @@ doctrine_cache:
                     memcached02.ss: 
                         port: 11211
         my_riak_cache:
-            aliases:
-                - riak
-                - riak_cache
             riak:
                 host: localhost
                 port: 8087
@@ -138,33 +120,197 @@ doctrine_cache:
                 bucket_property_list:
                     allow_multiple: false
                     n_value: 1
+```
+
+###### See [Cache providers](#cache-providers) for all supported cache provider and its specific configurations
+
+
+## Service aliases
+```xml
+<!--   {# application/config/doctrine_cache.xml #} -->
+
+<doctrine-cache>
+     <provider name="my_apc_cache">
+        <type>apc</type>
+        <namespace>my_apc_cache_ns</namespace>
+        <alias>apc_cache</alias>
+     </provider>
+    <provider>
+</doctrine-cache>
+```
+
+```yml
+# {# application/config/doctrine_cache.yml #}
+
+doctrine_cache:
+    providers:
+        my_apc_cache:
+            type: apc
+            namespace: my_apc_cache_ns
+            aliases:
+                - apc_cache
+```
+
+You can  access the cache providers by using created aliases:
+
+```php
+$cache  = $this->container->get('apc_cache');
+```
+
+
+## Custom providers
+Is possible to register a custom cache driver
+```xml
+<!--   {# application/config/doctrine_cache.xml #} -->
+
+<srv:services>
+    <srv:service id="my_custom_provider_service" class="MyCustomType">
+        <!-- ... -->
+    </srv:service>
+ </srv:services>
+
+<doctrine-cache>
+    <!-- register your custom cache provider -->
+    <custom-provider type="my_custom_type">
+        <prototype>my_custom_provider_service</prototype>
+        <definition-class>MyCustomTypeDefinition</definition-class> <!-- optional configuration -->
+    </custom-provider>
+
+     <provider name="my_custom_type_provider">
+        <my_custom_type>
+             <config-foo>foo</config-foo>
+             <config-bar>bar</config-bar>
+         </my_custom_type>
+     </provider>
+</doctrine-cache>
+```
+
+```yml
+# {# application/config/doctrine_cache.yml #}
+
+services:
+    my_custom_provider_service:
+        class: "MyCustomType"
+        # ...
+
+doctrine_cache:
+    custom_providers:
+        my_custom_type:
+            prototype:  "my_custom_provider_service"
+            definition_class: "MyCustomTypeDefinition" # optional configuration
+
+    providers:
+        my_custom_type_provider:
+            my_custom_type:
+                config_foo: "foo"
+                config_bar: "bar"
+```
+###### Definition class is a optional configuration that will parse option arguments given to your custom cache driver See [CacheDefinition](https://github.com/doctrine/DoctrineCacheBundle/blob/master/DependencyInjection/Definition/CacheDefinition.php)
+
+
+## Service parameter
+Is possible to configure a cache provider using a specific connection/bucket/collection
+```xml
+<!--   {# application/config/doctrine_cache.xml #} -->
+
+<srv:services>
+    <srv:service id="my_riak_connection_service" class="Riak\Connection">
+        <!-- ... -->
+    </srv:service>
+
+    <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
+        <!-- ... -->
+    </srv:service>
+
+    <srv:service id="my_memcached_connection_service" class="Memcached">
+        <!-- ... -->
+    </srv:service>
+ </srv:services>
+
+<doctrine-cache>
+     <provider  name="service_bucket_riak_provider">
+         <riak bucket-id="my_riak_bucket_service"/>
+     </provider>
+
+     <provider name="service_connection_riak_provider">
+         <riak connection-id="my_riak_connection_service">
+             <bucket-name>my_bucket_name</bucket-name>
+         </riak>
+     </provider>
+
+     <provider name="service_connection_memcached_provider">
+         <memcached connection-id="my_memcached_connection_service"/>
+     </provider>
+</doctrine-cache>
+```
+
+```yml
+# {# application/config/doctrine_cache.yml #}
+
+services:
+    my_riak_connection_service:
+        class: "Riak\Connection"
+        # ...
+
+    my_riak_bucket_service:
+        class: "Riak\Bucket"
+        # ...
+
+    my_memcached_connection_service:
+        class: "Memcached"
+        # ...
+
+doctrine_cache:
+    providers:
         service_bucket_riak_provider:
             riak:
                 bucket_id : "my_riak_bucket_service"
-        my_custom_type_provider:
-            my_custom_type: ~
+
+        service_connection_riak_provider:
+            riak:
+                connection_id: "my_riak_connection_service"
+                bucket_name: "my_bucket_name"
+
+        service_connection_memcached_provider:
+            memcached:
+                connection_id: "my_memcached_connection_service"
+
 ```
 
-4. Simply use `doctrine_cache.providers.{provider_name}` to inject it into the desired service.
+###### See [Cache providers](#cache-providers) for all specific configurations
 
 
-## Usage
+
+## Symfony acl cache
+```xml
+<!--   {# application/config/doctrine_cache.xml #} -->
+
+<doctrine-cache>
+    <acl-cache id="doctrine_cache.providers.acl_apc_provider"/>
+
+    <provider name="acl_apc_provider" type="apc"/>
+</doctrine-cache>
+```
+
+```yml
+# {# application/config/doctrine_cache.yml #}
+
+doctrine_cache:
+    acl_cache:
+        id: 'doctrine_cache.providers.acl_apc_provider'
+    providers:
+        acl_apc_provider:
+            type: 'apc'
+
+```
 
 Check the following sample:
-
-
 ```php
-$apcCache   = $this->container->get('doctrine_cache.providers.my_apc_cache');
-$riakCache  = $this->container->get('doctrine_cache.providers.my_riak_cache');
-$memCache   = $this->container->get('doctrine_cache.providers.my_memcached_cache');
+/** @var $aclCache Symfony\Component\Security\Acl\Model\AclCacheInterface */
+$aclCache = $this->container->get('security.acl.cache');
 
 ```
 
-You can also access the cache providers by using created aliases:
-
-```php
-$riakCache  = $this->container->get('riak_cache');
-```
 
 ## Cache providers
 
