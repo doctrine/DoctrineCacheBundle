@@ -130,12 +130,13 @@ doctrine_cache:
 <!--   {# application/config/doctrine_cache.xml #} -->
 
 <doctrine-cache>
-     <provider name="my_apc_cache">
+    <alias key="cache_apc">my_apc_cache</alias>
+
+    <provider name="my_apc_cache">
         <type>apc</type>
         <namespace>my_apc_cache_ns</namespace>
         <alias>apc_cache</alias>
-     </provider>
-    <provider>
+    </provider>
 </doctrine-cache>
 ```
 
@@ -143,6 +144,9 @@ doctrine_cache:
 # {# application/config/doctrine_cache.yml #}
 
 doctrine_cache:
+    aliases:
+        cache_apc: my_apc_cache
+
     providers:
         my_apc_cache:
             type: apc
@@ -154,7 +158,8 @@ doctrine_cache:
 You can  access the cache providers by using created aliases:
 
 ```php
-$cache  = $this->container->get('apc_cache');
+$apcCache  = $this->container->get('apc_cache');
+$cacheApc  = $this->container->get('cache_apc');
 ```
 
 
