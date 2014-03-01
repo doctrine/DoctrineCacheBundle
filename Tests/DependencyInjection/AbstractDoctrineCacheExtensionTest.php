@@ -147,6 +147,30 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             'configurable_couchbase_provider' => array(
                 '%doctrine_cache.couchbase.class%'
             ),
+            'configurable_memcached_provider_type' => array(
+                '%doctrine_cache.memcached.class%', array('setMemcached' => array())
+            ),
+            'configurable_memcache_provider_type' => array(
+                '%doctrine_cache.memcache.class%', array('setMemcache' => array())
+            ),
+            'configurable_redis_provider_type' => array(
+                '%doctrine_cache.redis.class%', array('setRedis' => array())
+            ),
+            'configurable_mongodb_provider_type' => array(
+                '%doctrine_cache.mongodb.class%'
+            ),
+            'configurable_riak_provider_type' => array(
+                '%doctrine_cache.riak.class%'
+            ),
+            'configurable_filesystem_provider_type' => array(
+                '%doctrine_cache.file_system.class%'
+            ),
+            'configurable_phpfile_provider_type' => array(
+                '%doctrine_cache.php_file.class%'
+            ),
+            'configurable_couchbase_provider_type' => array(
+                '%doctrine_cache.couchbase.class%'
+            ),
         );
 
         foreach ($drivers as $id => $value) {

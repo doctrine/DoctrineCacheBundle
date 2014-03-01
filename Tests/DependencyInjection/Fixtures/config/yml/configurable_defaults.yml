@@ -23,3 +23,43 @@ doctrine_cache:
 
         configurable_riak_provider:
             riak: ~
+
+        configurable_memcached_provider_type:
+            type : memcached
+            aliases :
+                - memcached_provider_type
+
+        configurable_memcache_provider_type:
+            type : memcache
+            aliases :
+                - memcache_provider_type
+
+        configurable_redis_provider_type:
+            type : redis
+            aliases :
+                - redis_provider_type
+
+        configurable_couchbase_provider_type:
+            type : couchbase
+            aliases :
+                - couchbase_provider_type
+
+        configurable_phpfile_provider_type:
+            type : php_file
+            aliases :
+                - php_file_provider_type
+
+        configurable_filesystem_provider_type:
+            type : file_system
+            aliases :
+                - file_system_provider_type
+
+        configurable_mongodb_provider_type:
+            type : mongodb
+            aliases :
+                - mongodb_provider_type
+
+        configurable_riak_provider_type:
+            type : riak
+            aliases :
+                - riak_provider_type

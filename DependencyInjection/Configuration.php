@@ -253,6 +253,7 @@ class Configuration implements ConfigurationInterface
         $port    = '%doctrine_cache.memcache.port%';
 
         $node
+            ->addDefaultsIfNotSet()
             ->fixXmlConfig('server')
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
@@ -296,6 +297,7 @@ class Configuration implements ConfigurationInterface
         $port    = '%doctrine_cache.memcached.port%';
 
         $node
+            ->addDefaultsIfNotSet()
             ->fixXmlConfig('server')
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
@@ -337,6 +339,7 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('redis');
 
         $node
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
                 ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
@@ -358,6 +361,7 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('riak');
 
         $node
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('host')->defaultValue('%doctrine_cache.riak.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.riak.port%')->end()
@@ -387,6 +391,7 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('couchbase');
 
         $node
+            ->addDefaultsIfNotSet()
             ->fixXmlConfig('hostname')
             ->children()
                 ->arrayNode('hostnames')
@@ -413,6 +418,7 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('mongodb');
 
         $node
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
                 ->scalarNode('collection_id')->defaultNull()->end()
@@ -436,6 +442,7 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('php_file');
 
         $node
+            ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
                 ->scalarNode('extension')->defaultNull()->end()
@@ -456,8 +463,9 @@ class Configuration implements ConfigurationInterface
         $node    = $builder->root('file_system');
 
         $node
+            ->addDefaultsIfNotSet()
             ->children()
-                ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
+                ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/file_system')->end()
                 ->scalarNode('extension')->defaultNull()->end()
             ->end()
         ;
