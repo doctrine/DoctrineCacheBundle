@@ -38,7 +38,8 @@
         "symfony/security":         "~2.2",
         "symfony/framework-bundle": "~2.2",
         "symfony/doctrine-bridge":  "~2.2",
-        "doctrine/cache":           "~1.3.0"
+        "doctrine/inflector":       "~1.0",
+        "doctrine/cache":           "~1.3"
     },
     "require-dev": {
         "phpunit/phpunit":                       "~3.7",
@@ -57,15 +58,5 @@
         "branch-alias": {
             "dev-master": "1.0.x-dev"
         }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "https://github.com/instaclick/ObjectCalisthenicsSniffs.git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/instaclick/CodingStandard.git"
-        }
-    ]
+    }
 }
