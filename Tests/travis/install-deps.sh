@@ -1,9 +1,8 @@
 #!/usr/bin/env sh
 
-IS_HHVM=`php -r "var_export(defined('HHVM_VERSION'));"`;
 BASEDIR=$(dirname $0);
 
-if [ $IS_HHVM ] ; then
+if [ "$TRAVIS_PHP_VERSION" = "hhvm" ]; then
     exit 0;
 fi
 
