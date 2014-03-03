@@ -11,36 +11,169 @@ use Doctrine\Common\Cache\ArrayCache;
 
 class AclCacheTest extends \PHPUnit_Framework_TestCase
 {
-    protected $permissionGrantingStrategy;
+    /**
+     * @var \Doctrine\Common\Cache\ArrayCache
+     */
+    private $cacheProvider;
 
-    public function test()
+    /**
+     * @var \Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy
+     */
+    private $permissionGrantingStrategy;
+
+    /**
+     * @var \Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache
+     */
+    private $aclCache;
+
+    public function setUp()
     {
-        $cache = $this->getAclCache();
+        $this->cacheProvider              = new ArrayCache();
+        $this->permissionGrantingStrategy = new PermissionGrantingStrategy();
+        $this->aclCache                   = new AclCache($this->cacheProvider, $this->permissionGrantingStrategy);
+    }
 
-        $aclWithParent = $this->getAcl(1);
-        $acl = $this->getAcl();
+    public function tearDown()
+    {
+        $this->cacheProvider              = null;
+        $this->permissionGrantingStrategy = null;
+        $this->aclCache                   = null;
+    }
 
-        $cache->putInCache($aclWithParent);
-        $cache->putInCache($acl);
+    /**
+     * @dataProvider provideDataForEvictFromCacheById
+     */
+    public function testEvictFromCacheById($expected, $primaryKey)
+    {
+        $this->cacheProvider->save('bar', 'foo_1');
+        $this->cacheProvider->save('foo_1', 's:4:test;');
 
-        $cachedAcl = $cache->getFromCacheByIdentity($acl->getObjectIdentity());
+        $this->aclCache->evictFromCacheById($primaryKey);
+
+        $this->assertEquals($expected, $this->cacheProvider->contains('bar'));
+        $this->assertEquals($expected, $this->cacheProvider->contains('foo_1'));
+    }
+
+    public function provideDataForEvictFromCacheById()
+    {
+        return array(
+            array(false, 'bar'),
+            array(true, 'test'),
+        );
+    }
+
+    /**
+     * @dataProvider provideDataForEvictFromCacheByIdentity
+     */
+    public function testEvictFromCacheByIdentity($expected, $identity)
+    {
+        $this->cacheProvider->save('foo_1', 's:4:test;');
+
+        $this->aclCache->evictFromCacheByIdentity($identity);
+
+        $this->assertEquals($expected, $this->cacheProvider->contains('foo_1'));
+    }
+
+    public function provideDataForEvictFromCacheByIdentity()
+    {
+        return array(
+            array(false, new ObjectIdentity(1, 'foo')),
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testPutInCacheWithoutId()
+    {
+        $acl = new Acl(null, new ObjectIdentity(1, 'foo'), $this->permissionGrantingStrategy, array(), false);
+
+        $this->aclCache->putInCache($acl);
+    }
+
+    public function testPutInCacheWithoutParent()
+    {
+        $acl = $this->getAcl(0);
+
+        $this->aclCache->putInCache($acl);
+
+        $this->assertTrue($this->cacheProvider->contains('foo1_class'));
+        $this->assertTrue($this->cacheProvider->contains('oid1'));
+    }
+
+    public function testPutInCacheWithParent()
+    {
+        $acl = $this->getAcl(2);
+
+        $this->aclCache->putInCache($acl);
+
+        // current
+        $this->assertTrue($this->cacheProvider->contains('foo2_class'));
+        $this->assertTrue($this->cacheProvider->contains('oid2'));
+
+        // parent
+        $this->assertTrue($this->cacheProvider->contains('foo3_class'));
+        $this->assertTrue($this->cacheProvider->contains('oid3'));
+
+        // grand-parent
+        $this->assertTrue($this->cacheProvider->contains('foo4_class'));
+        $this->assertTrue($this->cacheProvider->contains('oid4'));
+    }
+
+    public function testClearCache()
+    {
+        $acl = $this->getAcl(0);
+
+        $this->aclCache->putInCache($acl);
+        $this->aclCache->clearCache();
+
+        $this->assertFalse($this->cacheProvider->contains('foo5_class'));
+        $this->assertFalse($this->cacheProvider->contains('oid5'));
+    }
+
+    public function testGetFromCacheById()
+    {
+        $acl = $this->getAcl(1);
+
+        $this->aclCache->putInCache($acl);
+
+        $cachedAcl = $this->aclCache->getFromCacheById($acl->getId());
 
         $this->assertEquals($acl->getId(), $cachedAcl->getId());
-        $this->assertNull($acl->getParentAcl());
+        $this->assertNotNull($cachedParentAcl = $cachedAcl->getParentAcl());
+        $this->assertEquals($acl->getParentAcl()->getId(), $cachedParentAcl->getId());
 
-        $cachedAclWithParent = $cache->getFromCacheByIdentity($aclWithParent->getObjectIdentity());
+        $this->assertEquals($acl->getClassFieldAces('foo'), $cachedAcl->getClassFieldAces('foo'));
+        $this->assertEquals($acl->getObjectFieldAces('foo'), $cachedAcl->getObjectFieldAces('foo'));
+    }
 
-        $this->assertEquals($aclWithParent->getId(), $cachedAclWithParent->getId());
-        $this->assertNotNull($cachedParentAcl = $cachedAclWithParent->getParentAcl());
-        $this->assertEquals($aclWithParent->getParentAcl()->getId(), $cachedParentAcl->getId());
-        $this->assertTrue($cache->clearCache());
+    public function testGetFromCacheByIdentity()
+    {
+        $acl = $this->getAcl(1);
+
+        $this->aclCache->putInCache($acl);
+
+        $cachedAcl = $this->aclCache->getFromCacheByIdentity($acl->getObjectIdentity());
+
+        $this->assertEquals($acl->getId(), $cachedAcl->getId());
+        $this->assertNotNull($cachedParentAcl = $cachedAcl->getParentAcl());
+        $this->assertEquals($acl->getParentAcl()->getId(), $cachedParentAcl->getId());
+
+        $this->assertEquals($acl->getClassFieldAces('foo'), $cachedAcl->getClassFieldAces('foo'));
+        $this->assertEquals($acl->getObjectFieldAces('foo'), $cachedAcl->getObjectFieldAces('foo'));
     }
 
     protected function getAcl($depth = 0)
     {
         static $id = 1;
 
-        $acl = new Acl($id, new ObjectIdentity($id, 'foo'), $this->getPermissionGrantingStrategy(), array(), $depth > 0);
+        $acl = new Acl(
+            'oid' . $id,
+            new ObjectIdentity('class', 'foo' . $id),
+            $this->permissionGrantingStrategy,
+            array(),
+            $depth > 0
+        );
 
         // insert some ACEs
         $sid = new UserSecurityIdentity('johannes', 'Foo');
@@ -57,23 +190,5 @@ class AclCacheTest extends \PHPUnit_Framework_TestCase
         }
 
         return $acl;
-    }
-
-    protected function getPermissionGrantingStrategy()
-    {
-        if (null === $this->permissionGrantingStrategy) {
-            $this->permissionGrantingStrategy = new PermissionGrantingStrategy();
-        }
-
-        return $this->permissionGrantingStrategy;
-    }
-
-    protected function getAclCache($cacheDriver = null)
-    {
-        if (null === $cacheDriver) {
-            $cacheDriver = new ArrayCache();
-        }
-
-        return new AclCache($cacheDriver, $this->getPermissionGrantingStrategy());
     }
 }

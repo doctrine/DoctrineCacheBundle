@@ -51,7 +51,7 @@ class AclCache implements AclCacheInterface
         $key = $this->cache->fetch($primaryKey);
 
         $this->cache->delete($primaryKey);
-        $this->evictFromCacheKey($key);
+        $this->evictFromCacheByKey($key);
     }
 
     /**
@@ -210,9 +210,9 @@ class AclCache implements AclCacheInterface
      *
      * @param string $key
      */
-    private function evictFromCacheKey($key)
+    private function evictFromCacheByKey($key)
     {
-        if ($this->cache->contains($key)) {
+        if ( ! $this->cache->contains($key)) {
             return;
         }
 
