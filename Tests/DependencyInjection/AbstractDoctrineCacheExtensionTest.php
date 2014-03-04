@@ -257,11 +257,14 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
     {
         $container = $this->compileContainer('acl');
 
-        $this->assertEquals('doctrine_cache.providers.acl_apc_provider', $container->getParameter('doctrine_cache.acl_cache.id'));
         $this->assertTrue($container->hasDefinition('doctrine_cache.security.acl.cache'));
 
         $definition = $container->getDefinition('doctrine_cache.security.acl.cache');
 
+        $this->assertEquals('Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache', $definition->getClass());
+        $this->assertCount(2, $definition->getArguments());
+        $this->assertEquals('doctrine_cache.providers.acl_apc_provider', (string) $definition->getArgument(0));
+        $this->assertEquals('security.acl.permission_granting_strategy', (string) $definition->getArgument(1));
         $this->assertFalse($definition->isPublic());
     }
 
