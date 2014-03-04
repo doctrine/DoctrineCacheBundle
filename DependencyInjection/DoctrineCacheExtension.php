@@ -21,14 +21,17 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Cache Bundle Extension
  *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
+ * @author Danilo Cabello <danilo.cabello@gmail.com>
  */
 class DoctrineCacheExtension extends Extension
 {
@@ -50,13 +53,13 @@ class DoctrineCacheExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $rootConfig    = $this->processConfiguration($configuration, $configs);
+
         $locator = new FileLocator(__DIR__ . '/../Resources/config/');
         $loader  = new XmlFileLoader($container, $locator);
 
         $loader->load('services.xml');
-
-        $configuration = new Configuration();
-        $rootConfig    = $this->processConfiguration($configuration, $configs);
 
         $this->loadAcl($rootConfig, $container);
         $this->loadCustomProviders($rootConfig, $container);
@@ -74,7 +77,17 @@ class DoctrineCacheExtension extends Extension
             return;
         }
 
-        $container->setParameter('doctrine_cache.acl_cache.id', $rootConfig['acl_cache']['id']);
+        $aclCacheDefinition = new Definition(
+            $container->getParameter('doctrine_cache.security.acl.cache.class'),
+            array(
+                new Reference($rootConfig['acl_cache']['id']),
+                new Reference('security.acl.permission_granting_strategy'),
+            )
+        );
+
+        $aclCacheDefinition->setPublic(false);
+
+        $container->setDefinition('doctrine_cache.security.acl.cache', $aclCacheDefinition);
         $container->setAlias('security.acl.cache', 'doctrine_cache.security.acl.cache');
     }
 

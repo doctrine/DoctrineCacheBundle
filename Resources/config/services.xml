@@ -54,11 +54,6 @@
         <service id="doctrine_cache.abstract.mongodb" class="%doctrine_cache.mongodb.class%" abstract="true" />
         <service id="doctrine_cache.abstract.riak" class="%doctrine_cache.riak.class%" abstract="true" />
         <service id="doctrine_cache.abstract.couchbase" class="%doctrine_cache.couchbase.class%" abstract="true" />
-
-        <service id="doctrine_cache.security.acl.cache" class="%doctrine_cache.security.acl.cache.class%" public="false">
-            <argument type="service" id="%doctrine_cache.acl_cache.id%" />
-            <argument type="service" id="security.acl.permission_granting_strategy" />
-        </service>
     </services>
 
 </container>
