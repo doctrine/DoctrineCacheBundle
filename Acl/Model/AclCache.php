@@ -196,7 +196,7 @@ class AclCache implements AclCacheInterface
     /**
      * Returns the key for the object identity
      *
-     * @param ObjectIdentityInterface $oid
+     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $oid
      *
      * @return string
      */
