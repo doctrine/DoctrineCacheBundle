@@ -8,6 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Get stats from cache provider.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
  */
 class StatsCommand extends CacheCommand
 {

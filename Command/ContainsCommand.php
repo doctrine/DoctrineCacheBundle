@@ -9,6 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Check if a cache entry exists.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
  */
 class ContainsCommand extends CacheCommand
 {

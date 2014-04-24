@@ -8,11 +8,19 @@ use Doctrine\Common\Cache\Cache;
 
 /**
  * Base cache command.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
  */
 abstract class CacheCommand extends ContainerAwareCommand
 {
     /**
      * Get the requested cache provider service.
+     *
+     * @param string $cacheName
+     *
+     * @return Cache
+     *
+     * @throws \InvalidArgumentException
      */
     protected function getCacheProvider($cacheName)
     {

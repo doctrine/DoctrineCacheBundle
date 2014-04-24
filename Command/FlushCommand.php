@@ -8,6 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Flush a cache provider.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
  */
 class FlushCommand extends CacheCommand
 {

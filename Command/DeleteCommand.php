@@ -9,6 +9,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Delete cache entries.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
  */
 class DeleteCommand extends CacheCommand
 {
