@@ -18,7 +18,7 @@ abstract class CacheCommand extends ContainerAwareCommand
      *
      * @param string $cacheName
      *
-     * @return Cache
+     * @return \Doctrine\Common\Cache\Cache
      *
      * @throws \InvalidArgumentException
      */

@@ -32,12 +32,12 @@ class FlushCommand extends CacheCommand
         $cacheName     = $input->getArgument('cache-name');
         $cacheProvider = $this->getCacheProvider($cacheName);
 
-        if (method_exists($cacheProvider, 'flushAll')) {
-            $cacheProviderName = get_class($cacheProvider);
-            $output->writeln(sprintf('Clearing the cache for the <info>%s</info> provider of type <info>%s</info>', $cacheName, $cacheProviderName, true));
-            $cacheProvider->flushAll();
-        } else {
+        if ( ! method_exists($cacheProvider, 'flushAll')) {
             throw new \RuntimeException('Cache provider does not implement a flushAll method.');
         }
+
+        $cacheProviderName = get_class($cacheProvider);
+        $output->writeln(sprintf('Clearing the cache for the <info>%s</info> provider of type <info>%s</info>', $cacheName, $cacheProviderName, true));
+        $cacheProvider->flushAll();
     }
 }

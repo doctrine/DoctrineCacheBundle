@@ -34,10 +34,7 @@ class ContainsCommand extends CacheCommand
         $cacheProvider = $this->getCacheProvider($cacheName);
         $cacheId       = $input->getArgument('cache-id');
 
-        if ($cacheProvider->contains($cacheId)) {
-            $output->writeln('<info>TRUE</info>');
-        } else {
-            $output->writeln('<error>FALSE</error>');
-        }
+        $message = $cacheProvider->contains($cacheId) ? '<info>TRUE</info>' : '<error>FALSE</error>';
+        $output->writeln($message);
     }
 }

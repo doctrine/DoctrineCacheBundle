@@ -36,10 +36,18 @@ class StatsCommand extends CacheCommand
 
         if ($stats === null) {
             $output->writeln(sprintf('Stats were not provided for the <info>%s</info> provider of type <info>%s</info>', $cacheName, $cacheProviderName, true));
-        } else {
-            $stats = ltrim(rtrim(trim(print_r($stats, true)), ")\n"), "Array\n(");
-            $output->writeln(sprintf('Stats for the <info>%s</info> provider of type <info>%s</info>:', $cacheName, $cacheProviderName, true));
-            $output->writeln($stats);
+
+            return;
         }
+
+        $formatter = $this->getHelperSet()->get('formatter');
+
+        $lines = array();
+        foreach ($stats as $key => $stat) {
+            $lines[] = $formatter->formatSection($key, $stat);
+        }
+
+        $output->writeln(sprintf('Stats for the <info>%s</info> provider of type <info>%s</info>:', $cacheName, $cacheProviderName, true));
+        $output->writeln($lines);
     }
 }
