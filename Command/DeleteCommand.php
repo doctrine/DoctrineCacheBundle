@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Flush a cache provider.
+ * Delete cache entries.
  */
 class DeleteCommand extends CacheCommand
 {

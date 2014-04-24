@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Cache\Cache;
 
 /**
- * Flush a cache provider.
+ * Base cache command.
  */
 abstract class CacheCommand extends ContainerAwareCommand
 {
