@@ -44,6 +44,8 @@ class CacheProviderLoader
             ? $config['custom_provider']['type']
             : $config['type'];
 
+        $service->addTag('doctrine_cache.provider');
+
         if ($config['namespace']) {
             $service->addMethodCall('setNamespace', array($config['namespace']));
         }
