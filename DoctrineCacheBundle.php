@@ -19,8 +19,6 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle;
 
-use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler\AclCacheCompilerPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
