@@ -5,13 +5,17 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Definition;
 
-
+/**
+ * Compiler pass to add logger proxy.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
+ */
 class CacheLoggerCompilerPass implements CompilerPassInterface
 {
-
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
         // Only add cache logging when in debug mode.

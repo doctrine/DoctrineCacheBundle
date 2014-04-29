@@ -39,7 +39,7 @@
         <parameter key="doctrine_cache.zenddata.class">Doctrine\Common\Cache\ZendDataCache</parameter>
         <parameter key="doctrine_cache.security.acl.cache.class">Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache</parameter>
         <parameter key="doctrine_cache.data_collector.class">Doctrine\Bundle\DoctrineCacheBundle\DataCollector\DoctrineCacheDataCollector</parameter>
-        <parameter key="doctrine_cache.data_collector.template">DoctrineCacheBundle:Profiler:toolbar</parameter>
+        <parameter key="doctrine_cache.data_collector.template">DoctrineCacheBundle:Profiler:profiler</parameter>
         <parameter key="doctrine_cache.log_master.class">Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster</parameter>
         <parameter key="doctrine_cache.cache_logger_proxy.class">Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy</parameter>
     </parameters>

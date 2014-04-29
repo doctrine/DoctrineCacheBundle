@@ -1,11 +1,12 @@
 <?php
-/**
- *
- */
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Logger;
 
-
+/**
+ * Central storage for cache logs during this request.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
+ */
 class LogMaster
 {
     /**
@@ -27,36 +28,55 @@ class LogMaster
             'hit'      => 0,
             'miss'     => 0,
             'write'    => 0,
+            'delete'   => 0,
         );
-
     }
 
-    public function log($cacheName, $logType, $log)
+    /**
+     * Store cache log.
+     *
+     * @param string $cacheName
+     * @param string $logType
+     * @param array $log
+     */
+    public function log($cacheName, $logType, array $log)
     {
         $this->logs[$cacheName][$logType][] = $log;
         $this->updateTotals($log);
     }
 
-    public function updateTotals($log)
+    /**
+     * Update log statistics.
+     *
+     * @param array $log
+     */
+    public function updateTotals(array $log)
     {
         $this->totals['count']++;
         $this->totals['duration'] += $log['duration'];
 
-        if ($log['type'] === 'fetch') {
-            $this->totals['hit']  += $log['result'] === false ? 0 : 1;
-            $this->totals['miss'] += $log['result'] === false ? 1 : 0;
-        }
+        switch ($log['type']) {
+            case 'fetch':
+                $this->totals['hit']  += $log['success'] ? 0 : 1;
+                $this->totals['miss'] += $log['success'] ? 1 : 0;
+                break;
 
-        if ($log['type'] === 'save') {
-            $this->totals['write']++;
+            case 'save':
+                $this->totals['write']++;
+                break;
+
+            case 'delete':
+                $this->totals['delete']++;
+                break;
         }
     }
 
     /**
      * @param array $logs
+     *
      * @return LogMaster
      */
-    public function setLogs($logs)
+    public function setLogs(array $logs)
     {
         $this->logs = $logs;
 
@@ -73,9 +93,10 @@ class LogMaster
 
     /**
      * @param array $totals
+     *
      * @return LogMaster
      */
-    public function setTotals($totals)
+    public function setTotals(array $totals)
     {
         $this->totals = $totals;
 

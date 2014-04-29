@@ -1,13 +1,15 @@
 <?php
-/**
- *
- */
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Logger;
 
 use Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster;
 use Doctrine\Common\Cache\Cache;
 
+/**
+ * Proxy for logging cache requests.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
+ */
 class CacheLoggerProxy implements Cache
 {
     /**
@@ -40,7 +42,12 @@ class CacheLoggerProxy implements Cache
      */
     protected $cache;
 
-    public function __construct($serviceId, $class, $args)
+    /**
+     * @param string $serviceId
+     * @param string $class
+     * @param array  $args
+     */
+    public function __construct($serviceId, $class, array $args = array())
     {
         $this->serviceId = $serviceId;
         $this->cacheName = substr($serviceId, strrpos($serviceId, '.') + 1);
@@ -50,14 +57,23 @@ class CacheLoggerProxy implements Cache
         $this->cache     = $reflection->newInstanceArgs($args);
     }
 
-    public function __call($method, $args)
+    /**
+     * Magic method to proxy non-overridden calls.
+     *
+     * @param string $method
+     * @param array $args
+     *
+     * @return mixed
+     */
+    public function __call($method, array $args = array())
     {
         return call_user_func_array(array($this->cache, $method), $args);
     }
 
     /**
      * @param array $args
-     * @return CacheLoggerProxy
+     *
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setArgs($args)
     {
@@ -76,7 +92,7 @@ class CacheLoggerProxy implements Cache
 
     /**
      * @param \Doctrine\Common\Cache\Cache $cache
-     * @return CacheLoggerProxy
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setCache($cache)
     {
@@ -95,7 +111,7 @@ class CacheLoggerProxy implements Cache
 
     /**
      * @param string $class
-     * @return CacheLoggerProxy
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setClass($class)
     {
@@ -114,7 +130,7 @@ class CacheLoggerProxy implements Cache
 
     /**
      * @param \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster $logMaster
-     * @return CacheLoggerProxy
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setLogMaster(LogMaster $logMaster)
     {
@@ -131,7 +147,13 @@ class CacheLoggerProxy implements Cache
         return $this->logMaster;
     }
 
-    public function log($type, $log)
+    /**
+     * Send a log to the log master.
+     *
+     * @param string $type
+     * @param array $log
+     */
+    public function log($type, array $log)
     {
         $this->logMaster->log($this->cacheName, $type, $log);
     }
@@ -146,16 +168,20 @@ class CacheLoggerProxy implements Cache
         $result = $this->cache->fetch($id);
         $end    = microtime(true);
         $this->log($type, array(
-            'type'      => $type,
-            'timestamp' => time(),
-            'duration'  => $end - $start,
-            'request'   => $id,
-            'result'    => $result,
+            'type'     => $type,
+            'start'    => $start,
+            'duration' => $end - $start,
+            'id'       => $id,
+            'data'     => $result,
+            'success'  => ($result !== FALSE),
         ));
 
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     function contains($id)
     {
         return $this->cache->contains($id);
@@ -171,15 +197,13 @@ class CacheLoggerProxy implements Cache
         $result = $this->cache->save($id, $data, $lifeTime);
         $end    = microtime(true);
         $this->log($type, array(
-            'type' => $type,
-            'timestamp' => time(),
+            'type'     => $type,
+            'start'    => $start,
             'duration' => $end - $start,
-            'request' => array(
-                'id'       => $id,
-                'data'     => $data,
-                'lifetime' => $lifeTime,
-            ),
-            'result' => $result,
+            'id'       => $id,
+            'data'     => $data,
+            'success'  => $result,
+            'lifetime' => $lifeTime,
         ));
 
         return $result;
@@ -195,16 +219,19 @@ class CacheLoggerProxy implements Cache
         $result = $this->cache->delete($id);
         $end = microtime(true);
         $this->log($type, array(
-            'type'      => $type,
-            'timestamp' => time(),
-            'duration'  => $end - $start,
-            'request'   => $id,
-            'result'    => $result,
+            'type'     => $type,
+            'start'    => $start,
+            'duration' => $end - $start,
+            'id'       => $id,
+            'success'  => $result,
         ));
 
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     function getStats()
     {
         return $this->cache->getStats();

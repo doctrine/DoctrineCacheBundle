@@ -7,6 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster;
 
+/**
+ * Symfony data collector for the debug profiler.
+ *
+ * @author Alan Doucette <dragonwize@gmail.com>
+ */
 class DoctrineCacheDataCollector extends DataCollector
 {
     /**
@@ -34,11 +39,17 @@ class DoctrineCacheDataCollector extends DataCollector
         );
     }
 
+    /**
+     * @return array
+     */
     public function getLogs()
     {
         return $this->data['logs'];
     }
 
+    /**
+     * @return array
+     */
     public function getTotals()
     {
         return $this->data['totals'];
