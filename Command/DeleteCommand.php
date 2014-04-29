@@ -47,6 +47,7 @@ class DeleteCommand extends CacheCommand
         $success = $all ? $cacheProvider->deleteAll() : $cacheProvider->delete($cacheId);
         $color   = $success ? 'info' : 'error';
         $success = $success ? 'succeeded' : 'failed';
+        $message = null;
 
         if ( ! $all) {
             $message = "Deletion of <$color>%s</$color> in <$color>%s</$color> has <$color>%s</$color>";
