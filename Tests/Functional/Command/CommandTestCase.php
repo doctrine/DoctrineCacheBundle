@@ -13,7 +13,12 @@ class CommandTestCase extends FunctionalTestCase
     /**
      * @var string
      */
-    protected $cacheName = 'my_phpfile_cache';
+    protected $cacheProviderClass = 'Doctrine\Common\Cache\ArrayCache';
+
+    /**
+     * @var string
+     */
+    protected $cacheName = 'my_array_cache';
 
     /**
      * @var string
@@ -42,10 +47,10 @@ class CommandTestCase extends FunctionalTestCase
 
     public function setUp()
     {
-        $this->container = $this->compileContainer('php_file');
-        $this->provider  = $this->container->get('doctrine_cache.providers.my_phpfile_cache');
-        $this->kernel = $this->getMockKernel();
-        $this->app = new Application($this->kernel);
+        $this->container = $this->compileContainer('array');
+        $this->provider  = $this->container->get('doctrine_cache.providers.' . $this->cacheName);
+        $this->kernel    = $this->getMockKernel();
+        $this->app       = new Application($this->kernel);
     }
 
     /**
@@ -69,5 +74,15 @@ class CommandTestCase extends FunctionalTestCase
     private function getMockKernel()
     {
         return $this->getMock('\Symfony\Component\HttpKernel\Kernel', array(), array(), '', false, false);
+    }
+
+    /**
+     * Gets Filesystem mock instance
+     *
+     * @return \Symfony\Bundle\FrameworkBundle\Util\Filesystem
+     */
+    private function getMockFilesystem()
+    {
+        return $this->getMock('\Symfony\Bundle\FrameworkBundle\Util\Filesystem', array(), array(), '', false, false);
     }
 }

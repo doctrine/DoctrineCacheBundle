@@ -34,18 +34,6 @@ class DeleteCommandTest extends CommandTestCase
     }
 
     /**
-     * Tests a cache delete failure.
-     */
-    public function testDeleteFailure()
-    {
-        $this->tester->execute(array(
-            'cache-name' => $this->cacheName,
-            'cache-id'   => $this->cacheId,
-        ));
-        $this->assertEquals("Deletion of {$this->cacheId} in {$this->cacheName} has failed\n", $this->tester->getDisplay());
-    }
-
-    /**
      * Tests a cache delete success.
      */
     public function testDeleteSuccess()
