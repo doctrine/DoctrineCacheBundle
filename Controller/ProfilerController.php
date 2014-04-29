@@ -15,12 +15,12 @@ class ProfilerController extends ContainerAware
     /**
      * Renders the profiler panel for the given token.
      *
-     * @param string $token       The profiler token.
-     * @param string $cacheName   Cache provider name.
-     * @param string $requestType Type of cache request.
-     * @param int    $logIndex    Log index.
+     * @param string  $token       The profiler token.
+     * @param string  $cacheName   Cache provider name.
+     * @param string  $requestType Type of cache request.
+     * @param integer $logIndex    Log index.
      *
-     * @return Response A Response instance
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function dumpAction($token, $cacheName, $requestType, $logIndex)
     {

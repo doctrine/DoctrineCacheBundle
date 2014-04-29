@@ -19,6 +19,9 @@ class LogMaster
      */
     protected $totals;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->logs   = array();
@@ -37,7 +40,7 @@ class LogMaster
      *
      * @param string $cacheName
      * @param string $logType
-     * @param array $log
+     * @param array  $log
      */
     public function log($cacheName, $logType, array $log)
     {
@@ -74,7 +77,7 @@ class LogMaster
     /**
      * @param array $logs
      *
-     * @return LogMaster
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster
      */
     public function setLogs(array $logs)
     {
@@ -94,7 +97,7 @@ class LogMaster
     /**
      * @param array $totals
      *
-     * @return LogMaster
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster
      */
     public function setTotals(array $totals)
     {

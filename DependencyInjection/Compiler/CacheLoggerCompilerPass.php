@@ -21,6 +21,7 @@ class CacheLoggerCompilerPass implements CompilerPassInterface
         // Only add cache logging when in debug mode.
         $debug = $container->getParameter('kernel.debug');
         $logMasterId = 'doctrine_cache.log_master';
+
         if ( ! $debug || ! $container->hasDefinition($logMasterId)) {
             return;
         }

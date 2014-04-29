@@ -61,7 +61,7 @@ class CacheLoggerProxy implements Cache
      * Magic method to proxy non-overridden calls.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
      *
      * @return mixed
      */
@@ -92,6 +92,7 @@ class CacheLoggerProxy implements Cache
 
     /**
      * @param \Doctrine\Common\Cache\Cache $cache
+     *
      * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setCache($cache)
@@ -111,6 +112,7 @@ class CacheLoggerProxy implements Cache
 
     /**
      * @param string $class
+     *
      * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setClass($class)
@@ -130,6 +132,7 @@ class CacheLoggerProxy implements Cache
 
     /**
      * @param \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster $logMaster
+     *
      * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
      */
     public function setLogMaster(LogMaster $logMaster)
@@ -151,7 +154,7 @@ class CacheLoggerProxy implements Cache
      * Send a log to the log master.
      *
      * @param string $type
-     * @param array $log
+     * @param array  $log
      */
     public function log($type, array $log)
     {
@@ -173,7 +176,7 @@ class CacheLoggerProxy implements Cache
             'duration' => $end - $start,
             'id'       => $id,
             'data'     => $result,
-            'success'  => ($result !== FALSE),
+            'success'  => ($result !== false),
         ));
 
         return $result;
@@ -182,7 +185,7 @@ class CacheLoggerProxy implements Cache
     /**
      * {@inheritdoc}
      */
-    function contains($id)
+    public function contains($id)
     {
         return $this->cache->contains($id);
     }
@@ -232,7 +235,7 @@ class CacheLoggerProxy implements Cache
     /**
      * {@inheritdoc}
      */
-    function getStats()
+    public function getStats()
     {
         return $this->cache->getStats();
     }
