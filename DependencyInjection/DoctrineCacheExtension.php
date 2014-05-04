@@ -152,6 +152,6 @@ class DoctrineCacheExtension extends Extension
      **/
     public function getNamespace()
     {
-        return 'http://doctrine-project.org/schemas';
+        return 'http://doctrine-project.org/schema/symfony-dic/cache';
     }
 }
