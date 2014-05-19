@@ -35,7 +35,7 @@ class SymfonyBridgeAdapter
     /**
      * @var \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader
      */
-    private $caheProviderLoader;
+    private $cacheProviderLoader;
 
     /**
      * @var string
@@ -48,13 +48,13 @@ class SymfonyBridgeAdapter
     protected $mappingResourceName;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader  $caheProviderLoader
+     * @param \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader  $cacheProviderLoader
      * @param string                                                                        $objectManagerName
      * @param string                                                                        $mappingResourceName
      */
-    public function __construct(CacheProviderLoader $caheProviderLoader, $objectManagerName, $mappingResourceName)
+    public function __construct(CacheProviderLoader $cacheProviderLoader, $objectManagerName, $mappingResourceName)
     {
-        $this->caheProviderLoader   = $caheProviderLoader;
+        $this->cacheProviderLoader  = $cacheProviderLoader;
         $this->objectManagerName    = $objectManagerName;
         $this->mappingResourceName  = $mappingResourceName;
     }
@@ -121,7 +121,7 @@ class SymfonyBridgeAdapter
             );
         }
 
-        $this->caheProviderLoader->loadCacheProvider($id, $config, $container);
+        $this->cacheProviderLoader->loadCacheProvider($id, $config, $container);
 
         return $id;
     }
