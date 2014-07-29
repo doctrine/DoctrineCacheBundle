@@ -344,6 +344,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('connection_id')->defaultNull()->end()
                 ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
+                ->scalarNode('password')->defaultNull()->end()
+                ->scalarNode('database')->defaultNull()->end()
             ->end()
         ;
 
