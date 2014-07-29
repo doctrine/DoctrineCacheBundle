@@ -57,11 +57,11 @@ class RedisDefinition extends CacheDefinition
 
         if (isset($config['password'])) {
             $password = $config['password'];
-            $connDef->addMethodCall('auth', array($password, $port));
+            $connDef->addMethodCall('auth', array($password));
         }
         if (isset($config['database'])) {
             $database = (int) $config['database'];
-            $connDef->addMethodCall('select', array($database, $port));
+            $connDef->addMethodCall('select', array($database));
         }
 
         $container->setDefinition($connId, $connDef);

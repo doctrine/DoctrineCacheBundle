@@ -118,6 +118,8 @@ class SymfonyBridgeAdapter
             $config[$type] = array(
                 'host' => $host,
                 'port' => $port,
+                'password' => null,
+                'database' => null
             );
         }
 
