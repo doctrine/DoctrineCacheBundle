@@ -24,8 +24,8 @@ class ProfilerController extends ContainerAware
      */
     public function dumpAction($token, $cacheName, $requestType, $logIndex)
     {
-        /** @var $profiler \Symfony\Component\HttpKernel\Profiler\Profiler */
         $profiler = $this->container->get('profiler');
+
         $profiler->disable();
 
         $profile = $profiler->loadProfile($token);
@@ -41,8 +41,13 @@ class ProfilerController extends ContainerAware
             return new Response('No cache data logged.');
         }
 
-        return $this->container->get('templating')->renderResponse('DoctrineCacheBundle:Profiler:dump.html.twig', array(
-            'data' => $log['data'],
-        ));
+        $templating = $this->container->get('templating');
+
+        return $templating->renderResponse(
+            'DoctrineCacheBundle:Profiler:dump.html.twig',
+            array(
+                'data' => $log['data'],
+            )
+        );
     }
 }

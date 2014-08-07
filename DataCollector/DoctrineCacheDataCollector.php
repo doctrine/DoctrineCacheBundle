@@ -32,7 +32,6 @@ class DoctrineCacheDataCollector extends DataCollector
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
-        //ldd($this->logMaster->getLogs());
         $this->data = array(
             'logs' => $this->logMaster->getLogs(),
             'totals' => $this->logMaster->getTotals(),
