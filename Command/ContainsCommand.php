@@ -19,7 +19,7 @@ class ContainsCommand extends CacheCommand
      */
     protected function configure()
     {
-        $this->setName('doctrine-cache:contains')
+        $this->setName('doctrine:cache:contains')
             ->setDescription('Check if a cache entry exists')
             ->addArgument('cache-name', InputArgument::REQUIRED, 'Which cache provider to use?')
             ->addArgument('cache-id', InputArgument::REQUIRED, 'Which cache ID to check?');

@@ -19,7 +19,7 @@ class DeleteCommand extends CacheCommand
      */
     protected function configure()
     {
-        $this->setName('doctrine-cache:delete')
+        $this->setName('doctrine:cache:delete')
             ->setDescription('Delete a cache entry')
             ->addArgument('cache-name', InputArgument::REQUIRED, 'Which cache provider to use?')
             ->addArgument('cache-id', InputArgument::OPTIONAL, 'Which cache ID to delete?')

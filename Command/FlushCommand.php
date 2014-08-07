@@ -18,8 +18,8 @@ class FlushCommand extends CacheCommand
      */
     protected function configure()
     {
-        $this->setName('doctrine-cache:flush')
-            ->setAliases(array('doctrine-cache:clear'))
+        $this->setName('doctrine:cache:flush')
+            ->setAliases(array('doctrine:cache:clear'))
             ->setDescription('Flush a given cache')
             ->addArgument('cache-name', InputArgument::REQUIRED, 'Which cache provider to flush?');
     }

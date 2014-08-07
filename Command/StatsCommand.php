@@ -18,7 +18,7 @@ class StatsCommand extends CacheCommand
      */
     protected function configure()
     {
-        $this->setName('doctrine-cache:stats')
+        $this->setName('doctrine:cache:stats')
             ->setDescription('Get stats on a given cache provider')
             ->addArgument('cache-name', InputArgument::REQUIRED, 'Which cache provider to flush?');
     }
