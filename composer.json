@@ -52,7 +52,7 @@
         "instaclick/symfony2-coding-standard":   "dev-remaster"
     },
     "autoload": {
-        "psr-0": { "Doctrine\\Bundle\\DoctrineCacheBundle": "" }
+        "psr-4": { "Doctrine\\Bundle\\DoctrineCacheBundle\\": "" }
     },
     "extra": {
         "branch-alias": {
