@@ -108,16 +108,17 @@ class SymfonyBridgeAdapter
         }
 
         if (in_array($type, array('memcache', 'memcached'))) {
+            $host = !empty($host) ? $host : 'localhost';
             $config[$type]['servers'][$host] = array(
                 'host' => $host,
-                'port' => $port,
+                'port' => !empty($port) ? $port : 11211,
             );
         }
 
         if ($type === 'redis') {
             $config[$type] = array(
-                'host' => $host,
-                'port' => $port,
+                'host' => !empty($host) ? $host : 'localhost',
+                'port' => !empty($port) ? $port : 6379,
                 'password' => null,
                 'database' => null
             );
