@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsd:schema xmlns="http://doctrine-project.org/schemas/doctrine_cache"
+<xsd:schema xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            targetNamespace="http://doctrine-project.org/schemas/doctrine_cache"
+            targetNamespace="http://doctrine-project.org/schemas/symfony-dic/cache"
             elementFormDefault="qualified">
 
     <xsd:element name="doctrine_cache">
