@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<srv:container xmlns="http://doctrine-project.org/schemas"
+<srv:container xmlns="http://doctrine-project.org/schema/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+                        http://doctrine-project.org/schema/symfony-dic/cache http://doctrine-project.org/schema/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
      <srv:services>
         <srv:service id="my_riak_connection_service" class="%doctrine_cache.riak.connection.class%">
