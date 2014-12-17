@@ -2,7 +2,6 @@
     "name":                 "doctrine/doctrine-cache-bundle",
     "homepage":             "http://www.doctrine-project.org",
     "description":          "Symfony2 Bundle for Doctrine Cache",
-    "target-dir":           "Doctrine/Bundle/DoctrineCacheBundle",
     "keywords":             ["cache", "caching"],
     "type":                 "symfony-bundle",
     "license":              "MIT",
@@ -54,7 +53,7 @@
         "instaclick/symfony2-coding-standard":   "dev-remaster"
     },
     "autoload": {
-        "psr-0": { "Doctrine\\Bundle\\DoctrineCacheBundle": "" }
+        "psr-4": { "Doctrine\\Bundle\\DoctrineCacheBundle\\": "" }
     },
     "extra": {
         "branch-alias": {
