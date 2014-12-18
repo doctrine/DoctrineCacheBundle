@@ -20,8 +20,10 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Doctrine\Common\Inflector\Inflector;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Cache provider loader
@@ -44,8 +46,6 @@ class CacheProviderLoader
             ? $config['custom_provider']['type']
             : $config['type'];
 
-        $service->addTag('doctrine_cache.provider');
-
         if ($config['namespace']) {
             $service->addMethodCall('setNamespace', array($config['namespace']));
         }
@@ -56,6 +56,24 @@ class CacheProviderLoader
 
         if ($this->definitionClassExists($type, $container)) {
             $this->getCacheDefinition($type, $container)->configure($name, $config, $service, $container);
+        }
+
+        if (1) {
+            $loggerServiceId = $serviceId . '.logger';
+            $logger = new Definition(
+                $container->getParameter('doctrine_cache.cache_logger_proxy.class'),
+                array(
+                    new Reference($loggerServiceId . '.inner'),
+                    $name,
+                )
+            );
+            $logger->setPublic(false);
+            $logger->setDecoratedService($serviceId);
+
+            $logMasterId = 'doctrine_cache.log_master';
+            $logger->addMethodCall('setLogMaster', array(new Reference($logMasterId)));
+
+            $container->setDefinition($loggerServiceId, $logger);
         }
     }
 

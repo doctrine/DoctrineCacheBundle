@@ -81,10 +81,10 @@
                 </thead>
                 <tbody>
                 {% for index, log in logs %}
-                    <tr class="{{ (index + 1) is odd ? 'odd' : 'even' }}">
+                    <tr class="{{ cycle(['odd', 'even'], loop.index0) }}">
                         <td>{{ log.start|split('.')|first|date('H:i:s') }}.{{ "%-04s"|format(log.start|split('.')|last) }}</td>
                         <td>{{ (log.duration * 1000)|number_format(2) }} ms</td>
-                        <td>{{ log.success ? 'TRUE' : 'FALSE' }}</td>
+                        <td>{{ log.success ? 'YES' : 'NO' }}</td>
                         <td>{{ log.id }}</td>
                     </tr>
                     {% if log.data %}
@@ -107,11 +107,5 @@
 {% endblock %}
 
 {% block panel_dump %}
-    {{ render(controller('DoctrineCacheBundle:Profiler:dump', {
-        'token': token,
-        'panel': 'doctrine_cache',
-        'cacheName': app.request.query.get('cacheName'),
-        'requestType': app.request.query.get('requestType'),
-        'logIndex': app.request.query.get('logIndex')
-    })) }}
+    {% include 'DoctrineCacheBundle:Profiler:dump.html.twig' with {'data': collector.logs[app.request.query.get('cacheName')][app.request.query.get('requestType')][app.request.query.get('logIndex')]['data']} %}
 {% endblock %}

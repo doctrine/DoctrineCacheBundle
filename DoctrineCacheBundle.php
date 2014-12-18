@@ -20,8 +20,6 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler\CacheLoggerCompilerPass;
 
 /**
  * Symfony2 Bundle for Doctrine Cache
@@ -31,13 +29,4 @@ use Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Compiler\CacheLogger
  */
 class DoctrineCacheBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-
-        $container->addCompilerPass(new CacheLoggerCompilerPass());
-    }
 }

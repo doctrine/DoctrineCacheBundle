@@ -15,46 +15,22 @@ class CacheLoggerProxy implements Cache
     /**
      * @var string
      */
-    protected $serviceId;
-
-    /**
-     * @var string
-     */
-    protected $cacheName;
-
-    /**
-     * @var string
-     */
-    protected $class;
-
-    /**
-     * @var array
-     */
-    protected $args;
+    private $cacheName;
 
     /**
      * @var \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster
      */
-    protected $logMaster;
+    private $logMaster;
 
     /**
      * @var \Doctrine\Common\Cache\Cache
      */
-    protected $cache;
+    private $cache;
 
-    /**
-     * @param string $serviceId
-     * @param string $class
-     * @param array  $args
-     */
-    public function __construct($serviceId, $class, array $args = array())
+    public function __construct($cache, $name)
     {
-        $this->serviceId = $serviceId;
-        $this->cacheName = substr($serviceId, strrpos($serviceId, '.') + 1);
-        $this->class     = $class;
-        $this->args      = $args;
-        $reflection      = new \ReflectionClass($this->class);
-        $this->cache     = $reflection->newInstanceArgs($args);
+        $this->cacheName = $name;
+        $this->cache     = $cache;
     }
 
     /**
@@ -68,66 +44,6 @@ class CacheLoggerProxy implements Cache
     public function __call($method, array $args = array())
     {
         return call_user_func_array(array($this->cache, $method), $args);
-    }
-
-    /**
-     * @param array $args
-     *
-     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
-     */
-    public function setArgs($args)
-    {
-        $this->args = $args;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getArgs()
-    {
-        return $this->args;
-    }
-
-    /**
-     * @param \Doctrine\Common\Cache\Cache $cache
-     *
-     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
-     */
-    public function setCache($cache)
-    {
-        $this->cache = $cache;
-
-        return $this;
-    }
-
-    /**
-     * @return \Doctrine\Common\Cache\Cache
-     */
-    public function getCache()
-    {
-        return $this->cache;
-    }
-
-    /**
-     * @param string $class
-     *
-     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
-     */
-    public function setClass($class)
-    {
-        $this->class = $class;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getClass()
-    {
-        return $this->class;
     }
 
     /**
@@ -217,10 +133,10 @@ class CacheLoggerProxy implements Cache
      */
     public function delete($id)
     {
-        $type = 'delete';
-        $start = microtime(true);
+        $type   = 'delete';
+        $start  = microtime(true);
         $result = $this->cache->delete($id);
-        $end = microtime(true);
+        $end    = microtime(true);
         $this->log($type, array(
             'type'     => $type,
             'start'    => $start,
