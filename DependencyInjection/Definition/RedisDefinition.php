@@ -27,8 +27,8 @@ class RedisDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $memcacheConf = $config['redis'];
-        $connRef      = $this->getConnectionReference($name, $memcacheConf, $container);
+        $redisConf = $config['redis'];
+        $connRef   = $this->getConnectionReference($name, $redisConf, $container);
 
         $service->addMethodCall('setRedis', array($connRef));
     }
@@ -54,6 +54,16 @@ class RedisDefinition extends CacheDefinition
 
         $connDef->setPublic(false);
         $connDef->addMethodCall('connect', array($host, $port));
+
+        if (isset($config['password'])) {
+            $password = $config['password'];
+            $connDef->addMethodCall('auth', array($password));
+        }
+        
+        if (isset($config['database'])) {
+            $database = (int) $config['database'];
+            $connDef->addMethodCall('select', array($database));
+        }
 
         $container->setDefinition($connId, $connDef);
 
