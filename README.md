@@ -37,9 +37,9 @@ Installing this bundle can be done through these simple steps:
     <?xml version="1.0" encoding="UTF-8" ?>
     <container xmlns="http://symfony.com/schema/dic/services"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:doctrine-cache="http://doctrine-project.org/schemas/doctrine_cache"
+        xmlns:doctrine-cache="http://doctrine-project.org/schemas/symfony-dic/cache"
         xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-            http://doctrine-project.org/schemas/doctrine_cache http://doctrine-project.org/schemas/doctrine_cache/doctrine_cache-1.0.xsd">
+            http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
         <doctrine-cache:doctrine-cache>
              <doctrine-cache:provider name="my_apc_metadata_cache">
@@ -81,11 +81,11 @@ $arrayCache = $this->container->get('doctrine_cache.providers.my_array_cache');
 ```xml
 <!-- app/config/doctrine_cache.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
-<dic:container xmlns="http://doctrine-project.org/schemas/doctrine_cache"
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-        http://doctrine-project.org/schemas/doctrine_cache http://doctrine-project.org/schemas/doctrine_cache/doctrine_cache-1.0.xsd">
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
 <srv:container>
     <doctrine-cache>
@@ -140,11 +140,11 @@ doctrine_cache:
 ```xml
 <!-- app/config/doctrine_cache.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
-<dic:container xmlns="http://doctrine-project.org/schemas/doctrine_cache"
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-        http://doctrine-project.org/schemas/doctrine_cache http://doctrine-project.org/schemas/doctrine_cache/doctrine_cache-1.0.xsd">
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
 <srv:container>
     <doctrine-cache>
@@ -187,11 +187,11 @@ Is possible to register a custom cache driver
 ```xml
 <!-- app/config/doctrine_cache.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
-<dic:container xmlns="http://doctrine-project.org/schemas/doctrine_cache"
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-        http://doctrine-project.org/schemas/doctrine_cache http://doctrine-project.org/schemas/doctrine_cache/doctrine_cache-1.0.xsd">
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
 <srv:container>
     <srv:services>
@@ -245,11 +245,11 @@ Is possible to configure a cache provider using a specific connection/bucket/col
 ```xml
 <!-- app/config/doctrine_cache.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
-<dic:container xmlns="http://doctrine-project.org/schemas/doctrine_cache"
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-        http://doctrine-project.org/schemas/doctrine_cache http://doctrine-project.org/schemas/doctrine_cache/doctrine_cache-1.0.xsd">
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
 <srv:container>
     <srv:services>
@@ -325,11 +325,11 @@ doctrine_cache:
 ```xml
 <!-- app/config/doctrine_cache.xml -->
 <?xml version="1.0" encoding="UTF-8" ?>
-<dic:container xmlns="http://doctrine-project.org/schemas/doctrine_cache"
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-        http://doctrine-project.org/schemas/doctrine_cache http://doctrine-project.org/schemas/doctrine_cache/doctrine_cache-1.0.xsd">
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
 <srv:container>
     <doctrine-cache>
