@@ -9,15 +9,11 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Logger;
  */
 class LogMaster
 {
-    /**
-     * @var array
-     */
-    protected $logs;
+    /** @var array */
+    private $logs;
 
-    /**
-     * @var array
-     */
-    protected $totals;
+    /** @var array */
+    private $totals;
 
     /**
      * Constructor.

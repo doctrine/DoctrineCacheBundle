@@ -10,27 +10,25 @@ use Doctrine\Common\Cache\Cache;
  *
  * @author Alan Doucette <dragonwize@gmail.com>
  */
-class CacheLoggerProxy implements Cache
+class LoggingCache implements Cache
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $cacheName;
 
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster
-     */
+    /** @var \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster */
     private $logMaster;
 
-    /**
-     * @var \Doctrine\Common\Cache\Cache
-     */
+    /** @var \Doctrine\Common\Cache\Cache */
     private $cache;
 
-    public function __construct($cache, $name)
+    /** @var boolean */
+    private $logData;
+
+    public function __construct($cache, $name, $logData = true)
     {
         $this->cacheName = $name;
         $this->cache     = $cache;
+        $this->logData   = $logData;
     }
 
     /**
@@ -49,7 +47,7 @@ class CacheLoggerProxy implements Cache
     /**
      * @param \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster $logMaster
      *
-     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\CacheLoggerProxy
+     * @return \Doctrine\Bundle\DoctrineCacheBundle\Logger\LoggingCache
      */
     public function setLogMaster(LogMaster $logMaster)
     {
@@ -91,7 +89,7 @@ class CacheLoggerProxy implements Cache
             'start'    => $start,
             'duration' => $end - $start,
             'id'       => $id,
-            'data'     => $result,
+            'data'     => $this->logData ? $result : null,
             'success'  => ($result !== false),
         ));
 
@@ -120,7 +118,7 @@ class CacheLoggerProxy implements Cache
             'start'    => $start,
             'duration' => $end - $start,
             'id'       => $id,
-            'data'     => $data,
+            'data'     => $this->logData ? $result : null,
             'success'  => $result,
             'lifetime' => $lifeTime,
         ));

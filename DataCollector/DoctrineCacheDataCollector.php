@@ -14,10 +14,8 @@ use Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster;
  */
 class DoctrineCacheDataCollector extends DataCollector
 {
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster
-     */
-    protected $logMaster;
+    /** @var \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster */
+    private $logMaster;
 
     /**
      * @param \Doctrine\Bundle\DoctrineCacheBundle\Logger\LogMaster $logMaster
@@ -33,7 +31,7 @@ class DoctrineCacheDataCollector extends DataCollector
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
         $this->data = array(
-            'logs' => $this->logMaster->getLogs(),
+            'logs'   => $this->logMaster->getLogs(),
             'totals' => $this->logMaster->getTotals(),
         );
     }

@@ -58,13 +58,24 @@ class CacheProviderLoader
             $this->getCacheDefinition($type, $container)->configure($name, $config, $service, $container);
         }
 
-        if (1) {
+        $shouldLog = null;
+        if ($container->hasParameter('doctrine_cache.logging.enabled')) {
+            $shouldLog = $container->getParameter('doctrine_cache.logging.enabled');
+        }
+
+        $shouldLogData = false;
+        if ($container->hasParameter('doctrine_cache.logging.log_data')) {
+            $shouldLogData = $container->getParameter('doctrine_cache.logging.log_data');
+        }
+
+        if ($shouldLog !== false) {
             $loggerServiceId = $serviceId . '.logger';
             $logger = new Definition(
-                $container->getParameter('doctrine_cache.cache_logger_proxy.class'),
+                $container->getParameter('doctrine_cache.logging_cache.class'),
                 array(
                     new Reference($loggerServiceId . '.inner'),
                     $name,
+                    $shouldLogData,
                 )
             );
             $logger->setPublic(false);
