@@ -105,6 +105,8 @@ class SymfonyBridgeAdapter
             $namespace   = 'sf2' . $this->mappingResourceName .'_' . $objectManagerName . '_' . $hash;
 
             $config['namespace'] = $namespace;
+        } else {
+            $config['namespace'] = $cacheDriver['namespace'];
         }
 
         if (in_array($type, array('memcache', 'memcached'))) {
