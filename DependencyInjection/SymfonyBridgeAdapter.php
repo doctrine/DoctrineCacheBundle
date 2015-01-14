@@ -104,8 +104,10 @@ class SymfonyBridgeAdapter
             $hash        = hash('sha256', $environment);
             $namespace   = 'sf2' . $this->mappingResourceName .'_' . $objectManagerName . '_' . $hash;
 
-            $config['namespace'] = $namespace;
+            $cacheDriver['namespace'] = $namespace;
         }
+        
+        $config['namespace'] = $cacheDriver['namespace'];
 
         if (in_array($type, array('memcache', 'memcached'))) {
             $host = !empty($host) ? $host : 'localhost';
