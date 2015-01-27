@@ -1,0 +1,13 @@
+#collector-content table tr.even td {
+    background-color: #f1f7e2;
+}
+
+a.show-dump {
+    display: block;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}

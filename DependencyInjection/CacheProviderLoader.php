@@ -20,8 +20,10 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Doctrine\Common\Inflector\Inflector;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Cache provider loader
@@ -54,6 +56,35 @@ class CacheProviderLoader
 
         if ($this->definitionClassExists($type, $container)) {
             $this->getCacheDefinition($type, $container)->configure($name, $config, $service, $container);
+        }
+
+        $shouldLog = null;
+        if ($container->hasParameter('doctrine_cache.logging.enabled')) {
+            $shouldLog = $container->getParameter('doctrine_cache.logging.enabled');
+        }
+
+        $shouldLogData = false;
+        if ($container->hasParameter('doctrine_cache.logging.log_data')) {
+            $shouldLogData = $container->getParameter('doctrine_cache.logging.log_data');
+        }
+
+        if ($shouldLog !== false) {
+            $loggerServiceId = $serviceId . '.logger';
+            $logger = new Definition(
+                $container->getParameter('doctrine_cache.logging_cache.class'),
+                array(
+                    new Reference($loggerServiceId . '.inner'),
+                    $name,
+                    $shouldLogData,
+                )
+            );
+            $logger->setPublic(false);
+            $logger->setDecoratedService($serviceId);
+
+            $logMasterId = 'doctrine_cache.log_master';
+            $logger->addMethodCall('setLogMaster', array(new Reference($logMasterId)));
+
+            $container->setDefinition($loggerServiceId, $logger);
         }
     }
 
