@@ -2,7 +2,8 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Cache\Cache;
 
@@ -11,8 +12,13 @@ use Doctrine\Common\Cache\Cache;
  *
  * @author Alan Doucette <dragonwize@gmail.com>
  */
-abstract class CacheCommand extends ContainerAwareCommand
+abstract class CacheCommand extends Command implements ContainerAwareInterface
 {
+    /**
+     * @var ContainerInterface
+     */
+    private $container;
+
     /**
      * Get the requested cache provider service.
      *
@@ -39,5 +45,21 @@ abstract class CacheCommand extends ContainerAwareCommand
         }
 
         return $cacheProvider;
+    }
+
+    /**
+     * @return ContainerInterface
+     */
+    protected function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setContainer(ContainerInterface $container = null)
+    {
+        $this->container = $container;
     }
 }
