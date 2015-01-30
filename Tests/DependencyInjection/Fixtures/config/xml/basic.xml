@@ -8,6 +8,7 @@
      <doctrine-cache>
         <provider name="basic_apc_provider"         type="apc"/>
         <provider name="basic_array_provider"       type="array"/>
+        <provider name="basic_void_provider"        type="void"/>
         <provider name="basic_xcache_provider"      type="xcache"/>
         <provider name="basic_wincache_provider"    type="wincache"/>
         <provider name="basic_zenddata_provider"    type="zenddata"/>
@@ -18,6 +19,9 @@
         </provider>
         <provider name="basic_array_provider2">
             <array/>
+        </provider>
+        <provider name="basic_void_provider2">
+            <void/>
         </provider>
         <provider name="basic_xcache_provider2">
             <xcache/>

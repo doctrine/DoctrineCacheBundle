@@ -56,6 +56,8 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $this->assertTrue($container->hasParameter('doctrine_cache.php_file.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.redis.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.riak.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.sqlite3.class'));
+        $this->assertTrue($container->hasParameter('doctrine_cache.void.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.xcache.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.wincache.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.zenddata.class'));
@@ -67,6 +69,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $drivers   = array(
             'basic_apc_provider'         => '%doctrine_cache.apc.class%',
             'basic_array_provider'       => '%doctrine_cache.array.class%',
+            'basic_void_provider'        => '%doctrine_cache.void.class%',
             'basic_xcache_provider'      => '%doctrine_cache.xcache.class%',
             'basic_wincache_provider'    => '%doctrine_cache.wincache.class%',
             'basic_zenddata_provider'    => '%doctrine_cache.zenddata.class%',
@@ -74,6 +77,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
 
             'basic_apc_provider2'         => '%doctrine_cache.apc.class%',
             'basic_array_provider2'       => '%doctrine_cache.array.class%',
+            'basic_void_provider2'        => '%doctrine_cache.void.class%',
             'basic_xcache_provider2'      => '%doctrine_cache.xcache.class%',
             'basic_wincache_provider2'    => '%doctrine_cache.wincache.class%',
             'basic_zenddata_provider2'    => '%doctrine_cache.zenddata.class%',
@@ -88,29 +92,35 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
     {
         $container = $this->compileContainer('configurable');
         $drivers   = array(
+            'configurable_chain_provider' => array(
+                '%doctrine_cache.chain.class%'
+            ),
+            'configurable_couchbase_provider' => array(
+                '%doctrine_cache.couchbase.class%'
+            ),
+            'configurable_filesystem_provider' => array(
+                '%doctrine_cache.file_system.class%'
+            ),
             'configurable_memcached_provider' => array(
                 '%doctrine_cache.memcached.class%', array('setMemcached' => array())
             ),
             'configurable_memcache_provider' => array(
                 '%doctrine_cache.memcache.class%', array('setMemcache' => array())
             ),
-            'configurable_redis_provider' => array(
-                '%doctrine_cache.redis.class%', array('setRedis' => array())
-            ),
             'configurable_mongodb_provider' => array(
                 '%doctrine_cache.mongodb.class%'
-            ),
-            'configurable_riak_provider' => array(
-                '%doctrine_cache.riak.class%'
-            ),
-            'configurable_filesystem_provider' => array(
-                '%doctrine_cache.file_system.class%'
             ),
             'configurable_phpfile_provider' => array(
                 '%doctrine_cache.php_file.class%'
             ),
-            'configurable_couchbase_provider' => array(
-                '%doctrine_cache.couchbase.class%'
+            'configurable_redis_provider' => array(
+                '%doctrine_cache.redis.class%', array('setRedis' => array())
+            ),
+            'configurable_riak_provider' => array(
+                '%doctrine_cache.riak.class%'
+            ),
+            'configurable_sqlite3_provider' => array(
+                '%doctrine_cache.sqlite3.class%'
             ),
         );
 
@@ -238,6 +248,9 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             ),
             'service_collection_mongodb_provider' => array(
                 '%doctrine_cache.mongodb.class%'
+            ),
+            'service_connection_sqlite3_provider' => array(
+                '%doctrine_cache.sqlite3.class%'
             ),
         );
 
