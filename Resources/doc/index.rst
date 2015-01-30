@@ -58,8 +58,8 @@ ORM caching configuration
 
 Some configurations of the ORM can use cache to prevent an excessive number of requests, read the `Caching Drivers`_.
 
-.. code-block: yaml
-    
+.. code-block:: yaml
+
     # app/config/config.yml
     doctrine:
         orm:
