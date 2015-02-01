@@ -64,12 +64,13 @@ Some configurations of the ORM can use cache to prevent an excessive number of r
     doctrine:
         orm:
             metadata_cache_driver:
-                type: service
-                id: doctrine_cache.providers.metadata_cache_driver
+                # will load doctrine_cache.providers.metadata_cache_driver
+                cache_provider: metadata_cache_driver
             query_cache_driver:
-                type: service
-                id: doctrine_cache.providers.query_cache_driver
+                cache_provider: query_cache_driver
             result_cache_driver:
+                # if you're using a version < 1.3 of the DoctrineBundle
+                # you can use the "service" type
                 type: service
                 id: doctrine_cache.providers.result_cache_driver
 
