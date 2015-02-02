@@ -177,18 +177,21 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('type')->defaultNull()->end()
                             ->append($this->addBasicProviderNode('apc'))
                             ->append($this->addBasicProviderNode('array'))
-                            ->append($this->addBasicProviderNode('xcache'))
+                            ->append($this->addBasicProviderNode('void'))
                             ->append($this->addBasicProviderNode('wincache'))
+                            ->append($this->addBasicProviderNode('xcache'))
                             ->append($this->addBasicProviderNode('zenddata'))
                             ->append($this->addCustomProviderNode())
+                            ->append($this->addCouchbaseNode())
+                            ->append($this->addChainNode())
                             ->append($this->addMemcachedNode())
                             ->append($this->addMemcacheNode())
-                            ->append($this->addCouchbaseNode())
                             ->append($this->addFileSystemNode())
                             ->append($this->addPhpFileNode())
                             ->append($this->addMongoNode())
                             ->append($this->addRedisNode())
                             ->append($this->addRiakNode())
+                            ->append($this->addSqlite3Node())
                         ->end()
                         ->fixXmlConfig('alias', 'aliases')
                         ->children()
@@ -232,6 +235,28 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('type')->isRequired()->cannotBeEmpty()->end()
                 ->arrayNode('options')
                     ->useAttributeAsKey('name')
+                    ->prototype('scalar')->end()
+                ->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    /**
+     * Build chain node configuration definition
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    private function addChainNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('chain');
+
+        $node
+            ->fixXmlConfig('provider')
+            ->children()
+                ->arrayNode('providers')
                     ->prototype('scalar')->end()
                 ->end()
             ->end()
@@ -396,6 +421,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->fixXmlConfig('hostname')
             ->children()
+                ->scalarNode('connection_id')->defaultNull()->end()
                 ->arrayNode('hostnames')
                     ->prototype('scalar')->end()
                     ->defaultValue(array('%doctrine_cache.couchbase.hostnames%'))
@@ -469,6 +495,28 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/file_system')->end()
                 ->scalarNode('extension')->defaultNull()->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    /**
+     * Build sqlite3 node configuration definition
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    private function addSqlite3Node()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('sqlite3');
+
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('connection_id')->defaultNull()->end()
+                ->scalarNode('file_name')->defaultNull()->end()
+                ->scalarNode('table_name')->defaultNull()->end()
             ->end()
         ;
 

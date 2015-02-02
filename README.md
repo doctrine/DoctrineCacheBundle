@@ -364,9 +364,23 @@ $aclCache = $this->container->get('security.acl.cache');
 
 #### apc
 #### array
-#### xcache
-#### wincache
-#### zenddata
+#### chain
+    - providers - List of cache providers
+#### couchbase
+    - connection_id - Couchbase connection service id
+    - hostnames     - couchbase hostname list
+    - bucket_name   - couchbase bucket name
+    - username      - couchbase username
+    - password      - couchbase password
+#### file_system
+    - extension    - file extension
+    - directory    - cache directory
+#### mongodb
+    - connection_id     - MongoClient service id
+    - collection_id     - MongoCollection service id
+    - server            - mongodb server uri
+    - database_name     - mongodb database name
+    - collection_name   - mongodb collection name
 #### memcache
     - connection_id - Memcache connection service id
     - servers       - Server list
@@ -379,27 +393,13 @@ $aclCache = $this->container->get('security.acl.cache');
         - server
             - host - memcached host
             - port - memcached port
+#### php_file
+    - extension    - file extension
+    - directory    - cache directory
 #### redis
     - connection_id - Redis connection service id
     - host          - redis host
     - port          - redis port
-#### couchbase
-    - hostnames    - couchbase hostname list
-    - bucket_name  - couchbase bucket name
-    - username     - couchbase username
-    - password     - couchbase password
-#### php_file
-    - extension    - file extension
-    - directory    - cache directory
-#### file_system
-    - extension    - file extension
-    - directory    - cache directory
-#### mongodb
-    - connection_id     - MongoClient service id
-    - collection_id     - MongoCollection service id
-    - server            - mongodb server uri
-    - database_name     - mongodb database name
-    - collection_name   - mongodb collection name
 #### riak
     - connection_id                 - Riak\Connection service id
     - bucket_id                     - Riak\Bucket service id
@@ -409,6 +409,13 @@ $aclCache = $this->container->get('security.acl.cache');
     - bucket_property_list          - riak bucket configuration (property list)
         - allow_multiple: false     - riak bucket allow multiple configuration
         - n_value: 1                - riak bucket n-value configuration
-
+#### sqlite3
+    - connection_id - SQLite3 connection service id
+    - file_name     - SQLite3 database file name
+    - table_name    - Cache table name
+#### void
+#### xcache
+#### wincache
+#### zenddata
 
 Check the [doctrine-cache documentation Page](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html) for a better understanding.

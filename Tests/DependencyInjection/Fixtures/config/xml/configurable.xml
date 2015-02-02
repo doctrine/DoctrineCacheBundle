@@ -6,58 +6,79 @@
                         http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
      <doctrine-cache>
-         <provider name="configurable_memcached_provider">
-             <memcached>
-                 <server host="memcached01.ss"/>
-                 <server host="memcached02.ss"/>
-             </memcached>
-         </provider>
+        <provider name="configurable_apc_provider">
+            <apc/>
+        </provider>
 
-         <provider name="configurable_memcache_provider">
-             <memcache>
-                 <server host="memcached01.ss"/>
-                 <server host="memcached02.ss"/>
-             </memcache>
-         </provider>
+        <provider name="configurable_array_provider">
+            <array/>
+        </provider>
 
-         <provider name="configurable_redis_provider">
-             <redis host="localhost" port="11211" />
-         </provider>
+        <provider name="configurable_chain_provider">
+            <chain>
+                <provider>configurable_array_provider</provider>
+                <provider>configurable_apc_provider</provider>
+            </chain>
+        </provider>
 
-         <provider name="configurable_mongodb_provider">
-             <mongodb server="localhost:11211" >
-                 <database-name>my_database</database-name>
-                 <collection-name>my_collection</collection-name>
-             </mongodb>
-         </provider>
+        <provider name="configurable_memcached_provider">
+            <memcached>
+                <server host="memcached01.ss"/>
+                <server host="memcached02.ss"/>
+            </memcached>
+        </provider>
 
-         <provider name="configurable_riak_provider">
-             <riak host="localhost" port="8087">
-                 <bucket-name>my_bucket</bucket-name>
-                 <bucket-property-list>
-                     <allow-multiple>false</allow-multiple>
-                     <n-value>1</n-value>
-                 </bucket-property-list>
-             </riak>
-         </provider>
+        <provider name="configurable_memcache_provider">
+            <memcache>
+                <server host="memcached01.ss"/>
+                <server host="memcached02.ss"/>
+            </memcache>
+        </provider>
 
-         <provider name="configurable_filesystem_provider">
-             <file-system extension="fsc">
-                 <directory>%kernel.cache_dir%/configurable-filesystem-provider</directory>
-             </file-system>
-         </provider>
+        <provider name="configurable_redis_provider">
+            <redis host="localhost" port="11211" />
+        </provider>
 
-         <provider name="configurable_phpfile_provider">
-             <php-file extension="phpc">
-                 <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
-             </php-file>
-         </provider>
+        <provider name="configurable_mongodb_provider">
+            <mongodb server="localhost:11211" >
+                <database-name>my_database</database-name>
+                <collection-name>my_collection</collection-name>
+            </mongodb>
+        </provider>
 
-         <provider name="configurable_couchbase_provider">
-             <couchbase username="Administrator" password="password">
-                 <bucket-name>my_bucket</bucket-name>
-                 <hostname>127.0.0.1:809</hostname>
-             </couchbase>
-         </provider>
+        <provider name="configurable_riak_provider">
+            <riak host="localhost" port="8087">
+                <bucket-name>my_bucket</bucket-name>
+                <bucket-property-list>
+                    <allow-multiple>false</allow-multiple>
+                    <n-value>1</n-value>
+                </bucket-property-list>
+            </riak>
+        </provider>
+
+        <provider name="configurable_sqlite3_provider">
+            <sqlite3 file-name="cache.db" >
+                <table-name>my_table</table-name>
+            </sqlite3>
+        </provider>
+
+        <provider name="configurable_filesystem_provider">
+            <file-system extension="fsc">
+                <directory>%kernel.cache_dir%/configurable-filesystem-provider</directory>
+            </file-system>
+        </provider>
+
+        <provider name="configurable_phpfile_provider">
+            <php-file extension="phpc">
+                <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
+            </php-file>
+        </provider>
+
+        <provider name="configurable_couchbase_provider">
+            <couchbase username="Administrator" password="password">
+                <bucket-name>my_bucket</bucket-name>
+                <hostname>127.0.0.1:809</hostname>
+            </couchbase>
+        </provider>
     </doctrine-cache>
 </srv:container>

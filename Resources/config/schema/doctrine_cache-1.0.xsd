@@ -28,14 +28,16 @@
             <xsd:element name="namespace" type="xsd:string"/>
             <xsd:element name="alias" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
             <xsd:choice minOccurs="0" maxOccurs="1">
+                <xsd:element name="chain"       type="chain_provider"/>
+                <xsd:element name="couchbase"   type="couchbase_provider"/>
+                <xsd:element name="file-system" type="filesystem_provider"/>
                 <xsd:element name="memcached"   type="memcached_provider"/>
                 <xsd:element name="memcache"    type="memcache_provider"/>
                 <xsd:element name="mongodb"     type="mongodb_provider"/>
-                <xsd:element name="redis"       type="redis_provider"/>
-                <xsd:element name="couchbase"   type="couchbase_provider"/>
-                <xsd:element name="riak"        type="riak_provider"/>
                 <xsd:element name="php-file"    type="phpfile_provider"/>
-                <xsd:element name="file-system" type="filesystem_provider"/>
+                <xsd:element name="redis"       type="redis_provider"/>
+                <xsd:element name="riak"        type="riak_provider"/>
+                <xsd:element name="sqlite3"     type="sqlite3_provider"/>
             </xsd:choice>
         </xsd:sequence>
         <xsd:attribute name="name" type="xsd:string" use="required"/>
@@ -168,6 +170,23 @@
         </xsd:sequence>
         <xsd:attribute name="extension" type="xsd:string"/>
         <xsd:attribute name="directory" type="xsd:string"/>
+    </xsd:complexType>
+
+    <!-- sqlite3 -->
+    <xsd:complexType name="sqlite3_provider">
+        <xsd:sequence>
+            <xsd:element name="file-name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="table-name" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="file-name" type="xsd:string"/>
+        <xsd:attribute name="table-name" type="xsd:string"/>
+    </xsd:complexType>
+
+    <!-- chain -->
+    <xsd:complexType name="chain_provider">
+        <xsd:sequence>
+            <xsd:element name="provider" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
     </xsd:complexType>
 
 </xsd:schema>
