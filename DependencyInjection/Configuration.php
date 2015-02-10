@@ -190,6 +190,7 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPhpFileNode())
                             ->append($this->addMongoNode())
                             ->append($this->addRedisNode())
+                            ->append($this->addPredisNode())
                             ->append($this->addRiakNode())
                             ->append($this->addSqlite3Node())
                         ->end()
@@ -371,6 +372,37 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
                 ->scalarNode('password')->defaultNull()->end()
                 ->scalarNode('database')->defaultNull()->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    /**
+     * Build predis node configuration definition
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    private function addPredisNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('predis');
+
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+            ->scalarNode('client_id')->defaultNull()->end()
+            ->arrayNode('parameters')
+                ->treatNullLike(array())
+                ->prototype('scalar')->end()
+                ->defaultValue(array('scheme' => '%doctrine_cache.predis.scheme%',
+                                     'host' => '%doctrine_cache.predis.host%',
+                                     'port' => '%doctrine_cache.predis.port%'))
+            ->end()
+            ->arrayNode('options')
+                ->treatNullLike(array())
+                ->prototype('scalar')->end()
+            ->end()
             ->end()
         ;
 

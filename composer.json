@@ -36,7 +36,7 @@
         "symfony/security":        "~2.2",
         "symfony/doctrine-bridge": "~2.2",
         "doctrine/inflector":      "~1.0",
-        "doctrine/cache":          "~1.3"
+        "doctrine/cache":          "~1.4"
     },
     "require-dev": {
         "phpunit/phpunit":                       "~4",
@@ -49,7 +49,8 @@
         "satooshi/php-coveralls":                "~0.6.1",
         "squizlabs/php_codesniffer":             "~1.5",
         "instaclick/object-calisthenics-sniffs": "dev-master",
-        "instaclick/symfony2-coding-standard":   "dev-remaster"
+        "instaclick/symfony2-coding-standard":   "dev-remaster",
+        "predis/predis":                         "~0.8"
     },
     "autoload": {
         "psr-4": { "Doctrine\\Bundle\\DoctrineCacheBundle\\": "" }

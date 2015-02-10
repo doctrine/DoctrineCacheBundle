@@ -36,6 +36,7 @@
                 <xsd:element name="mongodb"     type="mongodb_provider"/>
                 <xsd:element name="php-file"    type="phpfile_provider"/>
                 <xsd:element name="redis"       type="redis_provider"/>
+                <xsd:element name="predis"      type="predis_provider"/>
                 <xsd:element name="riak"        type="riak_provider"/>
                 <xsd:element name="sqlite3"     type="sqlite3_provider"/>
             </xsd:choice>
@@ -91,6 +92,48 @@
         </xsd:sequence>
         <xsd:attribute name="host" type="xsd:string"/>
         <xsd:attribute name="port" type="xsd:string"/>
+    </xsd:complexType>
+
+    <!-- predis -->
+    <xsd:complexType name="predis_provider">
+        <xsd:sequence>
+            <xsd:element name="parameters" type="predis_parameters" minOccurs="0" maxOccurs="0" />
+            <xsd:element name="options" type="predis_options" minOccurs="0" maxOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="predis_parameters">
+        <xsd:sequence>
+            <xsd:element name="scheme" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="database" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="alias" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="scheme" type="xsd:string"/>
+        <xsd:attribute name="host" type="xsd:string"/>
+        <xsd:attribute name="port" type="xsd:string"/>
+        <xsd:attribute name="database" type="xsd:string"/>
+        <xsd:attribute name="alias" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="predis_options">
+        <xsd:sequence>
+            <xsd:element name="profile" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="prefix" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="exceptions" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="connections" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="cluster" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="replication" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="aggregate" type="xsd:string" minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+        <xsd:attribute name="profile" type="xsd:string"/>
+        <xsd:attribute name="prefix" type="xsd:string"/>
+        <xsd:attribute name="exceptions" type="xsd:string"/>
+        <xsd:attribute name="connections" type="xsd:string"/>
+        <xsd:attribute name="cluster" type="xsd:string"/>
+        <xsd:attribute name="replication" type="xsd:string"/>
+        <xsd:attribute name="aggregate" type="xsd:string"/>
     </xsd:complexType>
 
     <!-- couchbase -->
