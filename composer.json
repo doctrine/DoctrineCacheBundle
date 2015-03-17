@@ -52,6 +52,9 @@
         "instaclick/symfony2-coding-standard":   "dev-remaster",
         "predis/predis":                         "~0.8"
     },
+    "suggest": {
+       "predis/predis":                          "Required if you want to use Predis as cache backend"
+    },
     "autoload": {
         "psr-4": { "Doctrine\\Bundle\\DoctrineCacheBundle\\": "" }
     },
