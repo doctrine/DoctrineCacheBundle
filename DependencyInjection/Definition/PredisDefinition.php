@@ -33,9 +33,9 @@ class PredisDefinition extends CacheDefinition
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string                                                  $name
+     * @param array                                                   $config
+     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
      *
      * @return \Symfony\Component\DependencyInjection\Reference
      */
@@ -45,21 +45,22 @@ class PredisDefinition extends CacheDefinition
             return new Reference($config['client_id']);
         }
 
-        $parameters   = $config['parameters'];
-        if(is_null($parameters)){
+        $parameters = $config['parameters'];
+
+        if (is_null($parameters)) {
             $parameters = array(
                 'scheme' => 'tcp',
-                'host'   => $container->getParameter('%doctrine_cache.predis.host%'),
-                'port'   => $container->getParameter('%doctrine_cache.predis.port%')
+                'host' => $container->getParameter('%doctrine_cache.predis.host%'),
+                'port' => $container->getParameter('%doctrine_cache.predis.port%')
             );
         }
-        $options      = null;
-        if(isset($config['options'])){
+        $options = null;
+        if (isset($config['options'])) {
             $options = $config['options'];
         }
-        $clientClass  = '%doctrine_cache.predis.client.class%';
-        $clientId     = sprintf('doctrine_cache.services.%s_predis.client', $name);
-        $clientDef    = new Definition($clientClass);
+        $clientClass = '%doctrine_cache.predis.client.class%';
+        $clientId    = sprintf('doctrine_cache.services.%s_predis.client', $name);
+        $clientDef   = new Definition($clientClass);
 
         $clientDef->addArgument($parameters);
         $clientDef->addArgument($options);
