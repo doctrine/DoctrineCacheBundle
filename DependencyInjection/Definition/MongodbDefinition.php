@@ -53,9 +53,15 @@ class MongodbDefinition extends CacheDefinition
         $collDef        = new Definition($collClass, array($databaseName, $collectionName));
         $connRef        = $this->getConnectionReference($name, $config, $container);
 
-        $container->setDefinition($collId, $collDef)
-            ->setFactory(array($connRef, 'selectCollection'))
-            ->setPublic(false);
+        $definition = $container->setDefinition($collId, $collDef)->setPublic(false);
+        if (method_exists($definition, 'setFactory')) {
+            $definition->setFactory(array($connRef, 'selectCollection'));
+        } else {
+            $definition
+                ->setFactoryService($connRef)
+                ->setFactoryMethod('selectCollection')
+            ;
+        }
 
         return new Reference($collId);
     }
