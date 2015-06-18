@@ -45,8 +45,7 @@
             <srv:argument>localhost:27017</srv:argument>
         </srv:service>
 
-        <srv:service id="my_mongodb_collection_service" class="%doctrine_cache.mongodb.collection.class%">
-            <srv:factory service="my_mongodb_connection_service" method="selectCollection"/>
+        <srv:service id="my_mongodb_collection_service" class="%doctrine_cache.mongodb.collection.class%" abstract="true">
             <srv:argument>my_database</srv:argument>
             <srv:argument>my_cache_collection</srv:argument>
         </srv:service>
