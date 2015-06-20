@@ -57,12 +57,14 @@ class MongodbDefinition extends CacheDefinition
 
         if (method_exists($definition, 'setFactory')) {
             $definition->setFactory(array($connRef, 'selectCollection'));
-        } else {
-            $definition
-                ->setFactoryService($connRef)
-                ->setFactoryMethod('selectCollection')
-            ;
+
+            return new Reference($collId);
         }
+
+        $definition
+            ->setFactoryService($connRef)
+            ->setFactoryMethod('selectCollection')
+        ;
 
         return new Reference($collId);
     }
