@@ -83,6 +83,7 @@ class SymfonyBridgeAdapter
         $id   = $this->getObjectManagerElementName($objectManagerName . '_' . $cacheName);
         $host = isset($cacheDriver['host']) ? $cacheDriver['host'] : null;
         $port = isset($cacheDriver['port']) ? $cacheDriver['port'] : null;
+        $database = isset($cacheDriver['database']) ? $cacheDriver['database'] : null;
         $type = $cacheDriver['type'];
 
         if ($type == 'service') {
@@ -122,7 +123,7 @@ class SymfonyBridgeAdapter
                 'host' => !empty($host) ? $host : 'localhost',
                 'port' => !empty($port) ? $port : 6379,
                 'password' => null,
-                'database' => null
+                'database' => !empty($database) ? $database : 0
             );
         }
 
