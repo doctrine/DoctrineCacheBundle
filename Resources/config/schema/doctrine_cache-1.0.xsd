@@ -104,36 +104,14 @@
 
     <xsd:complexType name="predis_parameters">
         <xsd:sequence>
-            <xsd:element name="scheme" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="database" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="alias" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:any minOccurs="0"/>
         </xsd:sequence>
-        <xsd:attribute name="scheme" type="xsd:string"/>
-        <xsd:attribute name="host" type="xsd:string"/>
-        <xsd:attribute name="port" type="xsd:string"/>
-        <xsd:attribute name="database" type="xsd:string"/>
-        <xsd:attribute name="alias" type="xsd:string"/>
     </xsd:complexType>
 
     <xsd:complexType name="predis_options">
         <xsd:sequence>
-            <xsd:element name="profile" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="prefix" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="exceptions" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="connections" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="cluster" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="replication" type="xsd:string" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="aggregate" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:any minOccurs="0"/>
         </xsd:sequence>
-        <xsd:attribute name="profile" type="xsd:string"/>
-        <xsd:attribute name="prefix" type="xsd:string"/>
-        <xsd:attribute name="exceptions" type="xsd:string"/>
-        <xsd:attribute name="connections" type="xsd:string"/>
-        <xsd:attribute name="cluster" type="xsd:string"/>
-        <xsd:attribute name="replication" type="xsd:string"/>
-        <xsd:attribute name="aggregate" type="xsd:string"/>
     </xsd:complexType>
 
     <!-- couchbase -->

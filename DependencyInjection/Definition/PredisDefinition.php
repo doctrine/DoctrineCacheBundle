@@ -47,14 +47,8 @@ class PredisDefinition extends CacheDefinition
 
         $parameters = $config['parameters'];
 
-        if (is_null($parameters)) {
-            $parameters = array(
-                'scheme' => 'tcp',
-                'host' => $container->getParameter('%doctrine_cache.predis.host%'),
-                'port' => $container->getParameter('%doctrine_cache.predis.port%')
-            );
-        }
         $options = null;
+
         if (isset($config['options'])) {
             $options = $config['options'];
         }

@@ -393,14 +393,12 @@ class Configuration implements ConfigurationInterface
             ->children()
             ->scalarNode('client_id')->defaultNull()->end()
             ->arrayNode('parameters')
-                ->treatNullLike(array())
                 ->prototype('scalar')->end()
                 ->defaultValue(array('scheme' => '%doctrine_cache.predis.scheme%',
                                      'host' => '%doctrine_cache.predis.host%',
                                      'port' => '%doctrine_cache.predis.port%'))
             ->end()
             ->arrayNode('options')
-                ->treatNullLike(array())
                 ->prototype('scalar')->end()
             ->end()
             ->end()

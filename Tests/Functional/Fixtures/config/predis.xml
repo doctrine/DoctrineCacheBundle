@@ -13,6 +13,7 @@
                     <host>127.0.0.1</host>
                     <port>6379</port>
                     <database>2</database>
+                    <timeout>10</timeout>
                 </parameters>
                 <options>
                     <prefix>test_</prefix>
