@@ -36,7 +36,7 @@
         "symfony/security":        "~2.2",
         "symfony/doctrine-bridge": "~2.2",
         "doctrine/inflector":      "~1.0",
-        "doctrine/cache":          "~1.3"
+        "doctrine/cache":          "~1.4"
     },
     "require-dev": {
         "phpunit/phpunit":                       "~4",
