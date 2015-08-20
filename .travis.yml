@@ -7,16 +7,24 @@ php:
     - 5.6
     - hhvm
 
+matrix:
+  allow_failures:
+    - php: hhvm
+  include:
+    - php: 5.6
+      env: SYMFONY_VERSION='dev-master'
+
 services:
     - riak
     - mongodb
     - memcached
     - redis-server
 
-before_script: 
+before_script:
     - ./Tests/travis/install-deps.sh
     - composer self-update
-    - composer --prefer-source --dev install
+    - if [ "$SYMFONY_VERSION" != "" ]; then composer require --dev --no-update symfony/symfony=$SYMFONY_VERSION; fi
+    - composer update --prefer-source
 
 script:
     - ./vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
@@ -24,7 +32,3 @@ script:
 
 after_script:
     - php ./vendor/bin/coveralls -v
-
-matrix:
-  allow_failures:
-    - php: hhvm
