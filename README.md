@@ -365,7 +365,7 @@ $aclCache = $this->container->get('security.acl.cache');
 #### apc
 #### array
 #### chain
-    - providers - List of service ids of doctrine cache providers. Put fastest providers first (e.g. array cache)
+    - providers - List of service ids (`doctrine_cache.providers.` can be skipped) of doctrine cache providers. Put fastest providers first (e.g. array cache)
 #### couchbase
     - connection_id - Couchbase connection service id
     - hostnames     - couchbase hostname list
