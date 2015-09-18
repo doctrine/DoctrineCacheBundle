@@ -26,6 +26,10 @@ class PhpFileDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $service->setArguments(array($config['php_file']['directory'], $config['php_file']['extension']));
+        $service->setArguments(array(
+            $config['php_file']['directory'],
+            $config['php_file']['extension'],
+            $config['php_file']['umask']
+        ));
     }
 }

@@ -26,6 +26,10 @@ class FileSystemDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $service->setArguments(array($config['file_system']['directory'], $config['file_system']['extension']));
+        $service->setArguments(array(
+            $config['file_system']['directory'],
+            $config['file_system']['extension'],
+            $config['file_system']['umask']
+        ));
     }
 }

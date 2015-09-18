@@ -375,6 +375,7 @@ $aclCache = $this->container->get('security.acl.cache');
 #### file_system
     - extension    - file extension
     - directory    - cache directory
+    - umask        - umask to revoke permissions
 #### mongodb
     - connection_id     - MongoClient service id
     - collection_id     - MongoCollection service id
@@ -396,6 +397,7 @@ $aclCache = $this->container->get('security.acl.cache');
 #### php_file
     - extension    - file extension
     - directory    - cache directory
+    - umask        - umask to revoke permissions
 #### redis
     - connection_id - Redis connection service id
     - host          - redis host
