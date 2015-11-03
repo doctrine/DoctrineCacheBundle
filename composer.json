@@ -1,7 +1,7 @@
 {
     "name":                 "doctrine/doctrine-cache-bundle",
     "homepage":             "http://www.doctrine-project.org",
-    "description":          "Symfony2 Bundle for Doctrine Cache",
+    "description":          "Symfony Bundle for Doctrine Cache",
     "keywords":             ["cache", "caching"],
     "type":                 "symfony-bundle",
     "license":              "MIT",
