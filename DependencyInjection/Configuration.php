@@ -371,6 +371,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
                 ->scalarNode('password')->defaultNull()->end()
                 ->scalarNode('database')->defaultNull()->end()
+                ->scalarNode('timeout')->defaultNull()->end()
             ->end()
         ;
 

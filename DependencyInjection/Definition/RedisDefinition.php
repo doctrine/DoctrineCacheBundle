@@ -53,7 +53,13 @@ class RedisDefinition extends CacheDefinition
         $connDef    = new Definition($connClass);
 
         $connDef->setPublic(false);
-        $connDef->addMethodCall('connect', array($host, $port));
+        $connectionParams = array($host, $port);
+
+        if (isset($config['timeout'])) {
+
+            $connectionParams[] = $config['timeout'];
+        }
+        $connDef->addMethodCall('connect', $connectionParams);
 
         if (isset($config['password'])) {
             $password = $config['password'];
