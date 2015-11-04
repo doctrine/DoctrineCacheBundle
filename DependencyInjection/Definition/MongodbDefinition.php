@@ -60,7 +60,7 @@ class MongodbDefinition extends CacheDefinition
         ;
         $container->setDefinition($doctrineCollFactoryId, $doctrineCollFactoryDef);
 
-        $collClass = 'MongoCollection';
+        $collClass = '%doctrine_cache.mongodb.collection.class%';
         $collId = sprintf('doctrine_cache.services.%s.collection', $name);
         $collDef = new Definition($collClass);
         $collDef
