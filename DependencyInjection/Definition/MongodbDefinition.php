@@ -46,17 +46,28 @@ class MongodbDefinition extends CacheDefinition
             return new Reference($config['collection_id']);
         }
 
-        $databaseName   = $config['database_name'];
-        $collectionName = $config['collection_name'];
-        $collClass      = '%doctrine_cache.mongodb.collection.class%';
-        $collId         = sprintf('doctrine_cache.services.%s.collection', $name);
-        $collDef        = new Definition($collClass, array($databaseName, $collectionName));
-        $connRef        = $this->getConnectionReference($name, $config, $container);
+        $connRef = $this->getConnectionReference($name, $config, $container);
 
-        $container->setDefinition($collId, $collDef)
-            ->setFactoryMethod('selectCollection')
-            ->setFactoryService($connRef)
-            ->setPublic(false);
+        $doctrineCollFactoryClass = '%doctrine_cache.mongodb.collection.class%';
+        $doctrineCollFactoryId = sprintf('doctrine_cache.services.%s.collection.factory', $name);
+        $doctrineCollFactoryDef = new Definition($doctrineCollFactoryClass, array(
+            $config['database_name'],
+            $config['collection_name']
+        ));
+        $doctrineCollFactoryDef
+            ->setFactory(array($connRef, 'selectCollection'))
+            ->setPublic(false)
+        ;
+        $container->setDefinition($doctrineCollFactoryId, $doctrineCollFactoryDef);
+
+        $collClass = 'MongoCollection';
+        $collId = sprintf('doctrine_cache.services.%s.collection', $name);
+        $collDef = new Definition($collClass);
+        $collDef
+            ->setFactory(array(new Reference($doctrineCollFactoryId), 'getMongoCollection'))
+            ->setPublic(false)
+        ;
+        $container->setDefinition($collId, $collDef);
 
         return new Reference($collId);
     }
