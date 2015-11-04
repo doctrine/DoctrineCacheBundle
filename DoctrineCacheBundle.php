@@ -22,7 +22,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Symfony2 Bundle for Doctrine Cache
+ * Symfony Bundle for Doctrine Cache
  *
  * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
