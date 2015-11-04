@@ -3,5 +3,4 @@ build
 composer.phar
 composer.lock
 phpunit.xml
-/nbproject/
-/.idea/
+cache.db

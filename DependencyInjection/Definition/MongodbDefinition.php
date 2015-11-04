@@ -90,7 +90,9 @@ class MongodbDefinition extends CacheDefinition
         $connId         = sprintf('doctrine_cache.services.%s.connection', $name);
         $connDef        = new Definition($connClass, array($server));
 
+        $connDef->setPublic(false);
         $connDef->addMethodCall('connect');
+
         $container->setDefinition($connId, $connDef);
 
         return new Reference($connId);

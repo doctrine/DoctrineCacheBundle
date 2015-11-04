@@ -12,20 +12,15 @@ Master: [![Coverage Status](https://coveralls.io/repos/doctrine/DoctrineCacheBun
 Installing this bundle can be done through these simple steps:
 
 1. Add this bundle to your project as a composer dependency:
-```javascript
-    // composer.json
-    {
-        // ...
-        require: {
-            // ...
-            "doctrine/doctrine-cache-bundle": "~1.0"
-        }
-    }
-```
+
+  ```bash
+  composer require doctrine/doctrine-cache-bundle
+  ```
 
 2. Add this bundle in your application kernel:
-```php
-    // application/ApplicationKernel.php
+
+    ```php
+    // app/AppKernel.php
     public function registerBundles()
     {
         // ...
@@ -33,35 +28,43 @@ Installing this bundle can be done through these simple steps:
 
         return $bundles;
     }
-```
+    ```
 
 3. Check if the bundle is configured correctly:
-```xml
-<!--  {# application/config/doctrine_cache.xml #} -->
 
-<doctrine-cache>
-     <provider name="my_apc_metadata_cache">
-        <type>apc</type>
-        <namespace>metadata_cache_ns</namespace>
-     </provider>
-    <provider name="my_apc_query_cache" namespace="query_cache_ns">
-        <apc/>
-    <provider>
-</doctrine-cache>
-```
+    ```xml
+    <!-- app/config/config.xml -->
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <container xmlns="http://symfony.com/schema/dic/services"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:doctrine-cache="http://doctrine-project.org/schemas/symfony-dic/cache"
+        xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+            http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
-```yml
-# {# application/config/doctrine_cache.yml #}
+        <doctrine-cache:doctrine-cache>
+             <doctrine-cache:provider name="my_apc_metadata_cache">
+                <doctrine-cache:type>apc</doctrine-cache:type>
+                <doctrine-cache:namespace>metadata_cache_ns</doctrine-cache:namespace>
+             </doctrine-cache:provider>
+            <doctrine-cache:provider name="my_apc_query_cache" namespace="query_cache_ns">
+                <doctrine-cache:apc/>
+            <doctrine-cache:provider>
+        </doctrine-cache:doctrine-cache>
+    </container>
+    ```
 
-doctrine_cache:
-    providers:
-        my_apc_metadata_cache:
-            type: apc
-            namespace: metadata_cache_ns
-        my_apc_query_cache:
-            namespace: query_cache_ns
-            apc: ~
-```
+    ```yml
+    # app/config/config.yml
+
+    doctrine_cache:
+        providers:
+            my_apc_metadata_cache:
+                type: apc
+                namespace: metadata_cache_ns
+            my_apc_query_cache:
+                namespace: query_cache_ns
+                apc: ~
+    ```
 
 ## Usage
 Simply use `doctrine_cache.providers.{provider_name}` to inject it into the desired service.
@@ -76,33 +79,41 @@ $arrayCache = $this->container->get('doctrine_cache.providers.my_array_cache');
 
 ## Provider configuration
 ```xml
-<!--  {# application/config/doctrine_cache.xml #}  -->
+<!-- app/config/doctrine_cache.xml -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
-<doctrine-cache>
-     <provider name="my_memcached_cache">
-         <memcache>
-             <server host="memcached01.ss" port="11211"/>
-             <server>
-                <host>memcached01.ss</host>
-                <port>11211</port>
-             </server>
-         </memcache>
-     </provider>
+<srv:container>
+    <doctrine-cache>
+         <provider name="my_memcached_cache">
+             <memcache>
+                 <server host="memcached01.ss" port="11211"/>
+                 <server>
+                    <host>memcached01.ss</host>
+                    <port>11211</port>
+                 </server>
+             </memcache>
+         </provider>
 
-     <provider name="my_riak_cache">
-         <riak host="localhost" port="8087">
-             <bucket-name>my_bucket</bucket-name>
-             <bucket-property-list>
-                 <allow-multiple>false</allow-multiple>
-                 <n-value>1</n-value>
-             </bucket-property-list>
-         </riak>
-     </provider>
-</doctrine-cache>
+         <provider name="my_riak_cache">
+             <riak host="localhost" port="8087">
+                 <bucket-name>my_bucket</bucket-name>
+                 <bucket-property-list>
+                     <allow-multiple>false</allow-multiple>
+                     <n-value>1</n-value>
+                 </bucket-property-list>
+             </riak>
+         </provider>
+    </doctrine-cache>
+</srv:container>
 ```
 
 ```yml
-# {# application/config/doctrine_cache.yml #}
+# app/config/doctrine_cache.yml
 
 doctrine_cache:
     providers:
@@ -110,7 +121,7 @@ doctrine_cache:
             memcached:
                 servers:
                     memcached01.ss: 11211
-                    memcached02.ss: 
+                    memcached02.ss:
                         port: 11211
         my_riak_cache:
             riak:
@@ -127,21 +138,29 @@ doctrine_cache:
 
 ## Service aliases
 ```xml
-<!--   {# application/config/doctrine_cache.xml #} -->
+<!-- app/config/doctrine_cache.xml -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
-<doctrine-cache>
-    <alias key="cache_apc">my_apc_cache</alias>
+<srv:container>
+    <doctrine-cache>
+        <alias key="cache_apc">my_apc_cache</alias>
 
-    <provider name="my_apc_cache">
-        <type>apc</type>
-        <namespace>my_apc_cache_ns</namespace>
-        <alias>apc_cache</alias>
-    </provider>
-</doctrine-cache>
+        <provider name="my_apc_cache">
+            <type>apc</type>
+            <namespace>my_apc_cache_ns</namespace>
+            <alias>apc_cache</alias>
+        </provider>
+    </doctrine-cache>
+</srv:container>
 ```
 
 ```yml
-# {# application/config/doctrine_cache.yml #}
+# app/config/doctrine_cache.yml
 
 doctrine_cache:
     aliases:
@@ -166,32 +185,40 @@ $cacheApc  = $this->container->get('cache_apc');
 ## Custom providers
 Is possible to register a custom cache driver
 ```xml
-<!--   {# application/config/doctrine_cache.xml #} -->
+<!-- app/config/doctrine_cache.xml -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
-<srv:services>
-    <srv:service id="my_custom_provider_service" class="MyCustomType">
-        <!-- ... -->
-    </srv:service>
- </srv:services>
+<srv:container>
+    <srv:services>
+        <srv:service id="my_custom_provider_service" class="MyCustomType">
+            <!-- ... -->
+        </srv:service>
+     </srv:services>
 
-<doctrine-cache>
-    <!-- register your custom cache provider -->
-    <custom-provider type="my_custom_type">
-        <prototype>my_custom_provider_service</prototype>
-        <definition-class>MyCustomTypeDefinition</definition-class> <!-- optional configuration -->
-    </custom-provider>
+    <doctrine-cache>
+        <!-- register your custom cache provider -->
+        <custom-provider type="my_custom_type">
+            <prototype>my_custom_provider_service</prototype>
+            <definition-class>MyCustomTypeDefinition</definition-class> <!-- optional configuration -->
+        </custom-provider>
 
-     <provider name="my_custom_type_provider">
-        <my_custom_type>
-             <config-foo>foo</config-foo>
-             <config-bar>bar</config-bar>
-         </my_custom_type>
-     </provider>
-</doctrine-cache>
+         <provider name="my_custom_type_provider">
+            <my_custom_type>
+                 <config-foo>foo</config-foo>
+                 <config-bar>bar</config-bar>
+             </my_custom_type>
+         </provider>
+    </doctrine-cache>
+</srv:container>
 ```
 
 ```yml
-# {# application/config/doctrine_cache.yml #}
+# app/config/doctrine_cache.yml
 
 services:
     my_custom_provider_service:
@@ -216,41 +243,49 @@ doctrine_cache:
 ## Service parameter
 Is possible to configure a cache provider using a specific connection/bucket/collection
 ```xml
-<!--   {# application/config/doctrine_cache.xml #} -->
+<!-- app/config/doctrine_cache.xml -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
-<srv:services>
-    <srv:service id="my_riak_connection_service" class="Riak\Connection">
-        <!-- ... -->
-    </srv:service>
+<srv:container>
+    <srv:services>
+        <srv:service id="my_riak_connection_service" class="Riak\Connection">
+            <!-- ... -->
+        </srv:service>
 
-    <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
-        <!-- ... -->
-    </srv:service>
+        <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
+            <!-- ... -->
+        </srv:service>
 
-    <srv:service id="my_memcached_connection_service" class="Memcached">
-        <!-- ... -->
-    </srv:service>
- </srv:services>
+        <srv:service id="my_memcached_connection_service" class="Memcached">
+            <!-- ... -->
+        </srv:service>
+     </srv:services>
 
-<doctrine-cache>
-     <provider  name="service_bucket_riak_provider">
-         <riak bucket-id="my_riak_bucket_service"/>
-     </provider>
+    <doctrine-cache>
+         <provider  name="service_bucket_riak_provider">
+             <riak bucket-id="my_riak_bucket_service"/>
+         </provider>
 
-     <provider name="service_connection_riak_provider">
-         <riak connection-id="my_riak_connection_service">
-             <bucket-name>my_bucket_name</bucket-name>
-         </riak>
-     </provider>
+         <provider name="service_connection_riak_provider">
+             <riak connection-id="my_riak_connection_service">
+                 <bucket-name>my_bucket_name</bucket-name>
+             </riak>
+         </provider>
 
-     <provider name="service_connection_memcached_provider">
-         <memcached connection-id="my_memcached_connection_service"/>
-     </provider>
-</doctrine-cache>
+         <provider name="service_connection_memcached_provider">
+             <memcached connection-id="my_memcached_connection_service"/>
+         </provider>
+    </doctrine-cache>
+</srv:container>
 ```
 
 ```yml
-# {# application/config/doctrine_cache.yml #}
+# app/config/doctrine_cache.yml
 
 services:
     my_riak_connection_service:
@@ -288,17 +323,25 @@ doctrine_cache:
 
 ## Symfony acl cache
 ```xml
-<!--   {# application/config/doctrine_cache.xml #} -->
+<!-- app/config/doctrine_cache.xml -->
+<?xml version="1.0" encoding="UTF-8" ?>
+<dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srv="http://symfony.com/schema/dic/services"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
-<doctrine-cache>
-    <acl-cache id="doctrine_cache.providers.acl_apc_provider"/>
+<srv:container>
+    <doctrine-cache>
+        <acl-cache id="doctrine_cache.providers.acl_apc_provider"/>
 
-    <provider name="acl_apc_provider" type="apc"/>
-</doctrine-cache>
+        <provider name="acl_apc_provider" type="apc"/>
+    </doctrine-cache>
+</srv:container>
 ```
 
 ```yml
-# {# application/config/doctrine_cache.yml #}
+# app/config/doctrine_cache.yml
 
 doctrine_cache:
     acl_cache:
@@ -321,9 +364,23 @@ $aclCache = $this->container->get('security.acl.cache');
 
 #### apc
 #### array
-#### xcache
-#### wincache
-#### zenddata
+#### chain
+    - providers - List of cache providers
+#### couchbase
+    - connection_id - Couchbase connection service id
+    - hostnames     - couchbase hostname list
+    - bucket_name   - couchbase bucket name
+    - username      - couchbase username
+    - password      - couchbase password
+#### file_system
+    - extension    - file extension
+    - directory    - cache directory
+#### mongodb
+    - connection_id     - MongoClient service id
+    - collection_id     - MongoCollection service id
+    - server            - mongodb server uri
+    - database_name     - mongodb database name
+    - collection_name   - mongodb collection name
 #### memcache
     - connection_id - Memcache connection service id
     - servers       - Server list
@@ -336,27 +393,13 @@ $aclCache = $this->container->get('security.acl.cache');
         - server
             - host - memcached host
             - port - memcached port
+#### php_file
+    - extension    - file extension
+    - directory    - cache directory
 #### redis
     - connection_id - Redis connection service id
     - host          - redis host
     - port          - redis port
-#### couchbase
-    - hostnames    - couchbase hostname list
-    - bucket_name  - couchbase bucket name
-    - username     - couchbase username
-    - password     - couchbase password
-#### php_file
-    - extension    - file extension
-    - directory    - cache directory
-#### file_system
-    - extension    - file extension
-    - directory    - cache directory
-#### mongodb
-    - connection_id     - MongoClient service id
-    - collection_id     - MongoCollection service id
-    - server            - mongodb server uri
-    - database_name     - mongodb database name
-    - collection_name   - mongodb collection name
 #### riak
     - connection_id                 - Riak\Connection service id
     - bucket_id                     - Riak\Bucket service id
@@ -366,6 +409,13 @@ $aclCache = $this->container->get('security.acl.cache');
     - bucket_property_list          - riak bucket configuration (property list)
         - allow_multiple: false     - riak bucket allow multiple configuration
         - n_value: 1                - riak bucket n-value configuration
-
+#### sqlite3
+    - connection_id - SQLite3 connection service id
+    - file_name     - SQLite3 database file name
+    - table_name    - Cache table name
+#### void
+#### xcache
+#### wincache
+#### zenddata
 
 Check the [doctrine-cache documentation Page](http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html) for a better understanding.

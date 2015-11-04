@@ -1,13 +1,14 @@
 <?xml version="1.0" ?>
-<srv:container xmlns="http://doctrine-project.org/schemas"
+<srv:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+                        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
      <doctrine-cache>
         <provider name="basic_apc_provider"         type="apc"/>
         <provider name="basic_array_provider"       type="array"/>
+        <provider name="basic_void_provider"        type="void"/>
         <provider name="basic_xcache_provider"      type="xcache"/>
         <provider name="basic_wincache_provider"    type="wincache"/>
         <provider name="basic_zenddata_provider"    type="zenddata"/>
@@ -18,6 +19,9 @@
         </provider>
         <provider name="basic_array_provider2">
             <array/>
+        </provider>
+        <provider name="basic_void_provider2">
+            <void/>
         </provider>
         <provider name="basic_xcache_provider2">
             <xcache/>

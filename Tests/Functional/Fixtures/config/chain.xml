@@ -6,10 +6,15 @@
                         http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
     <doctrine-cache>
-        <provider name="my_phpfile_cache">
-             <php-file extension="phpc">
-                 <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
-             </php-file>
-         </provider>
+        <provider name="my_array_cache" type="array" />
+
+        <provider name="my_second_array_cache" type="array" />
+
+        <provider name="my_chain_cache">
+            <chain>
+          	    <provider>my_array_cache</provider>
+          	    <provider>my_second_array_cache</provider>
+            </chain>
+        </provider>
     </doctrine-cache>
 </srv:container>

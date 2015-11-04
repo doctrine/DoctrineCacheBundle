@@ -16,21 +16,22 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Couchbase definition.
+ * Sqlite3 definition.
  *
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
+ * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
-class CouchbaseDefinition extends CacheDefinition
+class Sqlite3Definition extends CacheDefinition
 {
     /**
      * {@inheritDoc}
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $couchbaseConf = $config['couchbase'];
-        $connRef       = $this->getConnectionReference($name, $couchbaseConf, $container);
+        $sqlite3Conf   = $config['sqlite3'];
+        $tableName     = $sqlite3Conf['table_name'];
+        $connectionRef = $this->getConnectionReference($name, $sqlite3Conf, $container);
 
-        $service->addMethodCall('setCouchbase', array($connRef));
+        $service->setArguments(array($connectionRef, $tableName));
     }
 
     /**
@@ -46,13 +47,10 @@ class CouchbaseDefinition extends CacheDefinition
             return new Reference($config['connection_id']);
         }
 
-        $host      = $config['hostnames'];
-        $user      = $config['username'];
-        $pass      = $config['password'];
-        $bucket    = $config['bucket_name'];
-        $connClass = '%doctrine_cache.couchbase.connection.class%';
-        $connId    = sprintf('doctrine_cache.services.%s_couchbase.connection', $name);
-        $connDef   = new Definition($connClass, array($host, $user, $pass, $bucket));
+        $fileName  = $config['file_name'];
+        $connClass = '%doctrine_cache.sqlite3.connection.class%';
+        $connId    = sprintf('doctrine_cache.services.%s.connection', $name);
+        $connDef   = new Definition($connClass, array($fileName, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE));
 
         $connDef->setPublic(false);
         $container->setDefinition($connId, $connDef);

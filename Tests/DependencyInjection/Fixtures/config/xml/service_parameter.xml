@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<srv:container xmlns="http://doctrine-project.org/schemas"
+<srv:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:srv="http://symfony.com/schema/dic/services"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
-                        http://doctrine-project.org/schemas http://doctrine-project.org/schemas/doctrine_cache-1.0.xsd">
+                        http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
      <srv:services>
         <srv:service id="my_riak_connection_service" class="%doctrine_cache.riak.connection.class%">
@@ -14,6 +14,10 @@
         <srv:service id="my_riak_bucket_service" class="%doctrine_cache.riak.bucket.class%">
             <srv:argument type="service" id="my_riak_connection_service"/>
             <srv:argument>my_service_bucket_name</srv:argument>
+        </srv:service>
+
+        <srv:service id="my_sqlite3_connection_service" class="%doctrine_cache.sqlite3.connection.class%">
+            <srv:argument>cache.db</srv:argument>
         </srv:service>
 
         <srv:service id="my_memcached_connection_service" class="%doctrine_cache.memcached.connection.class%">
@@ -41,7 +45,7 @@
             <srv:argument>localhost:27017</srv:argument>
         </srv:service>
 
-        <srv:service id="my_mongodb_collection_service" class="%doctrine_cache.mongodb.collection.class%" factory-service="my_mongodb_connection_service" factory-method="selectCollection">
+        <srv:service id="my_mongodb_collection_service" class="%doctrine_cache.mongodb.collection.class%" abstract="true">
             <srv:argument>my_database</srv:argument>
             <srv:argument>my_cache_collection</srv:argument>
         </srv:service>
@@ -74,6 +78,10 @@
 
          <provider name="service_collection_mongodb_provider">
              <mongodb collection-id="my_mongodb_collection_service"/>
+         </provider>
+
+         <provider name="service_connection_sqlite3_provider">
+             <sqlite3 connection-id="my_sqlite3_connection_service" table-name="my_table"/>
          </provider>
 
          <provider name="service_connection_mongodb_provider">

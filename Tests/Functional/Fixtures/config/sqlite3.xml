@@ -6,10 +6,10 @@
                         http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
     <doctrine-cache>
-        <provider name="my_phpfile_cache">
-             <php-file extension="phpc">
-                 <directory>%kernel.cache_dir%/configurable-phpfile-provider</directory>
-             </php-file>
+        <provider name="my_sqlite3_cache">
+             <sqlite3 file-name="cache.db">
+                 <table-name>my_table</table-name>
+             </sqlite3>
          </provider>
     </doctrine-cache>
 </srv:container>

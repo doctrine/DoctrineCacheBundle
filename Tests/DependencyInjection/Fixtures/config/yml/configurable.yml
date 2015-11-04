@@ -1,5 +1,16 @@
 doctrine_cache:
     providers:
+        configurable_apc_provider:
+            apc: ~
+
+        configurable_array_provider:
+            array: ~
+
+        configurable_chain_provider:
+            chain:
+                providers:
+                    - configurable_array_provider
+                    - configurable_apc_provider
 
         configurable_memcached_provider:
             memcached:
@@ -49,3 +60,8 @@ doctrine_cache:
                 bucket_property_list:
                     allow_multiple: false
                     n_value: 1
+
+        configurable_sqlite3_provider:
+            sqlite3:
+                file_name: cache.db
+                table_name: my_table
