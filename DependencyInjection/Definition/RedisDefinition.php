@@ -51,9 +51,14 @@ class RedisDefinition extends CacheDefinition
         $connClass  = '%doctrine_cache.redis.connection.class%';
         $connId     = sprintf('doctrine_cache.services.%s_redis.connection', $name);
         $connDef    = new Definition($connClass);
+        $connParams = array($host, $port);
+
+        if (isset($config['timeout'])) {
+            $connParams[] = $config['timeout'];
+        }
 
         $connDef->setPublic(false);
-        $connDef->addMethodCall('connect', array($host, $port));
+        $connDef->addMethodCall('connect', $connParams);
 
         if (isset($config['password'])) {
             $password = $config['password'];

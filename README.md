@@ -403,6 +403,7 @@ $aclCache = $this->container->get('security.acl.cache');
     - host          - redis host
     - port          - redis port
     - password      - redis password
+    - timeout       - redis connection timeout
     - database      - redis database selection (integer)
 #### riak
     - connection_id                 - Riak\Connection service id
