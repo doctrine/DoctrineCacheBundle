@@ -33,7 +33,7 @@
     ],
     "require": {
         "php":                     ">=5.3.2",
-        "symfony/security-acl":    "~2.7|~3.0",
+        "symfony/security-acl":    "~2.3|~3.0",
         "symfony/doctrine-bridge": "~2.2|~3.0",
         "doctrine/inflector":      "~1.0",
         "doctrine/cache":          "^1.4.2"
