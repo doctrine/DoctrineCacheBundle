@@ -77,7 +77,7 @@ class DoctrineCacheExtension extends Extension
             return;
         }
 
-        if (!interface_exists('Symfony\Component\Security\Acl\Model\AclInterface')) {
+        if ( ! interface_exists('Symfony\Component\Security\Acl\Model\AclInterface')) {
             throw new \LogicException('You must install symfony/security-acl in order to use the acl_cache functionality.');
         }
 
