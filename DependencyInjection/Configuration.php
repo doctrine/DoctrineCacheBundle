@@ -371,6 +371,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
                 ->scalarNode('password')->defaultNull()->end()
+                ->scalarNode('timeout')->defaultNull()->end()
                 ->scalarNode('database')->defaultNull()->end()
             ->end()
         ;
@@ -504,6 +505,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
                 ->scalarNode('extension')->defaultNull()->end()
+                ->integerNode('umask')->defaultValue(0002)->end()
             ->end()
         ;
 
@@ -525,6 +527,7 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/file_system')->end()
                 ->scalarNode('extension')->defaultNull()->end()
+                ->integerNode('umask')->defaultValue(0002)->end()
             ->end()
         ;
 

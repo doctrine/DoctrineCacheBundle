@@ -11,7 +11,7 @@
          colors="true">
 
     <testsuites>
-        <testsuite name="Symfony2 Bundle for Doctrine Cache">
+        <testsuite name="Symfony Bundle for Doctrine Cache">
             <directory>./Tests</directory>
         </testsuite>
     </testsuites>

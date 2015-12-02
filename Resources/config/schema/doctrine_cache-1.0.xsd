@@ -89,9 +89,16 @@
         <xsd:sequence>
             <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="password" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="timeout" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="database" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
         <xsd:attribute name="host" type="xsd:string"/>
         <xsd:attribute name="port" type="xsd:string"/>
+        <xsd:attribute name="password" type="xsd:string" />
+        <xsd:attribute name="timeout" type="xsd:unsignedInt" />
+        <xsd:attribute name="database" type="xsd:unsignedInt" />
     </xsd:complexType>
 
     <!-- predis -->
@@ -178,9 +185,11 @@
         <xsd:sequence>
             <xsd:element name="extension" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="directory" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="umask" type="xsd:integer" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
         <xsd:attribute name="extension" type="xsd:string"/>
         <xsd:attribute name="directory" type="xsd:string"/>
+        <xsd:attribute name="umask" type="xsd:integer"/>
     </xsd:complexType>
 
     <!-- php-file -->
@@ -188,9 +197,11 @@
         <xsd:sequence>
             <xsd:element name="extension" type="xsd:string" minOccurs="0" maxOccurs="1" />
             <xsd:element name="directory" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="umask" type="xsd:integer" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
         <xsd:attribute name="extension" type="xsd:string"/>
         <xsd:attribute name="directory" type="xsd:string"/>
+        <xsd:attribute name="umask" type="xsd:integer"/>
     </xsd:complexType>
 
     <!-- sqlite3 -->

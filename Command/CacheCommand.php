@@ -48,7 +48,7 @@ abstract class CacheCommand extends Command implements ContainerAwareInterface
     }
 
     /**
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     protected function getContainer()
     {

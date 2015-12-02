@@ -80,10 +80,12 @@ class SymfonyBridgeAdapter
      */
     public function loadCacheDriver($cacheName, $objectManagerName, array $cacheDriver, ContainerBuilder $container)
     {
-        $id   = $this->getObjectManagerElementName($objectManagerName . '_' . $cacheName);
-        $host = isset($cacheDriver['host']) ? $cacheDriver['host'] : null;
-        $port = isset($cacheDriver['port']) ? $cacheDriver['port'] : null;
-        $type = $cacheDriver['type'];
+        $id       = $this->getObjectManagerElementName($objectManagerName . '_' . $cacheName);
+        $host     = isset($cacheDriver['host']) ? $cacheDriver['host'] : null;
+        $port     = isset($cacheDriver['port']) ? $cacheDriver['port'] : null;
+        $password = isset($cacheDriver['password']) ? $cacheDriver['password'] : null;
+        $database = isset($cacheDriver['database']) ? $cacheDriver['database'] : null;
+        $type     = $cacheDriver['type'];
 
         if ($type == 'service') {
             $container->setAlias($id, new Alias($cacheDriver['id'], false));
@@ -121,8 +123,8 @@ class SymfonyBridgeAdapter
             $config[$type] = array(
                 'host' => !empty($host) ? $host : 'localhost',
                 'port' => !empty($port) ? $port : 6379,
-                'password' => null,
-                'database' => null
+                'password' => !empty($password) ? $password : null,
+                'database' => !empty($database) ? $database : 0
             );
         }
 

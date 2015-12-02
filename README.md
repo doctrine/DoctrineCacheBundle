@@ -1,7 +1,7 @@
 DoctrineCacheBundle
 ===================
 
-Symfony2 Bundle for Doctrine Cache
+Symfony Bundle for Doctrine Cache
 
 Master: [![Build Status](https://secure.travis-ci.org/doctrine/DoctrineCacheBundle.png?branch=master)](http://travis-ci.org/doctrine/DoctrineCacheBundle)
 
@@ -365,7 +365,7 @@ $aclCache = $this->container->get('security.acl.cache');
 #### apc
 #### array
 #### chain
-    - providers - List of cache providers
+    - providers - List of service ids (`doctrine_cache.providers.` can be skipped) of doctrine cache providers. Put fastest providers first (e.g. array cache)
 #### couchbase
     - connection_id - Couchbase connection service id
     - hostnames     - couchbase hostname list
@@ -375,6 +375,7 @@ $aclCache = $this->container->get('security.acl.cache');
 #### file_system
     - extension    - file extension
     - directory    - cache directory
+    - umask        - umask to revoke permissions
 #### mongodb
     - connection_id     - MongoClient service id
     - collection_id     - MongoCollection service id
@@ -396,10 +397,14 @@ $aclCache = $this->container->get('security.acl.cache');
 #### php_file
     - extension    - file extension
     - directory    - cache directory
+    - umask        - umask to revoke permissions
 #### redis
     - connection_id - Redis connection service id
     - host          - redis host
     - port          - redis port
+    - password      - redis password
+    - timeout       - redis connection timeout
+    - database      - redis database selection (integer)
 #### predis
     - parameters - array of parameters: {'schema': 'tcp', 'host': '10.0.0.1', 'port': '6379'}
     - options    - array of predis client options
