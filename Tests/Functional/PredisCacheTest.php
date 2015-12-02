@@ -21,8 +21,11 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
 /**
+ * Predis Driver Test
+ *
  * @group Functional
  * @group Predis
+ * @author Ivo Bathke <ivo.bathke@gmail.com>
  */
 class PredisCacheTest extends BaseCacheTest
 {
@@ -33,7 +36,7 @@ class PredisCacheTest extends BaseCacheTest
     {
         parent::setUp();
 
-        if (!class_exists('Doctrine\Common\Cache\PredisCache')) {
+        if ( ! class_exists('Doctrine\Common\Cache\PredisCache')) {
             $this->markTestSkipped('The ' . __CLASS__ .' requires the use of PredisCache available in doctrine/cache since 1.4');
         }
     }
