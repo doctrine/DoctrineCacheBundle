@@ -104,14 +104,8 @@
     <!-- predis -->
     <xsd:complexType name="predis_provider">
         <xsd:sequence>
-            <xsd:element name="parameters" type="predis_parameters" minOccurs="0" maxOccurs="0" />
+            <xsd:element name="parameters" type="xsd:anyType" minOccurs="0" maxOccurs="0" />
             <xsd:element name="options" type="predis_options" minOccurs="0" maxOccurs="0" />
-        </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:complexType name="predis_parameters">
-        <xsd:sequence>
-            <xsd:any minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 

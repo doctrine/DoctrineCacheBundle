@@ -406,7 +406,8 @@ $aclCache = $this->container->get('security.acl.cache');
     - timeout       - redis connection timeout
     - database      - redis database selection (integer)
 #### predis
-    - parameters - array of parameters: {'schema': 'tcp', 'host': '10.0.0.1', 'port': '6379'}
+    - client_id: - provide a client service id to skip the client creation by the bundle (optional)
+    - parameters - predis parameters, can be a dsn string, an array, nested array for clusters, example: {'scheme': 'tcp', 'host': '10.0.0.1', 'port': '6379'}
     - options    - array of predis client options
 #### riak
     - connection_id                 - Riak\Connection service id
