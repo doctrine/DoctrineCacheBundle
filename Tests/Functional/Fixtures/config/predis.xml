@@ -6,14 +6,14 @@
                         http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
     <doctrine-cache>
-        <provider name="my_riak_cache">
-            <riak host="localhost" port="8087">
-                <bucket-name>my_bucket</bucket-name>
-                <bucket-property-list>
-                    <allow-multiple>false</allow-multiple>
-                    <n-value>1</n-value>
-                </bucket-property-list>
-            </riak>
+        <provider name="my_predis_cache">
+            <predis scheme="tcp" host="127.0.0.1" port="6379">
+                <database>2</database>
+                <timeout>10</timeout>
+                <options>
+                    <prefix>test_</prefix>
+                </options>
+            </predis>
         </provider>
     </doctrine-cache>
 </srv:container>

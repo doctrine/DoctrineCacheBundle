@@ -405,6 +405,15 @@ $aclCache = $this->container->get('security.acl.cache');
     - password      - redis password
     - timeout       - redis connection timeout
     - database      - redis database selection (integer)
+#### predis
+    - client_id: - provide a client service id to skip the client creation by the bundle (optional, should be used for advanced configuration)  
+    - scheme     - connection scheme (tcp)
+    - host       - redis host
+    - port       - redis port
+    - password   - redis password
+    - timeout    - redis connection timeout
+    - database   - redis database selection (integer)
+    - options    - array of predis client options
 #### riak
     - connection_id                 - Riak\Connection service id
     - bucket_id                     - Riak\Bucket service id

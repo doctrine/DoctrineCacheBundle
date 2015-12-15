@@ -190,6 +190,7 @@ class Configuration implements ConfigurationInterface
                             ->append($this->addPhpFileNode())
                             ->append($this->addMongoNode())
                             ->append($this->addRedisNode())
+                            ->append($this->addPredisNode())
                             ->append($this->addRiakNode())
                             ->append($this->addSqlite3Node())
                         ->end()
@@ -372,6 +373,36 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('password')->defaultNull()->end()
                 ->scalarNode('timeout')->defaultNull()->end()
                 ->scalarNode('database')->defaultNull()->end()
+            ->end()
+        ;
+
+        return $node;
+    }
+
+    /**
+     * Build predis node configuration definition
+     *
+     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     */
+    private function addPredisNode()
+    {
+        $builder = new TreeBuilder();
+        $node    = $builder->root('predis');
+
+        $node
+            ->addDefaultsIfNotSet()
+            ->children()
+                ->scalarNode('client_id')->defaultNull()->end()
+                ->scalarNode('scheme')->defaultValue('tcp')->end()
+                ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
+                ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
+                ->scalarNode('password')->defaultNull()->end()
+                ->scalarNode('timeout')->defaultNull()->end()
+                ->scalarNode('database')->defaultNull()->end()
+                ->arrayNode('options')
+                  ->useAttributeAsKey('name')
+                  ->prototype('scalar')->end()
+                ->end()
             ->end()
         ;
 

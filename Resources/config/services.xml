@@ -25,6 +25,10 @@
         <parameter key="doctrine_cache.mongodb.collection.class">MongoCollection</parameter>
         <parameter key="doctrine_cache.mongodb.connection.class">MongoClient</parameter>
         <parameter key="doctrine_cache.mongodb.server">localhost:27017</parameter>
+        <parameter key="doctrine_cache.predis.client.class">Predis\Client</parameter>
+        <parameter key="doctrine_cache.predis.scheme">tcp</parameter>
+        <parameter key="doctrine_cache.predis.host">localhost</parameter>
+        <parameter key="doctrine_cache.predis.port">6379</parameter>
         <parameter key="doctrine_cache.redis.class">Doctrine\Common\Cache\RedisCache</parameter>
         <parameter key="doctrine_cache.redis.connection.class">Redis</parameter>
         <parameter key="doctrine_cache.redis.host">localhost</parameter>
@@ -55,6 +59,7 @@
         <service id="doctrine_cache.abstract.memcached" class="%doctrine_cache.memcached.class%" abstract="true" />
         <service id="doctrine_cache.abstract.mongodb" class="%doctrine_cache.mongodb.class%" abstract="true" />
         <service id="doctrine_cache.abstract.redis" class="%doctrine_cache.redis.class%" abstract="true" />
+        <service id="doctrine_cache.abstract.predis" class="Doctrine\Common\Cache\PredisCache" abstract="true" />
         <service id="doctrine_cache.abstract.riak" class="%doctrine_cache.riak.class%" abstract="true" />
         <service id="doctrine_cache.abstract.sqlite3" class="%doctrine_cache.sqlite3.class%" abstract="true" />
         <service id="doctrine_cache.abstract.void" class="%doctrine_cache.void.class%" abstract="true" />

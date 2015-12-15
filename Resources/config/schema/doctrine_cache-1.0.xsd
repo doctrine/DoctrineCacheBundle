@@ -36,6 +36,7 @@
                 <xsd:element name="mongodb"     type="mongodb_provider"/>
                 <xsd:element name="php-file"    type="phpfile_provider"/>
                 <xsd:element name="redis"       type="redis_provider"/>
+                <xsd:element name="predis"      type="predis_provider"/>
                 <xsd:element name="riak"        type="riak_provider"/>
                 <xsd:element name="sqlite3"     type="sqlite3_provider"/>
             </xsd:choice>
@@ -98,6 +99,31 @@
         <xsd:attribute name="password" type="xsd:string" />
         <xsd:attribute name="timeout" type="xsd:unsignedInt" />
         <xsd:attribute name="database" type="xsd:unsignedInt" />
+    </xsd:complexType>
+
+    <!-- predis -->
+    <xsd:complexType name="predis_provider">
+        <xsd:sequence>
+            <xsd:element name="scheme" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="password" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="timeout" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="database" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="options" type="predis_options" minOccurs="0" maxOccurs="0" />
+        </xsd:sequence>
+        <xsd:attribute name="scheme" type="xsd:string"/>
+        <xsd:attribute name="host" type="xsd:string"/>
+        <xsd:attribute name="port" type="xsd:string"/>
+        <xsd:attribute name="password" type="xsd:string" />
+        <xsd:attribute name="timeout" type="xsd:unsignedInt" />
+        <xsd:attribute name="database" type="xsd:unsignedInt" />
+    </xsd:complexType>
+
+    <xsd:complexType name="predis_options">
+        <xsd:sequence>
+            <xsd:any minOccurs="0"/>
+        </xsd:sequence>
     </xsd:complexType>
 
     <!-- couchbase -->
