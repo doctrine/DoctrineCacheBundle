@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Predis definition.
  *
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
+ * @author Ivo Bathke <ivo.bathke@gmail.com>
  */
 class PredisDefinition extends CacheDefinition
 {
@@ -28,7 +28,7 @@ class PredisDefinition extends CacheDefinition
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
         $redisConf = $config['predis'];
-        $connRef   = $this->getConnectionReference($name, $redisConf, $container);
+        $connRef = $this->getConnectionReference($name, $redisConf, $container);
         $service->addArgument($connRef);
     }
 
@@ -45,16 +45,33 @@ class PredisDefinition extends CacheDefinition
             return new Reference($config['client_id']);
         }
 
-        $parameters = $config['parameters'];
+        $parameters = array(
+            'scheme' => $config['scheme'],
+            'host'   => $config['host'],
+            'port'   => $config['port'],
+        );
+
+        if ($config['password']) {
+            $parameters['password'] = $config['password'];
+        }
+
+        if ($config['timeout']) {
+            $parameters['timeout'] = $config['timeout'];
+        }
+
+        if ($config['database']) {
+            $parameters['database'] = $config['database'];
+        }
 
         $options = null;
 
         if (isset($config['options'])) {
             $options = $config['options'];
         }
+
         $clientClass = '%doctrine_cache.predis.client.class%';
-        $clientId    = sprintf('doctrine_cache.services.%s_predis.client', $name);
-        $clientDef   = new Definition($clientClass);
+        $clientId = sprintf('doctrine_cache.services.%s_predis.client', $name);
+        $clientDef = new Definition($clientClass);
 
         $clientDef->addArgument($parameters);
         $clientDef->addArgument($options);

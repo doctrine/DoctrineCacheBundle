@@ -7,14 +7,9 @@
 
     <doctrine-cache>
         <provider name="my_predis_cache">
-            <predis>
-                <parameters>
-                    <scheme>tcp</scheme>
-                    <host>127.0.0.1</host>
-                    <port>6379</port>
-                    <database>2</database>
-                    <timeout>10</timeout>
-                </parameters>
+            <predis scheme="tcp" host="127.0.0.1" port="6379">
+                <database>2</database>
+                <timeout>10</timeout>
                 <options>
                     <prefix>test_</prefix>
                 </options>

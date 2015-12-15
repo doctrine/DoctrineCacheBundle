@@ -104,9 +104,20 @@
     <!-- predis -->
     <xsd:complexType name="predis_provider">
         <xsd:sequence>
-            <xsd:element name="parameters" type="xsd:anyType" minOccurs="0" maxOccurs="0" />
+            <xsd:element name="scheme" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="host" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="port" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="password" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="timeout" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="database" type="xsd:unsignedInt" minOccurs="0" maxOccurs="1" />
             <xsd:element name="options" type="predis_options" minOccurs="0" maxOccurs="0" />
         </xsd:sequence>
+        <xsd:attribute name="scheme" type="xsd:string"/>
+        <xsd:attribute name="host" type="xsd:string"/>
+        <xsd:attribute name="port" type="xsd:string"/>
+        <xsd:attribute name="password" type="xsd:string" />
+        <xsd:attribute name="timeout" type="xsd:unsignedInt" />
+        <xsd:attribute name="database" type="xsd:unsignedInt" />
     </xsd:complexType>
 
     <xsd:complexType name="predis_options">
