@@ -406,14 +406,6 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
-//        profile: which profile to use in order to match a specific version of Redis.
-//    prefix: a prefix string that is automatically applied to keys found in commands.
-//    exceptions: whether the client should throw or return responses upon Redis errors.
-//    connections: connection backends or a connection factory to be used by the client.
-//    cluster: which backend to use for clustering (predis, redis or custom configuration).
-//replication: which backend to use for replication (predis or custom configuration).
-//aggregate: custom connections aggregator (overrides both cluster and replication).
-
         return $node;
     }
 
