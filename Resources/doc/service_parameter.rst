@@ -1,8 +1,8 @@
 Service Parameter
 =================
 
-Is possible to configure a cache provider using a specific connection, bucket
-or collection:
+Cache providers can be also configured using a specific connection, bucket or
+collection. Example:
 
 .. configuration-block::
 

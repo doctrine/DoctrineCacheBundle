@@ -8,8 +8,6 @@ systems through the `Doctrine Cache`_ library.
 
     installation
     usage
-    configuration
-    aliases
     custom_providers
     service_parameter
     acl_cache

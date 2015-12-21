@@ -2,7 +2,7 @@ Usage
 =====
 
 First, configure your cache providers under the ``doctrine_cache`` configuration
-option:
+option. Example:
 
 .. configuration-block::
 
@@ -39,8 +39,57 @@ option:
             </doctrine-cache:doctrine-cache>
         </container>
 
-Then, use ``doctrine_cache.providers.{provider_name}`` to inject each cache
-provider into the desired service::
+Then, use the newly created ``doctrine_cache.providers.{provider_name}`` container
+services anywhere in your application::
 
     $apcCache = $this->container->get('doctrine_cache.providers.my_apc_cache');
     $arrayCache = $this->container->get('doctrine_cache.providers.my_array_cache');
+
+Service Aliases
+---------------
+
+In order to make your code more concise, you can define aliases for these services
+thanks to the ``aliases`` configuration option. Example:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # app/config/config.yml
+        doctrine_cache:
+            aliases:
+                cache_apc: my_apc_cache
+
+            providers:
+                my_apc_cache:
+                    type: apc
+                    namespace: my_apc_cache_ns
+                    aliases:
+                        - apc_cache
+
+    .. code-block:: xml
+
+        <!-- app/config/config.xml -->
+        <?xml version="1.0" encoding="UTF-8" ?>
+        <dic:container xmlns="http://doctrine-project.org/schemas/symfony-dic/cache"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns:srv="http://symfony.com/schema/dic/services"
+            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
+                http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
+
+        <srv:container>
+            <doctrine-cache>
+                <alias key="cache_apc">my_apc_cache</alias>
+
+                <provider name="my_apc_cache">
+                    <type>apc</type>
+                    <namespace>my_apc_cache_ns</namespace>
+                    <alias>apc_cache</alias>
+                </provider>
+            </doctrine-cache>
+        </srv:container>
+
+Now you can use the short ``apc_cache`` alias to get the provider called
+``my_apc_cache``, instead of using ``doctrine_cache.providers.my_apc_cache``::
+
+    $apcCache = $this->container->get('apc_cache');
