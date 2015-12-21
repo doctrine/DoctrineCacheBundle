@@ -28,5 +28,5 @@ Master: [![Coverage Status](https://coveralls.io/repos/doctrine/DoctrineCacheBun
     }
     ```
 
-Read the [documentation](Resources/doc/index.rst) to elarn how to configure and
+Read the [documentation](Resources/doc/index.rst) to learn how to configure and
 use your own cache providers.
