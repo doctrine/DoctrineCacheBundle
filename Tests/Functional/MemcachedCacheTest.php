@@ -20,7 +20,6 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
-use Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Fixtures\Memcached;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -53,7 +52,7 @@ class MemcachedCacheTest extends BaseCacheTest
 
     protected function overrideContainer(ContainerBuilder $container)
     {
-        $container->setParameter('doctrine_cache.memcached.connection.class', Memcached::class);
+        $container->setParameter('doctrine_cache.memcached.connection.class', 'Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Fixtures\Memcached');
     }
 
     /**
