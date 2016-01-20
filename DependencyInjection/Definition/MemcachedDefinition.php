@@ -49,6 +49,9 @@ class MemcachedDefinition extends CacheDefinition
         $connClass  = '%doctrine_cache.memcached.connection.class%';
         $connId     = sprintf('doctrine_cache.services.%s.connection', $name);
         $connDef    = new Definition($connClass);
+        if (isset($config['persistent_id']) === true) {
+            $connDef->addArgument($config['persistent_id']);
+        }
 
         foreach ($config['servers'] as $host => $server) {
             $connDef->addMethodCall('addServer', array($host, $server['port']));

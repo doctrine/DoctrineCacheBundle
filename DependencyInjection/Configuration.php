@@ -327,6 +327,7 @@ class Configuration implements ConfigurationInterface
             ->fixXmlConfig('server')
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
+                ->scalarNode('persistent_id')->defaultNull()->end()
                 ->arrayNode('servers')
                 ->useAttributeAsKey('host')
                     ->prototype('array')
