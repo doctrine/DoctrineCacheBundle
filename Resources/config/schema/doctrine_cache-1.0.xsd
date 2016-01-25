@@ -52,6 +52,7 @@
             <xsd:element name="server" type="memcached_server" minOccurs="1" maxOccurs="unbounded" />
             <xsd:element name="connection-id" type="xsd:string" minOccurs="0" maxOccurs="1" />
         </xsd:sequence>
+        <xsd:attribute name="persistent-id" type="xsd:string"/>
         <xsd:attribute name="connection-id" type="xsd:string"/>
     </xsd:complexType>
 
