@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="doctrine_cache.apc.class">Doctrine\Common\Cache\ApcCache</parameter>
+        <parameter key="doctrine_cache.apcu.class">Doctrine\Common\Cache\ApcuCache</parameter>
         <parameter key="doctrine_cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
         <parameter key="doctrine_cache.chain.class">Doctrine\Common\Cache\ChainCache</parameter>
         <parameter key="doctrine_cache.couchbase.class">Doctrine\Common\Cache\CouchbaseCache</parameter>
@@ -50,6 +51,7 @@
 
     <services>
         <service id="doctrine_cache.abstract.apc" class="%doctrine_cache.apc.class%" abstract="true" />
+        <service id="doctrine_cache.abstract.apcu" class="%doctrine_cache.apcu.class%" abstract="true" />
         <service id="doctrine_cache.abstract.array" class="%doctrine_cache.array.class%" abstract="true" />
         <service id="doctrine_cache.abstract.chain" class="%doctrine_cache.chain.class%" abstract="true" />
         <service id="doctrine_cache.abstract.couchbase" class="%doctrine_cache.couchbase.class%" abstract="true" />

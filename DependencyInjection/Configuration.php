@@ -176,6 +176,7 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('namespace')->defaultNull()->end()
                             ->scalarNode('type')->defaultNull()->end()
                             ->append($this->addBasicProviderNode('apc'))
+                            ->append($this->addBasicProviderNode('apcu'))
                             ->append($this->addBasicProviderNode('array'))
                             ->append($this->addBasicProviderNode('void'))
                             ->append($this->addBasicProviderNode('wincache'))
