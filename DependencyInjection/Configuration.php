@@ -285,6 +285,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('connection_id')->defaultNull()->end()
                 ->arrayNode('servers')
                 ->useAttributeAsKey('host')
+                ->normalizeKeys(false)
                     ->prototype('array')
                         ->beforeNormalization()
                             ->ifTrue(function ($v) {
@@ -330,6 +331,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('persistent_id')->defaultNull()->end()
                 ->arrayNode('servers')
                 ->useAttributeAsKey('host')
+                ->normalizeKeys(false)
                     ->prototype('array')
                         ->beforeNormalization()
                             ->ifTrue(function ($v) {
