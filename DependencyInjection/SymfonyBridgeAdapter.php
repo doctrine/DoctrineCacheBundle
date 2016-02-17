@@ -128,6 +128,17 @@ class SymfonyBridgeAdapter
             );
         }
 
+        if ($type === 'predis') {
+            $config[$type] = array(
+                'scheme' => 'tcp',
+                'host' => !empty($host) ? $host : 'localhost',
+                'port' => !empty($port) ? $port : 6379,
+                'password' => !empty($password) ? $password : null,
+                'database' => !empty($database) ? $database : 0,
+                'timeout' => null,
+            );
+        }
+
         $this->cacheProviderLoader->loadCacheProvider($id, $config, $container);
 
         return $id;
