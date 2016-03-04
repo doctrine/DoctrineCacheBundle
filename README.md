@@ -3,7 +3,7 @@ DoctrineCacheBundle
 
 Symfony Bundle for Doctrine Cache.
 
-Master: [![Build Status](https://secure.travis-ci.org/doctrine/DoctrineCacheBundle.png?branch=master)](http://travis-ci.org/doctrine/DoctrineCacheBundle)
+Master: [![Build Status](https://secure.travis-ci.org/doctrine/DoctrineCacheBundle.svg?branch=master)](https://travis-ci.org/doctrine/DoctrineCacheBundle)
 
 Master: [![Coverage Status](https://coveralls.io/repos/doctrine/DoctrineCacheBundle/badge.png?branch=master)](https://coveralls.io/r/doctrine/DoctrineCacheBundle?branch=master)
 
@@ -28,5 +28,5 @@ Master: [![Coverage Status](https://coveralls.io/repos/doctrine/DoctrineCacheBun
     }
     ```
 
-Read the [documentation](Resources/doc/index.rst) to learn how to configure and
+Read the [documentation](https://symfony.com/doc/current/bundles/DoctrineCacheBundle/index.html) to learn how to configure and
 use your own cache providers.
