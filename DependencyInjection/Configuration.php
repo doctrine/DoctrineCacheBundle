@@ -377,6 +377,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('password')->defaultNull()->end()
                 ->scalarNode('timeout')->defaultNull()->end()
                 ->scalarNode('database')->defaultNull()->end()
+                ->booleanNode('persistent')->defaultFalse()->end()
             ->end()
         ;
 

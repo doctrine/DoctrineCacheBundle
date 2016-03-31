@@ -100,6 +100,7 @@
         <xsd:attribute name="password" type="xsd:string" />
         <xsd:attribute name="timeout" type="xsd:unsignedInt" />
         <xsd:attribute name="database" type="xsd:unsignedInt" />
+        <xsd:attribute name="persistent" type="xsd:boolean" />
     </xsd:complexType>
 
     <!-- predis -->
