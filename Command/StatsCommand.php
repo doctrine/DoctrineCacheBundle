@@ -20,7 +20,7 @@ class StatsCommand extends CacheCommand
     {
         $this->setName('doctrine:cache:stats')
             ->setDescription('Get stats on a given cache provider')
-            ->addArgument('cache-name', InputArgument::REQUIRED, 'Which cache provider to flush?');
+            ->addArgument('cache-name', InputArgument::REQUIRED, 'For which cache provider would you like to get stats?');
     }
 
     /**
