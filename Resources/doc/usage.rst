@@ -79,7 +79,7 @@ thanks to the ``aliases`` configuration option. Example:
 
         <srv:container>
             <doctrine-cache>
-                <alias key="cache_apc">my_apc_cache</alias>
+                <alias key="apc_cache">my_apc_cache</alias>
 
                 <provider name="my_apc_cache">
                     <type>apc</type>
