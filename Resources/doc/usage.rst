@@ -42,8 +42,8 @@ option. Example:
 Then, use the newly created ``doctrine_cache.providers.{provider_name}`` container
 services anywhere in your application::
 
-    $apcCache = $this->container->get('doctrine_cache.providers.my_apc_cache');
-    $arrayCache = $this->container->get('doctrine_cache.providers.my_array_cache');
+    $metadataCache = $this->container->get('doctrine_cache.providers.my_apc_metadata_cache');
+    $queryCache = $this->container->get('doctrine_cache.providers.my_apc_query_cache');
 
 Service Aliases
 ---------------
