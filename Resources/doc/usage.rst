@@ -58,7 +58,7 @@ thanks to the ``aliases`` configuration option. Example:
         # app/config/config.yml
         doctrine_cache:
             aliases:
-                cache_apc: my_apc_cache
+                apc_cache: my_apc_cache
 
             providers:
                 my_apc_cache:
