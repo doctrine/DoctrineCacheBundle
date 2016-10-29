@@ -117,6 +117,7 @@ class Configuration implements ConfigurationInterface
                 $options = reset($params);
                 $conf    = array(
                     'type'            => 'custom_provider',
+                    'namespace'       => $conf['namespace'] ?: null,
                     'custom_provider' => array(
                         'type'      => $conf['type'],
                         'options'   => $options ?: null,
