@@ -114,6 +114,31 @@ class SymfonyBridgeAdpterTest extends TestCase
         $this->assertTrue($container->hasAlias('doctrine.orm.default_metadata_cache'));
     }
 
+    public function testCacheDriverPrefixSeed()
+    {
+        $container   = $this->createServiceContainer();
+        $definition  = new Definition('%doctrine.orm.cache.apc.class%');
+        $cacheDriver = array(
+            'type' => 'apc',
+            'id'   => 'service_driver'
+        );
+
+        $container->setParameter('cache.prefix.seed', 'foo');
+        $container->setDefinition('service_driver', $definition);
+
+        $this->adapter->loadCacheDriver('metadata_cache', 'default', $cacheDriver, $container);
+
+        $service = $container->findDefinition('doctrine.orm.default_metadata_cache');
+
+        $expectedMethodCalls = array(
+            array(
+                'setNamespace',
+                array('sf_orm_default_2eb4176f7637ca5687b4a9530b97e686a1ad6ff953a9e2dbef24e07adf8946d7')
+            )
+        );
+        $this->assertSame($expectedMethodCalls, $service->getMethodCalls());
+    }
+
     /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage "unrecognized_type" is an unrecognized Doctrine cache driver.
