@@ -108,7 +108,7 @@ class SymfonyBridgeAdapter
                 $seed = '.'.$container->getParameterBag()->resolveValue($container->getParameter('cache.prefix.seed'));
             }
 
-            $seed .= '.'.$container->getParameter('kernel.name').'.'.$container->getParameter('kernel.environment').'.'.$container->getParameter('kernel.debug');
+            $seed .= '.'.$container->getParameter('kernel.name').'.'.$container->getParameter('kernel.environment');
             $hash      = hash('sha256', $seed);
             $namespace = 'sf_' . $this->mappingResourceName .'_' . $objectManagerName . '_' . $hash;
 
