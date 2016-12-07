@@ -133,7 +133,7 @@ class SymfonyBridgeAdpterTest extends TestCase
         $expectedMethodCalls = array(
             array(
                 'setNamespace',
-                array('sf_orm_default_2eb4176f7637ca5687b4a9530b97e686a1ad6ff953a9e2dbef24e07adf8946d7')
+                array('sf_orm_default_8c36a4de0535c77272fc7390a992fb8c6da987c3b940b2f466ea2596aa31abfb')
             )
         );
         $this->assertSame($expectedMethodCalls, $service->getMethodCalls());
@@ -158,7 +158,7 @@ class SymfonyBridgeAdpterTest extends TestCase
         $expectedMethodCalls = array(
             array(
                 'setNamespace',
-                array('sf_orm_default_a990b094c7b0795115f73d3f942785108b6a06e84062f6972c49fd86b91c2b84')
+                array('sf_orm_default_b94fa67b19b95498aee2fd6ef50b832b056bd8b4826c3e66209a6e975f48e615')
             )
         );
         $this->assertSame($expectedMethodCalls, $service->getMethodCalls());
