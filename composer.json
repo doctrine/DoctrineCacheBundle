@@ -23,6 +23,10 @@
             "email":    "guilhermeblanco@hotmail.com"
         },
         {
+            "name":     "Kinn Coelho Julião",
+            "email":    "kinncj@php.net"
+        },
+        {
             "name":     "Symfony Community",
             "homepage": "http://symfony.com/contributors"
         },
