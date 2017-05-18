@@ -20,7 +20,6 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Doctrine\Common\Inflector\Inflector;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -68,17 +67,23 @@ class CacheProviderLoader
         $type = $config['type'];
         $id   = 'doctrine_cache.abstract.' . $type;
 
+        static $childDefinition;
+
+        if (null === $childDefinition) {
+            $childDefinition = class_exists('Symfony\Component\DependencyInjection\ChildDefinition') ? 'Symfony\Component\DependencyInjection\ChildDefinition' : 'Symfony\Component\DependencyInjection\DefinitionDecorator';
+        }
+
         if ($type === 'custom_provider') {
             $type  = $config['custom_provider']['type'];
             $param = $this->getCustomProviderParameter($type);
 
             if ($container->hasParameter($param)) {
-                return new DefinitionDecorator($container->getParameter($param));
+                return new $childDefinition($container->getParameter($param));
             }
         }
 
         if ($container->hasDefinition($id)) {
-            return new DefinitionDecorator($id);
+            return new $childDefinition($id);
         }
 
         throw new \InvalidArgumentException(sprintf('"%s" is an unrecognized Doctrine cache driver.', $type));
