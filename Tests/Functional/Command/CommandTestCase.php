@@ -73,7 +73,10 @@ class CommandTestCase extends FunctionalTestCase
      */
     private function getMockKernel()
     {
-        return $this->getMock('\Symfony\Component\HttpKernel\Kernel', array(), array(), '', false, false);
+        $mock = $this->getMock('\Symfony\Component\HttpKernel\Kernel', array(), array(), '', false, false);
+        $mock->method('getBundles')->willReturn(array());
+        $mock->method('getContainer')->willReturn($this->container);
+        return $mock;
     }
 
     /**
