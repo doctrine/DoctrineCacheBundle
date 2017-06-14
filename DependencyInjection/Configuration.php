@@ -173,6 +173,7 @@ class Configuration implements ConfigurationInterface
                             ->then($normalization)
                         ->end()
                         ->children()
+                            ->scalarNode('lazy')->defaultFalse()->end()
                             ->scalarNode('namespace')->defaultNull()->end()
                             ->scalarNode('type')->defaultNull()->end()
                             ->append($this->addBasicProviderNode('apc'))

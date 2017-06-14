@@ -51,6 +51,10 @@ class CacheProviderLoader
             $container->setAlias($alias, $serviceId);
         }
 
+        if ($config['lazy']) {
+            $service->setLazy(true);
+        }
+
         if ($this->definitionClassExists($type, $container)) {
             $this->getCacheDefinition($type, $container)->configure($name, $config, $service, $container);
         }
