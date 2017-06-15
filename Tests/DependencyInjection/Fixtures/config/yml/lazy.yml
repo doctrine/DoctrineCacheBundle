@@ -1,0 +1,11 @@
+doctrine_cache:
+    providers:
+        lazy_provider:
+            type: apc
+            lazy: true
+        lazy_false_provider:
+            type: array
+            lazy: false
+        lazy_no_provider:
+            type: redis
+            lazy: false
