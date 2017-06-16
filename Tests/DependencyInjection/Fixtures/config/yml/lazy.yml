@@ -8,4 +8,3 @@ doctrine_cache:
             lazy: false
         lazy_no_provider:
             type: redis
-            lazy: false
