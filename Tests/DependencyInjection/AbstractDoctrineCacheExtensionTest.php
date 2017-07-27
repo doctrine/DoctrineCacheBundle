@@ -194,6 +194,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $drivers   = array(
             'doctrine_cache.providers.foo_namespace_provider' => 'foo_namespace',
             'doctrine_cache.providers.barNamespaceProvider'   => 'barNamespace',
+            'doctrine_cache.providers.my_custom_type_namespace_provider'   => 'my_namespace',
         );
 
         foreach ($drivers as $key => $value) {

@@ -5,8 +5,23 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd
                         http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
+    <srv:services>
+        <srv:service id="my_custom_provider_service_namespace" class="Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Cache\MyCustomType"/>
+    </srv:services>
+
      <doctrine-cache>
+         <custom-provider type="my_custom_type_namespace">
+             <prototype>my_custom_provider_service_namespace</prototype>
+             <definition-class>Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Definition\MyCustomTypeDefinition</definition-class>
+         </custom-provider>
+
         <provider name="foo_namespace_provider" type="array"    namespace="foo_namespace"/>
         <provider name="barNamespaceProvider"   type="array"    namespace="barNamespace"/>
+         <provider name="my_custom_type_namespace_provider" namespace="my_namespace">
+             <my_custom_type_namespace>
+                 <config-foo>foo</config-foo>
+                 <config-bar>bar</config-bar>
+             </my_custom_type_namespace>
+         </provider>
     </doctrine-cache>
 </srv:container>
