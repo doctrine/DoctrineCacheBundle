@@ -18,5 +18,6 @@ doctrine_cache:
                 config_bar: "bar"
 
         my_custom_type_provider2:
+            namespace: 'my_namespace'
             my_custom_type2:
                 config_foobar: "foobar"

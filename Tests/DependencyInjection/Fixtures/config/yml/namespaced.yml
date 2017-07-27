@@ -1,4 +1,12 @@
+services:
+    my_custom_provider_service_namespace:
+        class: Doctrine\Bundle\DoctrineCacheBundle\Tests\DependencyInjection\Fixtures\Cache\MyCustomType
+
 doctrine_cache:
+    custom_providers:
+        my_custom_type_namespace:
+            prototype:  "my_custom_provider_service_namespace"
+
     providers:
         foo_namespace_provider:
             type: array
@@ -6,3 +14,7 @@ doctrine_cache:
         barNamespaceProvider:
             type: array
             namespace: barNamespace
+        my_custom_type_namespace_provider:
+            namespace: 'my_namespace'
+            my_custom_type_namespace:
+                config_foobar: "foobar"
