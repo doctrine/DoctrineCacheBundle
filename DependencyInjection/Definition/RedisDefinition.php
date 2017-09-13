@@ -46,6 +46,8 @@ class RedisDefinition extends CacheDefinition
             return new Reference($config['connection_id']);
         }
 
+        $config = $this->parseUri($config);
+
         $host       = $config['host'];
         $port       = $config['port'];
         $connClass  = '%doctrine_cache.redis.connection.class%';
@@ -79,5 +81,42 @@ class RedisDefinition extends CacheDefinition
         $container->setDefinition($connId, $connDef);
 
         return new Reference($connId);
+    }
+
+    private function parseUri(array $config)
+    {
+        if ( ! isset($config['uri'])) {
+            return $config;
+        }
+
+        if (preg_match('/^redis://(.*)$/', $config['uri'], $matches)) {
+            $config['host'] = $matches[1];
+        }
+
+        // Make sure we pass a valid url to parse_url by replacing
+        // potentional unix socket with a fake host
+        $url = str_replace($config['uri'], $config['host'], 'fakehost');
+
+        if ( ! $url = parse_url($url, PHP_URL_SCHEME|PHP_URL_HOST|PHP_URL_PORT|PHP_URL_QUERY)) {
+            throw new \InvalidArgumentException(sprintf('Malformed Redis uri: "%s".', $config['uri']));
+        }
+
+        if (isset($url['query'])) {
+            parse_str($url['query'], $query);
+
+            if (isset($query['db'])) {
+                $config['database'] = $query['db'];
+            }
+
+            if (isset($query['password'])) {
+                $config['password'] = $query['password'];
+            }
+        }
+
+        if (isset($url['port'])) {
+            $config['port'] = $url['port'];
+        }
+
+        return array_merge_recursive($config, $url);
     }
 }
