@@ -74,7 +74,6 @@ class Configuration implements ConfigurationInterface
     public function getProviderNames(NodeInterface $tree)
     {
         foreach ($tree->getChildren() as $providers) {
-
             if ($providers->getName() !== 'providers') {
                 continue;
             }

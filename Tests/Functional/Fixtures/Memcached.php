@@ -3,7 +3,6 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Fixtures;
 
-
 class Memcached extends \Memcached
 {
     protected $persistentId;

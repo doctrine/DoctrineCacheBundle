@@ -59,7 +59,5 @@ class StatsCommandTest extends CommandTestCase
             // This test is for Doctrine/Cache < 1.6.0 only
             $this->assertEquals("Stats were not provided for the {$this->cacheName} provider of type Doctrine\\Common\\Cache\\ArrayCache\n", $this->tester->getDisplay());
         }
-
-
     }
 }
