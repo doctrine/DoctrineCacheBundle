@@ -19,6 +19,7 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle;
 
+use Symfony\Component\Console\Application;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -29,4 +30,10 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class DoctrineCacheBundle extends Bundle
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function registerCommands(Application $application)
+    {
+    }
 }
