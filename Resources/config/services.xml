@@ -68,6 +68,18 @@
         <service id="doctrine_cache.abstract.wincache" class="%doctrine_cache.wincache.class%" abstract="true" />
         <service id="doctrine_cache.abstract.xcache" class="%doctrine_cache.xcache.class%" abstract="true" />
         <service id="doctrine_cache.abstract.zenddata" class="%doctrine_cache.zenddata.class%" abstract="true" />
+        <service id="doctrine_cache.contains_command" class="Doctrine\Bundle\DoctrineCacheBundle\Command\ContainsCommand">
+            <tag name="console.command" />
+        </service>
+        <service id="doctrine_cache.delete_command" class="Doctrine\Bundle\DoctrineCacheBundle\Command\DeleteCommand">
+            <tag name="console.command" />
+        </service>
+        <service id="doctrine_cache.flush_command" class="Doctrine\Bundle\DoctrineCacheBundle\Command\FlushCommand">
+            <tag name="console.command" />
+        </service>
+        <service id="doctrine_cache.stats_command" class="Doctrine\Bundle\DoctrineCacheBundle\Command\StatsCommand">
+            <tag name="console.command" />
+        </service>
     </services>
 
 </container>
