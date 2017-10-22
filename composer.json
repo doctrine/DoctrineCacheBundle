@@ -46,12 +46,10 @@
         "symfony/finder":                        "~2.2|~3.0|~4.0",
         "symfony/framework-bundle":              "~2.2|~3.0|~4.0",
         "symfony/security-acl":                  "~2.3|~3.0",
-        "instaclick/coding-standard":            "~1.1",
-        "squizlabs/php_codesniffer":             "~1.5",
-        "instaclick/object-calisthenics-sniffs": "dev-master",
-        "instaclick/symfony2-coding-standard":   "dev-remaster",
         "predis/predis":                         "~0.8",
-        "mongodb/mongodb":                       "^1.0"
+        "mongodb/mongodb":                       "^1.0",
+        "doctrine/coding-standard":              "^1.0",
+        "squizlabs/php_codesniffer":             "^3.0"
     },
     "suggest": {
         "symfony/security-acl": "For using this bundle to cache ACLs"

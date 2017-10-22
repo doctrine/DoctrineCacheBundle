@@ -4,3 +4,5 @@ composer.phar
 composer.lock
 phpunit.xml
 cache.db
+/phpcs.xml
+/.phpcs-cache

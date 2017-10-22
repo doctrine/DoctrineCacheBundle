@@ -41,5 +41,6 @@ jobs:
         - travis_retry composer update -n
 
     - stage: Coding standard
+      php: nightly
       script:
-        - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
+        - ./vendor/bin/phpcs
