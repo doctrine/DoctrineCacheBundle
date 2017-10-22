@@ -3,9 +3,6 @@ doctrine_cache:
         configurable_memcached_provider:
             memcached: ~
 
-        configurable_memcache_provider:
-            memcache: ~
-
         configurable_redis_provider:
             redis: ~
 
@@ -25,11 +22,6 @@ doctrine_cache:
             type : memcached
             aliases :
                 - memcached_provider_type
-
-        configurable_memcache_provider_type:
-            type : memcache
-            aliases :
-                - memcache_provider_type
 
         configurable_redis_provider_type:
             type : redis

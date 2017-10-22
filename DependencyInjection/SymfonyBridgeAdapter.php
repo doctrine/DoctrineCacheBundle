@@ -117,7 +117,7 @@ class SymfonyBridgeAdapter
         
         $config['namespace'] = $cacheDriver['namespace'];
 
-        if (in_array($type, array('memcache', 'memcached'))) {
+        if ($type === 'memcached') {
             $host = !empty($host) ? $host : 'localhost';
             $config[$type]['servers'][$host] = array(
                 'host' => $host,

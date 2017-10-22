@@ -60,24 +60,11 @@ This provider defines no configuration options.
 ``collection_name``
     mongodb collection name
 
-``memcache``
-~~~~~~~~~~~~
-
-``connection_id``
-    Memcache connection service id
-``servers``
-    Server list
-
-    * ``server``
-
-      * ``host``, Memcache host
-      * ``port``, Memcache port
-
 ``memcached``
 ~~~~~~~~~~~~~
 
 ``connection_id``
-    Memcache connection service id
+    Memcached connection service id
 ``servers``
     Server list
 

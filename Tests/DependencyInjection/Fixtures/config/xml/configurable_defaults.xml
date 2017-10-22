@@ -10,10 +10,6 @@
              <memcached />
          </provider>
 
-         <provider name="configurable_memcache_provider">
-             <memcache />
-         </provider>
-
          <provider name="configurable_redis_provider">
              <redis />
          </provider>
@@ -36,9 +32,6 @@
 
          <provider name="configurable_memcached_provider_type" type="memcached">
              <alias>memcached_provider_type</alias>
-         </provider>
-         <provider name="configurable_memcache_provider_type" type="memcache">
-             <alias>memcache_provider_type</alias>
          </provider>
          <provider name="configurable_redis_provider_type" type="redis">
              <alias>redis_provider_type</alias>

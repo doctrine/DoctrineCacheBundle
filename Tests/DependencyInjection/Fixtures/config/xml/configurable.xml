@@ -28,13 +28,6 @@
             </memcached>
         </provider>
 
-        <provider name="configurable_memcache_provider">
-            <memcache>
-                <server host="memcached01.ss"/>
-                <server host="memcached02.ss"/>
-            </memcache>
-        </provider>
-
         <provider name="configurable_redis_provider">
             <redis host="localhost" port="11211" />
         </provider>

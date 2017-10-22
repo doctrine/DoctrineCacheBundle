@@ -55,7 +55,6 @@ class SymfonyBridgeAdpterTest extends TestCase
             array('%doctrine_cache.wincache.class%',  array('type' => 'wincache')),
             array('%doctrine_cache.zenddata.class%',  array('type' => 'zenddata')),
             array('%doctrine_cache.redis.class%',     array('type' => 'redis'),     array('setRedis')),
-            array('%doctrine_cache.memcache.class%',  array('type' => 'memcache'),  array('setMemcache')),
             array('%doctrine_cache.memcached.class%', array('type' => 'memcached'), array('setMemcached')),
         );
     }

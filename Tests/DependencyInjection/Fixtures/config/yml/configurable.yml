@@ -18,12 +18,6 @@ doctrine_cache:
                     memcached01.ss: ~
                     memcached02.ss: ~
 
-        configurable_memcache_provider:
-            memcache:
-                servers:
-                    memcache01.ss: ~
-                    memcache02.ss: ~
-
         configurable_redis_provider:
             redis:
                 host: localhost

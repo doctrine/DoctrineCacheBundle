@@ -51,7 +51,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $this->assertTrue($container->hasParameter('doctrine_cache.couchbase.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.file_system.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.memcached.class'));
-        $this->assertTrue($container->hasParameter('doctrine_cache.memcache.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.mongodb.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.php_file.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.redis.class'));
@@ -103,9 +102,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             'configurable_memcached_provider' => array(
                 '%doctrine_cache.memcached.class%', array('setMemcached' => array())
             ),
-            'configurable_memcache_provider' => array(
-                '%doctrine_cache.memcache.class%', array('setMemcache' => array())
-            ),
             'configurable_mongodb_provider' => array(
                 '%doctrine_cache.mongodb.class%'
             ),
@@ -132,9 +128,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             'configurable_memcached_provider' => array(
                 '%doctrine_cache.memcached.class%', array('setMemcached' => array())
             ),
-            'configurable_memcache_provider' => array(
-                '%doctrine_cache.memcache.class%', array('setMemcache' => array())
-            ),
             'configurable_redis_provider' => array(
                 '%doctrine_cache.redis.class%', array('setRedis' => array())
             ),
@@ -152,9 +145,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             ),
             'configurable_memcached_provider_type' => array(
                 '%doctrine_cache.memcached.class%', array('setMemcached' => array())
-            ),
-            'configurable_memcache_provider_type' => array(
-                '%doctrine_cache.memcache.class%', array('setMemcache' => array())
             ),
             'configurable_redis_provider_type' => array(
                 '%doctrine_cache.redis.class%', array('setRedis' => array())
@@ -221,9 +211,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $providers = array(
             'service_connection_memcached_provider' => array(
                 '%doctrine_cache.memcached.class%'
-            ),
-            'service_connection_memcache_provider' => array(
-                '%doctrine_cache.memcache.class%'
             ),
             'service_connection_redis_provider' => array(
                 '%doctrine_cache.redis.class%'

@@ -14,10 +14,6 @@
         <parameter key="doctrine_cache.couchbase.hostnames">localhost:8091</parameter>
         <parameter key="doctrine_cache.file_system.class">Doctrine\Common\Cache\FilesystemCache</parameter>
         <parameter key="doctrine_cache.php_file.class">Doctrine\Common\Cache\PhpFileCache</parameter>
-        <parameter key="doctrine_cache.memcache.class">Doctrine\Common\Cache\MemcacheCache</parameter>
-        <parameter key="doctrine_cache.memcache.connection.class">Memcache</parameter>
-        <parameter key="doctrine_cache.memcache.host">localhost</parameter>
-        <parameter key="doctrine_cache.memcache.port">11211</parameter>
         <parameter key="doctrine_cache.memcached.class">Doctrine\Common\Cache\MemcachedCache</parameter>
         <parameter key="doctrine_cache.memcached.connection.class">Memcached</parameter>
         <parameter key="doctrine_cache.memcached.host">localhost</parameter>
@@ -51,7 +47,6 @@
         <service id="doctrine_cache.abstract.couchbase" class="%doctrine_cache.couchbase.class%" abstract="true" />
         <service id="doctrine_cache.abstract.file_system" class="%doctrine_cache.file_system.class%" abstract="true" />
         <service id="doctrine_cache.abstract.php_file" class="%doctrine_cache.php_file.class%" abstract="true" />
-        <service id="doctrine_cache.abstract.memcache" class="%doctrine_cache.memcache.class%" abstract="true" />
         <service id="doctrine_cache.abstract.memcached" class="%doctrine_cache.memcached.class%" abstract="true" />
         <service id="doctrine_cache.abstract.mongodb" class="%doctrine_cache.mongodb.class%" abstract="true" />
         <service id="doctrine_cache.abstract.redis" class="%doctrine_cache.redis.class%" abstract="true" />

@@ -4,11 +4,6 @@ services:
         calls:
             - [addServer, ["localhost", 11211]]
 
-    my_memcache_connection_service:
-        class: "%doctrine_cache.memcache.connection.class%"
-        calls:
-            - [connect, ["localhost", 11211]]
-
     my_mongodb_connection_service:
         class: "%doctrine_cache.mongodb.connection.class%"
         arguments: ["localhost:27017"]
@@ -35,10 +30,6 @@ doctrine_cache:
         service_connection_memcached_provider:
             memcached:
                 connection_id: "my_memcached_connection_service"
-
-        service_connection_memcache_provider:
-            memcache:
-                connection_id: "my_memcache_connection_service"
 
         service_collection_mongodb_provider:
             mongodb:

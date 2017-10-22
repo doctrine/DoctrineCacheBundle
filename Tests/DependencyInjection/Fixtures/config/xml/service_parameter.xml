@@ -17,13 +17,6 @@
             </srv:call>
         </srv:service>
 
-        <srv:service id="my_memcache_connection_service" class="%doctrine_cache.memcache.connection.class%">
-            <srv:call method="connect">
-                <srv:argument>localhost</srv:argument>
-                <srv:argument>11211</srv:argument>
-            </srv:call>
-        </srv:service>
-
         <srv:service id="my_redis_connection_service" class="%doctrine_cache.redis.connection.class%">
             <srv:call method="connect">
                 <srv:argument>localhost</srv:argument>
@@ -46,12 +39,6 @@
              <memcached connection-id="my_memcached_connection_service"/>
          </provider>
 
-         <provider name="service_connection_memcache_provider">
-             <memcache>
-                 <connection-id>my_memcache_connection_service</connection-id>
-             </memcache>
-         </provider>
-
          <provider name="service_connection_redis_provider">
              <redis connection-id="my_redis_connection_service"/>
          </provider>
@@ -66,7 +53,7 @@
 
          <provider name="service_connection_mongodb_provider">
              <mongodb>
-                 <connection-id>my_memcache_connection_service</connection-id>
+                 <connection-id>my_mongodb_connection_service</connection-id>
                  <database-name>my_database</database-name>
                  <collection-name>my_cache_collection</collection-name>
              </mongodb>

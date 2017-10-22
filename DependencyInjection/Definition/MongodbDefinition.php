@@ -27,8 +27,8 @@ class MongodbDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $memcacheConf = $config['mongodb'];
-        $collRef      = $this->getCollectionReference($name, $memcacheConf, $container);
+        $mongodbConf = $config['mongodb'];
+        $collRef     = $this->getCollectionReference($name, $mongodbConf, $container);
 
         $service->setArguments(array($collRef));
     }
