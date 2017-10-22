@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\FunctionalTestCase;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Acl\Domain;
 
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\Acl\Model;
 
 use Doctrine\Common\Cache\CacheProvider;

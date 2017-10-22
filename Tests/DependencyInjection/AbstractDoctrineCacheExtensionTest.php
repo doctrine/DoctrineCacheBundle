@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -200,7 +202,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             $this->assertTrue($container->hasDefinition($key));
 
             foreach ($aliases as $alias) {
-                $this->assertEquals(strtolower($key), strtolower($container->getAlias($alias)));
+                $this->assertEquals(strtolower((string) $key), strtolower((string) $container->getAlias($alias)));
             }
         }
     }
