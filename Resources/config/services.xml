@@ -19,8 +19,8 @@
         <parameter key="doctrine_cache.memcached.host">localhost</parameter>
         <parameter key="doctrine_cache.memcached.port">11211</parameter>
         <parameter key="doctrine_cache.mongodb.class">Doctrine\Common\Cache\MongoDBCache</parameter>
-        <parameter key="doctrine_cache.mongodb.collection.class">MongoCollection</parameter>
-        <parameter key="doctrine_cache.mongodb.connection.class">MongoClient</parameter>
+        <parameter key="doctrine_cache.mongodb.collection.class">MongoDB\Collection</parameter>
+        <parameter key="doctrine_cache.mongodb.connection.class">MongoDB\Client</parameter>
         <parameter key="doctrine_cache.mongodb.server">localhost:27017</parameter>
         <parameter key="doctrine_cache.predis.client.class">Predis\Client</parameter>
         <parameter key="doctrine_cache.predis.scheme">tcp</parameter>

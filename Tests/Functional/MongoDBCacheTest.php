@@ -33,7 +33,7 @@ class MongoDBCacheTest extends BaseCacheTest
     {
         parent::setUp();
 
-        if ( ! extension_loaded('mongo')) {
+        if ( ! extension_loaded('mongodb')) {
             $this->markTestSkipped('The ' . __CLASS__ .' requires the use of mongo >= 1.3.0');
         }
 

@@ -50,9 +50,9 @@ This provider defines no configuration options.
 ~~~~~~~~~~~
 
 ``connection_id``
-    MongoClient service id
+    MongoDB\Client service id
 ``collection_id``
-    MongoCollection service id
+    MongoDB\Collection service id
 ``server``
     mongodb server uri
 ``database_name``

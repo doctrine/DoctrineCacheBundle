@@ -27,8 +27,8 @@ class MongodbDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $mongodbConf = $config['mongodb'];
-        $collRef     = $this->getCollectionReference($name, $mongodbConf, $container);
+        $memcacheConf = $config['mongodb'];
+        $collRef      = $this->getCollectionReference($name, $memcacheConf, $container);
 
         $service->setArguments(array($collRef));
     }
@@ -85,10 +85,9 @@ class MongodbDefinition extends CacheDefinition
         $server         = $config['server'];
         $connClass      = '%doctrine_cache.mongodb.connection.class%';
         $connId         = sprintf('doctrine_cache.services.%s.connection', $name);
-        $connDef        = new Definition($connClass, array($server));
+        $connDef        = new Definition($connClass, array('mongodb://' . $server));
 
         $connDef->setPublic(false);
-        $connDef->addMethodCall('connect');
 
         $container->setDefinition($connId, $connDef);
 
