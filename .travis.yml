@@ -20,11 +20,8 @@ before_script:
     - composer update --prefer-source
 
 script:
-    - ./vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
+    - ./vendor/bin/phpunit -v
     - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
-
-after_script:
-    - php ./vendor/bin/coveralls -v
 
 matrix:
     allow_failures:
