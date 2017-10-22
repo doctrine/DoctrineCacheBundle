@@ -1,30 +1,45 @@
-language: php
+dist: trusty
 sudo: false
-dist: precise
+language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
 
 php:
     - 7.1
     - 7.2
     - nightly
 
+before_install:
+  - mv ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini{,.disabled} || echo "xdebug not available"
+  - echo 'apc.enabled=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo 'apc.enable_cli=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo 'extension=mongodb.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo 'extension=redis.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo 'extension=memcached.so' >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - composer self-update
+
+install:
+  - travis_retry composer update -n --prefer-dist
+
 services:
     - mongodb
     - memcached
     - redis-server
 
-before_script:
-    - ./Tests/travis/install-deps.sh
-    - composer self-update
-    - if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-    - composer update --prefer-source
+script: ./vendor/bin/phpunit -v
 
-script:
-    - ./vendor/bin/phpunit -v
-    - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
+jobs:
+  allow_failures:
+    - php: nightly
 
-matrix:
-    allow_failures:
-        - php: nightly
-    include:
-        - php: 7.1
-          env: DEPS="dev"
+  include:
+    - stage: Test (dev dependencies)
+      install:
+        - perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json
+        - travis_retry composer update -n
+
+    - stage: Coding standard
+      script:
+        - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
