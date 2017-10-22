@@ -135,25 +135,6 @@ This provider defines no configuration options.
 ``options``
     Array of predis client options
 
-``riak``
-~~~~~~~~
-
-``connection_id``
-    Riak\Connection service id
-``bucket_id``
-    Riak\Bucket service id
-``host``
-    Riak host
-``port``
-    Riak port
-``bucket_name``
-    Riak bucket name
-``bucket_property_list``
-    Riak bucket configuration (property list)
-
-    * ``allow_multiple: false``, riak bucket allow multiple configuration
-    * ``n_value: 1``, riak bucket n-value configuration
-
 ``sqlite3``
 ~~~~~~~~~~~
 

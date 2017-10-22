@@ -52,15 +52,6 @@ doctrine_cache:
                 database_name: my_database
                 collection_name: my_collection
 
-        configurable_riak_provider:
-            riak:
-                host: localhost
-                port: 8087
-                bucket_name: my_bucket
-                bucket_property_list:
-                    allow_multiple: false
-                    n_value: 1
-
         configurable_sqlite3_provider:
             sqlite3:
                 file_name: cache.db

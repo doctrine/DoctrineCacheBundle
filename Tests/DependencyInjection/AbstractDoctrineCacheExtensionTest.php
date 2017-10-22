@@ -55,7 +55,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
         $this->assertTrue($container->hasParameter('doctrine_cache.mongodb.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.php_file.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.redis.class'));
-        $this->assertTrue($container->hasParameter('doctrine_cache.riak.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.sqlite3.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.void.class'));
         $this->assertTrue($container->hasParameter('doctrine_cache.xcache.class'));
@@ -116,9 +115,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             'configurable_redis_provider' => array(
                 '%doctrine_cache.redis.class%', array('setRedis' => array())
             ),
-            'configurable_riak_provider' => array(
-                '%doctrine_cache.riak.class%'
-            ),
             'configurable_sqlite3_provider' => array(
                 '%doctrine_cache.sqlite3.class%'
             ),
@@ -145,9 +141,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             'configurable_mongodb_provider' => array(
                 '%doctrine_cache.mongodb.class%'
             ),
-            'configurable_riak_provider' => array(
-                '%doctrine_cache.riak.class%'
-            ),
             'configurable_filesystem_provider' => array(
                 '%doctrine_cache.file_system.class%'
             ),
@@ -168,9 +161,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
             ),
             'configurable_mongodb_provider_type' => array(
                 '%doctrine_cache.mongodb.class%'
-            ),
-            'configurable_riak_provider_type' => array(
-                '%doctrine_cache.riak.class%'
             ),
             'configurable_filesystem_provider_type' => array(
                 '%doctrine_cache.file_system.class%'
@@ -229,12 +219,6 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
     {
         $container = $this->compileContainer('service_parameter');
         $providers = array(
-            'service_bucket_riak_provider' => array(
-                '%doctrine_cache.riak.class%'
-            ),
-            'service_connection_riak_provider' => array(
-                '%doctrine_cache.riak.class%'
-            ),
             'service_connection_memcached_provider' => array(
                 '%doctrine_cache.memcached.class%'
             ),

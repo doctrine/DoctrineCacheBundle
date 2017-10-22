@@ -22,10 +22,6 @@
              <mongodb />
          </provider>
 
-         <provider name="configurable_riak_provider">
-             <riak />
-         </provider>
-
          <provider name="configurable_filesystem_provider">
              <file-system />
          </provider>
@@ -49,9 +45,6 @@
          </provider>
          <provider name="configurable_mongodb_provider_type" type="mongodb">
              <alias>mongodb_provider_type</alias>
-         </provider>
-         <provider name="configurable_riak_provider_type" type="riak">
-             <alias>memcached_provider_type</alias>
          </provider>
          <provider name="configurable_filesystem_provider_type" type="file_system">
              <alias>filesystem_provider_type</alias>

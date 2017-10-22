@@ -21,9 +21,6 @@ doctrine_cache:
         configurable_mongodb_provider:
             mongodb: ~
 
-        configurable_riak_provider:
-            riak: ~
-
         configurable_memcached_provider_type:
             type : memcached
             aliases :
@@ -58,8 +55,3 @@ doctrine_cache:
             type : mongodb
             aliases :
                 - mongodb_provider_type
-
-        configurable_riak_provider_type:
-            type : riak
-            aliases :
-                - riak_provider_type

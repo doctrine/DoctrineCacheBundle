@@ -8,7 +8,6 @@ php:
     - nightly
 
 services:
-    - riak
     - mongodb
     - memcached
     - redis-server

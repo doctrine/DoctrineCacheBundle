@@ -6,16 +6,6 @@
                         http://doctrine-project.org/schemas/symfony-dic/cache http://doctrine-project.org/schemas/symfony-dic/cache/doctrine_cache-1.0.xsd">
 
      <srv:services>
-        <srv:service id="my_riak_connection_service" class="%doctrine_cache.riak.connection.class%">
-            <srv:argument>localhost</srv:argument>
-            <srv:argument>8087</srv:argument>
-        </srv:service>
-
-        <srv:service id="my_riak_bucket_service" class="%doctrine_cache.riak.bucket.class%">
-            <srv:argument type="service" id="my_riak_connection_service"/>
-            <srv:argument>my_service_bucket_name</srv:argument>
-        </srv:service>
-
         <srv:service id="my_sqlite3_connection_service" class="%doctrine_cache.sqlite3.connection.class%">
             <srv:argument>cache.db</srv:argument>
         </srv:service>
@@ -52,16 +42,6 @@
     </srv:services>
 
     <doctrine-cache>
-         <provider  name="service_bucket_riak_provider">
-             <riak bucket-id="my_riak_bucket_service"/>
-         </provider>
-
-         <provider name="service_connection_riak_provider">
-             <riak connection-id="my_riak_connection_service">
-                 <bucket-name>my_bucket_name</bucket-name>
-             </riak>
-         </provider>
-
          <provider name="service_connection_memcached_provider">
              <memcached connection-id="my_memcached_connection_service"/>
          </provider>

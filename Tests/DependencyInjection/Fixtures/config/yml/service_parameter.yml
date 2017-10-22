@@ -22,14 +22,6 @@ services:
         calls:
             - [connect, ["localhost", 6379]]
 
-    my_riak_connection_service:
-        class: "%doctrine_cache.riak.connection.class%"
-        arguments: ["localhost", 8087]
-
-    my_riak_bucket_service:
-        class: "%doctrine_cache.riak.bucket.class%"
-        arguments: ["@my_riak_connection_service", "my_service_bucket_name"]
-
     my_sqlite3_connection_service:
         class: "%doctrine_cache.sqlite3.connection.class%"
         arguments: ["cache.db"]
@@ -61,15 +53,6 @@ doctrine_cache:
         service_connection_redis_provider:
             redis:
                 connection_id: "my_redis_connection_service"
-
-        service_bucket_riak_provider:
-            riak:
-                bucket_id : "my_riak_bucket_service"
-
-        service_connection_riak_provider:
-            riak:
-                connection_id: "my_riak_connection_service"
-                bucket_name: "my_bucket_name"
 
         service_connection_sqlite3_provider:
             sqlite3:

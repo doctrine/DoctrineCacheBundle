@@ -46,16 +46,6 @@
             </mongodb>
         </provider>
 
-        <provider name="configurable_riak_provider">
-            <riak host="localhost" port="8087">
-                <bucket-name>my_bucket</bucket-name>
-                <bucket-property-list>
-                    <allow-multiple>false</allow-multiple>
-                    <n-value>1</n-value>
-                </bucket-property-list>
-            </riak>
-        </provider>
-
         <provider name="configurable_sqlite3_provider">
             <sqlite3 file-name="cache.db" >
                 <table-name>my_table</table-name>

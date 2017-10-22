@@ -34,12 +34,6 @@
         <parameter key="doctrine_cache.redis.connection.class">Redis</parameter>
         <parameter key="doctrine_cache.redis.host">localhost</parameter>
         <parameter key="doctrine_cache.redis.port">6379</parameter>
-        <parameter key="doctrine_cache.riak.class">Doctrine\Common\Cache\RiakCache</parameter>
-        <parameter key="doctrine_cache.riak.bucket.class">Riak\Bucket</parameter>
-        <parameter key="doctrine_cache.riak.connection.class">Riak\Connection</parameter>
-        <parameter key="doctrine_cache.riak.bucket_property_list.class">Riak\BucketPropertyList</parameter>
-        <parameter key="doctrine_cache.riak.host">localhost</parameter>
-        <parameter key="doctrine_cache.riak.port">8087</parameter>
         <parameter key="doctrine_cache.sqlite3.class">Doctrine\Common\Cache\SQLite3Cache</parameter>
         <parameter key="doctrine_cache.sqlite3.connection.class">SQLite3</parameter>
         <parameter key="doctrine_cache.void.class">Doctrine\Common\Cache\VoidCache</parameter>
@@ -62,7 +56,6 @@
         <service id="doctrine_cache.abstract.mongodb" class="%doctrine_cache.mongodb.class%" abstract="true" />
         <service id="doctrine_cache.abstract.redis" class="%doctrine_cache.redis.class%" abstract="true" />
         <service id="doctrine_cache.abstract.predis" class="Doctrine\Common\Cache\PredisCache" abstract="true" />
-        <service id="doctrine_cache.abstract.riak" class="%doctrine_cache.riak.class%" abstract="true" />
         <service id="doctrine_cache.abstract.sqlite3" class="%doctrine_cache.sqlite3.class%" abstract="true" />
         <service id="doctrine_cache.abstract.void" class="%doctrine_cache.void.class%" abstract="true" />
         <service id="doctrine_cache.abstract.wincache" class="%doctrine_cache.wincache.class%" abstract="true" />

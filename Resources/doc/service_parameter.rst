@@ -12,14 +12,6 @@ collection. Example:
         services:
             # ...
 
-            my_riak_connection_service:
-                class: "Riak\Connection"
-                # ...
-
-            my_riak_bucket_service:
-                class: "Riak\Bucket"
-                # ...
-
             my_memcached_connection_service:
                 class: "Memcached"
                 # ...
@@ -27,15 +19,6 @@ collection. Example:
         # app/config/config.yml
         doctrine_cache:
             providers:
-                service_bucket_riak_provider:
-                    riak:
-                        bucket_id : "my_riak_bucket_service"
-
-                service_connection_riak_provider:
-                    riak:
-                        connection_id: "my_riak_connection_service"
-                        bucket_name: "my_bucket_name"
-
                 service_connection_memcached_provider:
                     memcached:
                         connection_id: "my_memcached_connection_service"
@@ -52,30 +35,12 @@ collection. Example:
 
         <srv:container>
             <srv:services>
-                <srv:service id="my_riak_connection_service" class="Riak\Connection">
-                    <!-- ... -->
-                </srv:service>
-
-                <srv:service id="my_riak_bucket_service" class="Riak\Bucket">
-                    <!-- ... -->
-                </srv:service>
-
                 <srv:service id="my_memcached_connection_service" class="Memcached">
                     <!-- ... -->
                 </srv:service>
              </srv:services>
 
             <doctrine-cache>
-                 <provider  name="service_bucket_riak_provider">
-                     <riak bucket-id="my_riak_bucket_service"/>
-                 </provider>
-
-                 <provider name="service_connection_riak_provider">
-                     <riak connection-id="my_riak_connection_service">
-                         <bucket-name>my_bucket_name</bucket-name>
-                     </riak>
-                 </provider>
-
                  <provider name="service_connection_memcached_provider">
                      <memcached connection-id="my_memcached_connection_service"/>
                  </provider>
