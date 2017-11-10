@@ -8,8 +8,9 @@ use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
 use Symfony\Component\Security\Acl\Domain\Acl;
 use Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache;
 use Doctrine\Common\Cache\ArrayCache;
+use PHPUnit\Framework\TestCase;
 
-class AclCacheTest extends \PHPUnit_Framework_TestCase
+class AclCacheTest extends TestCase
 {
     /**
      * @var \Doctrine\Common\Cache\ArrayCache
