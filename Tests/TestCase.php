@@ -5,8 +5,9 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends BaseTestCase
 {
     /**
      * @param array $bundles
@@ -31,7 +32,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             'kernel.cache_dir'   => sys_get_temp_dir(),
         )));
     }
-    
+
     /**
      * @param array $bundles
      * @param string $vendor
