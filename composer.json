@@ -57,7 +57,10 @@
         "symfony/security-acl": "For using this bundle to cache ACLs"
     },
     "autoload": {
-        "psr-4": { "Doctrine\\Bundle\\DoctrineCacheBundle\\": "" }
+        "psr-4": { "Doctrine\\Bundle\\DoctrineCacheBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "extra": {
         "branch-alias": {
