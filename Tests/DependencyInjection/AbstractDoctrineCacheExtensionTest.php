@@ -353,7 +353,10 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
 
         $compilerPassConfig = $container->getCompilerPassConfig();
 
-        $compilerPassConfig->setOptimizationPasses(array(new ResolveDefinitionTemplatesPass()));
+        $pass = class_exists('Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass')
+            ? 'Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass'
+            : 'Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass';
+        $compilerPassConfig->setOptimizationPasses(array(new $pass()));
         $compilerPassConfig->setRemovingPasses(array());
 
         $this->loadFromFile($container, $file);
