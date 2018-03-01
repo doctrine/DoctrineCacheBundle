@@ -2,6 +2,7 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Doctrine\Common\Inflector\Inflector;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -28,9 +29,10 @@ class CacheProviderLoader
         if ($config['namespace']) {
             $service->addMethodCall('setNamespace', array($config['namespace']));
         }
+        $service->setPublic(true);
 
         foreach ($config['aliases'] as $alias) {
-            $container->setAlias($alias, $serviceId);
+            $container->setAlias($alias, new Alias($serviceId, true));
         }
 
         if ($this->definitionClassExists($type, $container)) {
