@@ -2,6 +2,7 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -95,7 +96,7 @@ class DoctrineCacheExtension extends Extension
     protected function loadCacheAliases(array $rootConfig, ContainerBuilder $container)
     {
         foreach ($rootConfig['aliases'] as $alias => $name) {
-            $container->setAlias($alias, 'doctrine_cache.providers.' . $name);
+            $container->setAlias($alias, new Alias('doctrine_cache.providers.' . $name, true));
         }
     }
 
