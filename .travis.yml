@@ -1,16 +1,10 @@
 language: php
 sudo: false
-dist: precise
+dist: trusty
 
-php:
-    - 5.3
-    - 5.4
-    - 5.5
-    - 5.6
-    - 7.0
-    - 7.1
-    - nightly
-    - hhvm
+cache:
+    directories:
+        - $HOME/.composer/cache
 
 services:
     - riak
@@ -22,7 +16,7 @@ before_script:
     - ./Tests/travis/install-deps.sh
     - composer self-update
     - if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-    - composer update --prefer-source
+    - composer update --prefer-dist
 
 script:
     - ./vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
@@ -32,9 +26,19 @@ after_script:
     - php ./vendor/bin/coveralls -v
 
 matrix:
+    exclude:
+        - php: 5.3
+          dist: trusty
     allow_failures:
         - php: nightly
-        - php: hhvm
     include:
+        - php: 5.3
+          dist: precise
+        - php: 5.4
+        - php: 5.5
         - php: 5.6
           env: DEPS="dev"
+        - php: 7.0
+        - php: 7.1
+        - php: 7.2
+        - php: nightly
