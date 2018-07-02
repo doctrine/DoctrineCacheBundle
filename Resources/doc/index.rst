@@ -13,4 +13,4 @@ systems through the `Doctrine Cache`_ library.
     acl_cache
     reference
 
-.. _`Doctrine Cache`: http://docs.doctrine-project.org/projects/doctrine-common/en/latest/reference/caching.html
+.. _`Doctrine Cache`: https://www.doctrine-project.org/projects/doctrine-cache/en/latest
