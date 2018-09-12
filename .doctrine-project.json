@@ -13,12 +13,6 @@
             "branchName": "1.2",
             "slug": "1.2",
             "maintained": false
-        },
-        {
-            "name": "1.1",
-            "branchName": "1.1",
-            "slug": "1.1",
-            "maintained": false
         }
     ]
 }

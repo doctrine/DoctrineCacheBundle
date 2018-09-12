@@ -1,6 +1,6 @@
 {
     "name":                 "doctrine/doctrine-cache-bundle",
-    "homepage":             "http://www.doctrine-project.org",
+    "homepage":             "https://www.doctrine-project.org",
     "description":          "Symfony Bundle for Doctrine Cache",
     "keywords":             ["cache", "caching"],
     "type":                 "symfony-bundle",
