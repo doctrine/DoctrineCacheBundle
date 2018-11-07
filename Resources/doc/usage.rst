@@ -45,6 +45,8 @@ services anywhere in your application::
     $metadataCache = $this->container->get('doctrine_cache.providers.my_apc_metadata_cache');
     $queryCache = $this->container->get('doctrine_cache.providers.my_apc_query_cache');
 
+Both ``metadataCache`` and ``$queryCache`` are instances of ``Doctrine\Common\Cache\CacheProvider``.
+
 Service Aliases
 ---------------
 
