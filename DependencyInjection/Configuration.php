@@ -86,8 +86,8 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $self            = $this;
-        $builder         = new TreeBuilder();
-        $node            = $builder->root('doctrine_cache', 'array');
+        $builder         = new TreeBuilder('doctrine_cache');
+        $node            = $this->getRootNode($builder, 'doctrine_cache');
         $normalization   = function ($conf) use ($self, $builder) {
             $conf['type'] = isset($conf['type'])
                 ? $conf['type']
@@ -198,8 +198,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addBasicProviderNode($name)
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root($name);
+        $builder = new TreeBuilder($name);
+        $node    = $this->getRootNode($builder, $name);
 
         return $node;
     }
@@ -211,8 +211,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addCustomProviderNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('custom_provider');
+        $builder = new TreeBuilder('custom_provider');
+        $node    = $this->getRootNode($builder, 'custom_provider');
 
         $node
             ->children()
@@ -234,8 +234,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addChainNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('chain');
+        $builder = new TreeBuilder('chain');
+        $node    = $this->getRootNode($builder, 'chain');
 
         $node
             ->fixXmlConfig('provider')
@@ -256,8 +256,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addMemcacheNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('memcache');
+        $builder = new TreeBuilder('memcache');
+        $node    = $this->getRootNode($builder, 'memcache');
         $host    = '%doctrine_cache.memcache.host%';
         $port    = '%doctrine_cache.memcache.port%';
 
@@ -301,8 +301,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addMemcachedNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('memcached');
+        $builder = new TreeBuilder('memcached');
+        $node    = $this->getRootNode($builder, 'memcached');
         $host    = '%doctrine_cache.memcached.host%';
         $port    = '%doctrine_cache.memcached.port%';
 
@@ -347,8 +347,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addRedisNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('redis');
+        $builder = new TreeBuilder('redis');
+        $node    = $this->getRootNode($builder, 'redis');
 
         $node
             ->addDefaultsIfNotSet()
@@ -373,8 +373,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addPredisNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('predis');
+        $builder = new TreeBuilder('predis');
+        $node    = $this->getRootNode($builder, 'predis');
 
         $node
             ->addDefaultsIfNotSet()
@@ -403,8 +403,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addRiakNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('riak');
+        $builder = new TreeBuilder('riak');
+        $node    = $this->getRootNode($builder, 'riak');
 
         $node
             ->addDefaultsIfNotSet()
@@ -433,8 +433,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addCouchbaseNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('couchbase');
+        $builder = new TreeBuilder('couchbase');
+        $node    = $this->getRootNode($builder, 'couchbase');
 
         $node
             ->addDefaultsIfNotSet()
@@ -461,8 +461,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addMongoNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('mongodb');
+        $builder = new TreeBuilder('mongodb');
+        $node    = $this->getRootNode($builder, 'mongodb');
 
         $node
             ->addDefaultsIfNotSet()
@@ -485,8 +485,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addPhpFileNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('php_file');
+        $builder = new TreeBuilder('php_file');
+        $node    = $this->getRootNode($builder, 'php_file');
 
         $node
             ->addDefaultsIfNotSet()
@@ -507,8 +507,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addFileSystemNode()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('file_system');
+        $builder = new TreeBuilder('file_system');
+        $node    = $this->getRootNode($builder, 'file_system');
 
         $node
             ->addDefaultsIfNotSet()
@@ -529,8 +529,8 @@ class Configuration implements ConfigurationInterface
      */
     private function addSqlite3Node()
     {
-        $builder = new TreeBuilder();
-        $node    = $builder->root('sqlite3');
+        $builder = new TreeBuilder('sqlite3');
+        $node    = $this->getRootNode($builder, 'sqlite3');
 
         $node
             ->addDefaultsIfNotSet()
@@ -542,5 +542,15 @@ class Configuration implements ConfigurationInterface
         ;
 
         return $node;
+    }
+
+    private function getRootNode(TreeBuilder $treeBuilder, $name)
+    {
+        // BC layer for symfony/config 4.1 and older
+        if ( ! \method_exists($treeBuilder, 'getRootNode')) {
+            return $treeBuilder->root($name);
+        }
+
+        return $treeBuilder->getRootNode();
     }
 }
