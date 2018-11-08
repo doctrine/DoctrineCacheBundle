@@ -26,21 +26,12 @@ after_script:
     - php ./vendor/bin/coveralls -v
 
 matrix:
-    exclude:
-        - php: 5.3
-          dist: trusty
     allow_failures:
         - php: nightly
     include:
-        - php: 5.3
-          dist: precise
-          env: COMPOSER_MEMORY_LIMIT=-1
-        - php: 5.4
-        - php: 5.5
-        - php: 5.6
-          env: DEPS="dev" COMPOSER_MEMORY_LIMIT=-1
-        - php: 7.0
         - php: 7.1
+        - php: 7.1
+          env: DEPS="dev"
         - php: 7.2
         - php: 7.3
         - php: nightly
