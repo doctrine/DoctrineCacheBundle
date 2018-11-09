@@ -7,7 +7,6 @@
          processIsolation="false"
          backupGlobals="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          colors="true">
 
     <testsuites>
