@@ -2,36 +2,53 @@ language: php
 sudo: false
 dist: trusty
 
-cache:
-    directories:
-        - $HOME/.composer/cache
-
-services:
-    - riak
-    - mongodb
-    - memcached
-    - redis-server
-
-before_script:
-    - ./Tests/travis/install-deps.sh
-    - composer self-update
-    - if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
-    - composer update --prefer-dist
-
-script:
-    - ./vendor/bin/phpunit -v --coverage-clover ./build/logs/clover.xml
-    - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
-
-after_script:
-    - php ./vendor/bin/coveralls -v
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+  - nightly
 
 matrix:
-    allow_failures:
-        - php: nightly
-    include:
-        - php: 7.1
-        - php: 7.1
-          env: DEPS="dev"
-        - php: 7.2
-        - php: 7.3
-        - php: nightly
+  allow_failures:
+    - php: nightly
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+services:
+  - mongodb
+  - memcached
+  - redis-server
+
+jobs:
+  include:
+    # Test against lowest dependencies
+    - stage: Test
+      php: 7.1
+      env: COMPOSER_FLAGS="--prefer-lowest"
+
+    # Test against dev dependencies on the newest version
+    - stage: Test
+      php: 7.3
+      env: DEPS="dev"
+
+    - stage: Code Quality
+      php: 7.1
+      script:
+        - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
+      after_script:
+
+before_install:
+  - echo "extension = redis.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension = memcached.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
+install:
+  - if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi;
+  - composer update --prefer-dist $COMPOSER_FLAGS
+
+script:
+  - ./vendor/bin/phpunit -v --coverage-clover clover.xml
+
+after_script:
+  - php ./vendor/bin/coveralls -v
