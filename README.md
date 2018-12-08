@@ -28,5 +28,5 @@ Master: [![Coverage Status](https://coveralls.io/repos/doctrine/DoctrineCacheBun
     }
     ```
 
-Read the [documentation](https://symfony.com/doc/current/bundles/DoctrineCacheBundle/index.html) to learn how to configure and
+Read the [documentation](https://github.com/doctrine/DoctrineCacheBundle/blob/master/Resources/doc/usage.rst) to learn how to configure and
 use your own cache providers.
