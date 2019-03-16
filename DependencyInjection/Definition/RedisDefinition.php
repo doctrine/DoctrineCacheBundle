@@ -72,7 +72,7 @@ class RedisDefinition extends CacheDefinition
         }
 
         if (isset($config['database'])) {
-            $database = (int) $config['database'];
+            $database = $config['database'];
             $connDef->addMethodCall('select', array($database));
         }
 
