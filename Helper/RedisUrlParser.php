@@ -1,0 +1,54 @@
+<?php
+
+namespace Doctrine\Bundle\DoctrineCacheBundle\Helper;
+
+/**
+ * Redis Url Parser
+ *
+ * @author David Gerardin <davidgerah@gmail.com>
+ */
+class RedisUrlParser
+{
+    /**
+     * Extracts parts from the URL in config (if present), updates the config and returns it
+     *
+     * @param array $config
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function parse(array $config): array
+    {
+        if ( ! isset($config['url'])) {
+            return $config;
+        }
+
+        $url = parse_url($config['url']);
+
+        if ($url === false) {
+            throw new \InvalidArgumentException('Malformed parameter "url".');
+        }
+
+        $url = array_map('rawurldecode', $url);
+
+        if (isset($url['host'])) {
+            $config['host'] = $url['host'];
+        }
+
+        if (isset($url['port'])) {
+            $config['port'] = $url['port'];
+        }
+
+        if (isset($url['user'])) {
+            $config['password'] = $url['user'];
+        }
+
+        if (isset($url['path']) && strlen($url['path']) >= 2) {
+            $database = substr($url['path'], 1);
+            $config['database'] = $database;
+        }
+
+        return $config;
+    }
+}
