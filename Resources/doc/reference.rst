@@ -101,6 +101,8 @@ This provider defines no configuration options.
 
 ``connection_id``
     Redis connection service id
+``url``
+    Redis Url (DSN). Will override explicitly set host, port, password, database
 ``host``
     Redis host
 ``port``

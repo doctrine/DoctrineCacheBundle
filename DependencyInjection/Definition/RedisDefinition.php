@@ -46,6 +46,8 @@ class RedisDefinition extends CacheDefinition
             return new Reference($config['connection_id']);
         }
 
+        $config = $this->parseUrl($config);
+
         $host       = $config['host'];
         $port       = $config['port'];
         $connClass  = '%doctrine_cache.redis.connection.class%';
@@ -79,5 +81,48 @@ class RedisDefinition extends CacheDefinition
         $container->setDefinition($connId, $connDef);
 
         return new Reference($connId);
+    }
+
+    /**
+     * Extracts parts from the URL in config (if present), updates the config and returns it
+     *
+     * @param array $config
+     *
+     * @return array
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function parseUrl(array $config): array
+    {
+        if (!isset($config['url'])) {
+            return $config;
+        }
+
+        $url = parse_url($config['url']);
+
+        if ($url === false) {
+            throw new \InvalidArgumentException('Malformed parameter "url".');
+        }
+
+        $url = array_map('rawurldecode', $url);
+
+        if (isset($url['host'])) {
+            $config['host'] = $url['host'];
+        }
+
+        if (isset($url['port'])) {
+            $config['port'] = $url['port'];
+        }
+
+        if (isset($url['user'])) {
+            $config['password'] = $url['user'];
+        }
+
+        if (isset($url['path']) && strlen($url['path']) >= 2) {
+            $database = substr($url['path'], 1);
+            $config['database'] = $database;
+        }
+
+        return $config;
     }
 }

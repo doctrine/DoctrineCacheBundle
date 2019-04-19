@@ -354,6 +354,7 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
+                ->scalarNode('url')->info('A URL with connection information; any parameter value parsed from this string will override explicitly set host, port, password, database')->defaultNull()->end()
                 ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
                 ->scalarNode('password')->defaultNull()->end()
