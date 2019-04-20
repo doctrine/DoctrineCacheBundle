@@ -102,7 +102,7 @@ This provider defines no configuration options.
 ``connection_id``
     Redis connection service id
 ``url``
-    Redis Url (DSN). Will override explicitly set host, port, password, database
+    Redis Url (DSN). Will override explicitly set host, port, password, database. Assumed to be percent-encoded to allow special characters.
 ``host``
     Redis host
 ``port``

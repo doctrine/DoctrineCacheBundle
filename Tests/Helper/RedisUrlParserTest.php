@@ -68,16 +68,36 @@ class UrlParserTest extends TestCase
         $this->assertSame('0', $config['database']);
     }
 
-    public function testParseUrlOverride()
+    public function testParseUrlPartialOverride()
     {
         $config = RedisUrlParser::parse(
             [
                 'url' => 'redis://url_password@host',
+                'port' => '6379',
                 'password' => 'explicit_password',
             ]
         );
 
         $this->assertSame('url_password', $config['password']);
+        $this->assertSame('6379', $config['port']);
+    }
+
+    public function testParseUrlFullOverride()
+    {
+        $config = RedisUrlParser::parse(
+            [
+                'url' => 'redis://url_password@url_host:9736',
+                'host' => 'explicit_host',
+                'port' => '6379',
+                'password' => 'explicit_password',
+                'database' => '1',
+            ]
+        );
+
+        $this->assertSame('url_password', $config['password']);
+        $this->assertSame('url_host', $config['host']);
+        $this->assertSame('9736', $config['port']);
+        $this->assertSame('1', $config['database']);
     }
 
     public function testParseUrlWithoutUrlDoesNothing()
@@ -85,5 +105,23 @@ class UrlParserTest extends TestCase
         $config = ['something' => 'else'];
 
         $this->assertSame($config, RedisUrlParser::parse($config));
+    }
+
+    public function testParseUrlPasswordWithoutEncoding()
+    {
+        $config = RedisUrlParser::parse(['url' => 'redis://VIfb2^$\zA@host']);
+        $this->assertSame('VIfb2^$\zA', $config['password']);
+    }
+
+    public function testParseUrlPasswordWithPercentEncoding()
+    {
+        $config = RedisUrlParser::parse(['url' => 'redis://foobar%2F@host']);
+        $this->assertSame('foobar/', $config['password']);
+    }
+
+    public function testParseUrlPasswordWithPercentSign()
+    {
+        $config = RedisUrlParser::parse(['url' => 'redis://foo%25bar@host']);
+        $this->assertSame('foo%bar', $config['password']);
     }
 }
