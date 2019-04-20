@@ -354,7 +354,16 @@ class Configuration implements ConfigurationInterface
             ->addDefaultsIfNotSet()
             ->children()
                 ->scalarNode('connection_id')->defaultNull()->end()
-                ->scalarNode('url')->info('A URL with connection information; any parameter value parsed from this string will override explicitly set host, port, password, database')->defaultNull()->end()
+                ->scalarNode('url')
+                    ->defaultNull()
+                    ->info('A URL with connection information; any parameter value parsed from this string will override explicitly set host, port, password, database')
+                    ->validate()
+                        ->ifTrue(function ($url) {
+                            return (is_string($url) === false) || (parse_url($url) === false);
+                        })
+                        ->thenInvalid('Malformed parameter "url": %s')
+                    ->end()
+                ->end()
                 ->scalarNode('host')->defaultValue('%doctrine_cache.redis.host%')->end()
                 ->scalarNode('port')->defaultValue('%doctrine_cache.redis.port%')->end()
                 ->scalarNode('password')->defaultNull()->end()

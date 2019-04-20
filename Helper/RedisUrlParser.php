@@ -15,8 +15,6 @@ class RedisUrlParser
      * @param array $config
      *
      * @return array
-     *
-     * @throws \InvalidArgumentException
      */
     public static function parse(array $config): array
     {
@@ -25,11 +23,6 @@ class RedisUrlParser
         }
 
         $url = parse_url($config['url']);
-
-        if ($url === false) {
-            throw new \InvalidArgumentException('Malformed parameter "url".');
-        }
-
         $url = array_map('rawurldecode', $url);
 
         if (isset($url['host'])) {
