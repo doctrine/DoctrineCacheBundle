@@ -3,35 +3,28 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\Acl\Model;
 
 use Doctrine\Common\Cache\CacheProvider;
+use InvalidArgumentException;
+use ReflectionProperty;
 use Symfony\Component\Security\Acl\Model\AclCacheInterface;
 use Symfony\Component\Security\Acl\Model\AclInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
+use function serialize;
+use function unserialize;
 
 /**
  * This class is a wrapper around the actual cache implementation.
- *
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
 class AclCache implements AclCacheInterface
 {
-    /**
-     * @var \Doctrine\Common\Cache\CacheProvider
-     */
+    /** @var CacheProvider */
     private $cache;
 
-    /**
-     * @var \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface
-     */
+    /** @var PermissionGrantingStrategyInterface */
     private $permissionGrantingStrategy;
 
     /**
      * Constructor
-     *
-     * @param \Doctrine\Common\Cache\CacheProvider                                      $cache
-     * @param \Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface $permissionGrantingStrategy
      */
     public function __construct(CacheProvider $cache, PermissionGrantingStrategyInterface $permissionGrantingStrategy)
     {
@@ -44,7 +37,7 @@ class AclCache implements AclCacheInterface
      */
     public function evictFromCacheById($primaryKey)
     {
-        if ( ! $this->cache->contains($primaryKey)) {
+        if (! $this->cache->contains($primaryKey)) {
             return;
         }
 
@@ -69,14 +62,14 @@ class AclCache implements AclCacheInterface
      */
     public function getFromCacheById($primaryKey)
     {
-        if ( ! $this->cache->contains($primaryKey)) {
+        if (! $this->cache->contains($primaryKey)) {
             return null;
         }
 
         $key = $this->cache->fetch($primaryKey);
         $acl = $this->getFromCacheByKey($key);
 
-        if ( ! $acl) {
+        if (! $acl) {
             $this->cache->delete($primaryKey);
 
             return null;
@@ -100,13 +93,13 @@ class AclCache implements AclCacheInterface
      */
     public function putInCache(AclInterface $acl)
     {
-        if (null === $acl->getId()) {
-            throw new \InvalidArgumentException('Transient ACLs cannot be cached.');
+        if ($acl->getId() === null) {
+            throw new InvalidArgumentException('Transient ACLs cannot be cached.');
         }
 
         $parentAcl = $acl->getParentAcl();
 
-        if (null !== $parentAcl) {
+        if ($parentAcl !== null) {
             $this->putInCache($parentAcl);
         }
 
@@ -129,30 +122,30 @@ class AclCache implements AclCacheInterface
      *
      * @param string $serialized
      *
-     * @return \Symfony\Component\Security\Acl\Model\AclInterface
+     * @return AclInterface
      */
     private function unserializeAcl($serialized)
     {
         $acl      = unserialize($serialized);
         $parentId = $acl->getParentAcl();
 
-        if (null !== $parentId) {
+        if ($parentId !== null) {
             $parentAcl = $this->getFromCacheById($parentId);
 
-            if (null === $parentAcl) {
+            if ($parentAcl === null) {
                 return null;
             }
 
             $acl->setParentAcl($parentAcl);
         }
 
-        $reflectionProperty = new \ReflectionProperty($acl, 'permissionGrantingStrategy');
+        $reflectionProperty = new ReflectionProperty($acl, 'permissionGrantingStrategy');
 
         $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($acl, $this->permissionGrantingStrategy);
         $reflectionProperty->setAccessible(false);
 
-        $aceAclProperty = new \ReflectionProperty('Symfony\Component\Security\Acl\Domain\Entry', 'acl');
+        $aceAclProperty = new ReflectionProperty('Symfony\Component\Security\Acl\Domain\Entry', 'acl');
 
         $aceAclProperty->setAccessible(true);
 
@@ -164,7 +157,7 @@ class AclCache implements AclCacheInterface
             $aceAclProperty->setValue($ace, $acl);
         }
 
-        $aceClassFieldProperty = new \ReflectionProperty($acl, 'classFieldAces');
+        $aceClassFieldProperty = new ReflectionProperty($acl, 'classFieldAces');
 
         $aceClassFieldProperty->setAccessible(true);
 
@@ -176,7 +169,7 @@ class AclCache implements AclCacheInterface
 
         $aceClassFieldProperty->setAccessible(false);
 
-        $aceObjectFieldProperty = new \ReflectionProperty($acl, 'objectFieldAces');
+        $aceObjectFieldProperty = new ReflectionProperty($acl, 'objectFieldAces');
 
         $aceObjectFieldProperty->setAccessible(true);
 
@@ -196,8 +189,6 @@ class AclCache implements AclCacheInterface
     /**
      * Returns the key for the object identity
      *
-     * @param \Symfony\Component\Security\Acl\Model\ObjectIdentityInterface $oid
-     *
      * @return string
      */
     private function createKeyFromIdentity(ObjectIdentityInterface $oid)
@@ -212,7 +203,7 @@ class AclCache implements AclCacheInterface
      */
     private function evictFromCacheByKey($key)
     {
-        if ( ! $this->cache->contains($key)) {
+        if (! $this->cache->contains($key)) {
             return;
         }
 
@@ -224,11 +215,11 @@ class AclCache implements AclCacheInterface
      *
      * @param string $key
      *
-     * @return null|\Symfony\Component\Security\Acl\Model\AclInterface
+     * @return AclInterface|null
      */
     private function getFromCacheByKey($key)
     {
-        if ( ! $this->cache->contains($key)) {
+        if (! $this->cache->contains($key)) {
             return null;
         }
 

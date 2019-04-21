@@ -2,6 +2,9 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
+use function extension_loaded;
+use function fsockopen;
+
 /**
  * @group Functional
  * @group Riak
@@ -15,13 +18,15 @@ class RiakCacheTest extends BaseCacheTest
     {
         parent::setUp();
 
-        if ( ! extension_loaded('riak')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the use of riak');
+        if (! extension_loaded('riak')) {
+            $this->markTestSkipped('The ' . self::class . ' requires the use of riak');
         }
 
-        if (@fsockopen('localhost', 8087) === false) {
-            $this->markTestSkipped('The ' . __CLASS__ .' cannot connect to riak');
+        if (@fsockopen('localhost', 8087) !== false) {
+            return;
         }
+
+        $this->markTestSkipped('The ' . self::class . ' cannot connect to riak');
     }
 
     /**
@@ -30,8 +35,7 @@ class RiakCacheTest extends BaseCacheTest
     protected function createCacheDriver()
     {
         $container = $this->compileContainer('riak');
-        $cache     = $container->get('doctrine_cache.providers.my_riak_cache');
 
-        return $cache;
+        return $container->get('doctrine_cache.providers.my_riak_cache');
     }
 }

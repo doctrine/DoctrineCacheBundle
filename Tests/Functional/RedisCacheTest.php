@@ -3,13 +3,14 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
 use Symfony\Component\DependencyInjection\Definition;
+use function extension_loaded;
+use function fsockopen;
 
 /**
  * Redis Driver Test
  *
  * @group Functional
  * @group Redis
- * @author Tomasz Wójcik <tomasz.prgtw.wojcik@gmail.com>
  */
 class RedisCacheTest extends BaseCacheTest
 {
@@ -18,31 +19,30 @@ class RedisCacheTest extends BaseCacheTest
      */
     protected function createCacheDriver()
     {
-        if ( ! extension_loaded('redis')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the redis extension');
+        if (! extension_loaded('redis')) {
+            $this->markTestSkipped('The ' . self::class . ' requires the redis extension');
         }
 
-        if (false === @fsockopen('localhost', 6379)) {
-            $this->markTestSkipped('The ' . __CLASS__ .' cannot connect to redis');
+        if (@fsockopen('localhost', 6379) === false) {
+            $this->markTestSkipped('The ' . self::class . ' cannot connect to redis');
         }
 
         $container = $this->compileContainer('redis');
-        $cache     = $container->get('doctrine_cache.providers.my_redis_cache');
 
-        return $cache;
+        return $container->get('doctrine_cache.providers.my_redis_cache');
     }
 
     /**
-     * @dataProvider provideProviders
-     *
      * @param string $serviceId
      * @param string $methodUsed
+     *
+     * @dataProvider provideProviders
      */
     public function testPersistentConnection($serviceId, $methodUsed)
     {
-        $container = $this->compileContainer('redis');
+        $container  = $this->compileContainer('redis');
         $definition = $container->getDefinition($serviceId);
-        $calls = $definition->getMethodCalls();
+        $calls      = $definition->getMethodCalls();
 
         $this->assertCount(1, $calls);
         /** @var Definition $redisDefinition */
@@ -52,9 +52,9 @@ class RedisCacheTest extends BaseCacheTest
 
     public function provideProviders()
     {
-        return array(
-            'not_persistent' => array('doctrine_cache.providers.my_redis_cache', 'connect'),
-            'persistent' => array('doctrine_cache.providers.my_persistent_redis_cache', 'pconnect'),
-        );
+        return [
+            'not_persistent' => ['doctrine_cache.providers.my_redis_cache', 'connect'],
+            'persistent' => ['doctrine_cache.providers.my_persistent_redis_cache', 'pconnect'],
+        ];
     }
 }

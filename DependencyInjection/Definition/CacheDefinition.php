@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -16,14 +16,10 @@ use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * Cache Definition.
- *
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 abstract class CacheDefinition
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $type;
 
     /**
@@ -35,10 +31,8 @@ abstract class CacheDefinition
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\Definition         $service
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      */
     abstract public function configure($name, array $config, Definition $service, ContainerBuilder $container);
 }

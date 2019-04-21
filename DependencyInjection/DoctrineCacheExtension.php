@@ -1,6 +1,8 @@
 <?php
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
+use LogicException;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,27 +10,19 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use function interface_exists;
 
 /**
  * Cache Bundle Extension
- *
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
- * @author Danilo Cabello <danilo.cabello@gmail.com>
  */
 class DoctrineCacheExtension extends Extension
 {
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader
-     */
+    /** @var CacheProviderLoader */
     private $loader;
 
-    /**
-     * @param \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader $loader
-     */
-    public function __construct(CacheProviderLoader $loader = null)
+    public function __construct(?CacheProviderLoader $loader = null)
     {
-        $this->loader = $loader ?: new CacheProviderLoader;
+        $this->loader = $loader ?: new CacheProviderLoader();
     }
 
     /**
@@ -51,25 +45,24 @@ class DoctrineCacheExtension extends Extension
     }
 
     /**
-     * @param array                                                     $rootConfig
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param array $rootConfig
      */
     protected function loadAcl(array $rootConfig, ContainerBuilder $container)
     {
-        if ( ! isset($rootConfig['acl_cache']['id'])) {
+        if (! isset($rootConfig['acl_cache']['id'])) {
             return;
         }
 
-        if ( ! interface_exists('Symfony\Component\Security\Acl\Model\AclInterface')) {
-            throw new \LogicException('You must install symfony/security-acl in order to use the acl_cache functionality.');
+        if (! interface_exists('Symfony\Component\Security\Acl\Model\AclInterface')) {
+            throw new LogicException('You must install symfony/security-acl in order to use the acl_cache functionality.');
         }
 
         $aclCacheDefinition = new Definition(
             $container->getParameter('doctrine_cache.security.acl.cache.class'),
-            array(
+            [
                 new Reference($rootConfig['acl_cache']['id']),
                 new Reference('security.acl.permission_granting_strategy'),
-            )
+            ]
         );
 
         $aclCacheDefinition->setPublic(false);
@@ -79,8 +72,7 @@ class DoctrineCacheExtension extends Extension
     }
 
     /**
-     * @param array                                                     $rootConfig
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param array $rootConfig
      */
     protected function loadCacheProviders(array $rootConfig, ContainerBuilder $container)
     {
@@ -90,8 +82,7 @@ class DoctrineCacheExtension extends Extension
     }
 
     /**
-     * @param array                                                     $rootConfig
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param array $rootConfig
      */
     protected function loadCacheAliases(array $rootConfig, ContainerBuilder $container)
     {
@@ -101,8 +92,7 @@ class DoctrineCacheExtension extends Extension
     }
 
     /**
-     * @param array                                                     $rootConfig
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param array $rootConfig
      */
     protected function loadCustomProviders(array $rootConfig, ContainerBuilder $container)
     {
@@ -112,9 +102,11 @@ class DoctrineCacheExtension extends Extension
 
             $container->setParameter($providerParameterName, $rootConfig['prototype']);
 
-            if ($rootConfig['definition_class']) {
-                $container->setParameter($definitionParameterName, $rootConfig['definition_class']);
+            if (! $rootConfig['definition_class']) {
+                continue;
             }
+
+            $container->setParameter($definitionParameterName, $rootConfig['definition_class']);
         }
     }
 

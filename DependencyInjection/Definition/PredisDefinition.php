@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -14,11 +14,10 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use function sprintf;
 
 /**
  * Predis definition.
- *
- * @author Ivo Bathke <ivo.bathke@gmail.com>
  */
 class PredisDefinition extends CacheDefinition
 {
@@ -28,16 +27,15 @@ class PredisDefinition extends CacheDefinition
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
         $redisConf = $config['predis'];
-        $connRef = $this->getConnectionReference($name, $redisConf, $container);
+        $connRef   = $this->getConnectionReference($name, $redisConf, $container);
         $service->addArgument($connRef);
     }
 
     /**
-     * @param string                                                  $name
-     * @param array                                                   $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
+     * @param string $name
+     * @param array  $config
      *
-     * @return \Symfony\Component\DependencyInjection\Reference
+     * @return Reference
      */
     private function getConnectionReference($name, array $config, ContainerBuilder $container)
     {
@@ -45,11 +43,11 @@ class PredisDefinition extends CacheDefinition
             return new Reference($config['client_id']);
         }
 
-        $parameters = array(
+        $parameters = [
             'scheme' => $config['scheme'],
             'host'   => $config['host'],
             'port'   => $config['port'],
-        );
+        ];
 
         if ($config['password']) {
             $parameters['password'] = $config['password'];
@@ -70,8 +68,8 @@ class PredisDefinition extends CacheDefinition
         }
 
         $clientClass = '%doctrine_cache.predis.client.class%';
-        $clientId = sprintf('doctrine_cache.services.%s_predis.client', $name);
-        $clientDef = new Definition($clientClass);
+        $clientId    = sprintf('doctrine_cache.services.%s_predis.client', $name);
+        $clientDef   = new Definition($clientClass);
 
         $clientDef->addArgument($parameters);
         $clientDef->addArgument($options);

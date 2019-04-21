@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -14,11 +14,10 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use function sprintf;
 
 /**
  * Memcached definition.
- *
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class MemcachedDefinition extends CacheDefinition
 {
@@ -30,15 +29,14 @@ class MemcachedDefinition extends CacheDefinition
         $memcachedConf = $config['memcached'];
         $connRef       = $this->getConnectionReference($name, $memcachedConf, $container);
 
-        $service->addMethodCall('setMemcached', array($connRef));
+        $service->addMethodCall('setMemcached', [$connRef]);
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      *
-     * @return \Symfony\Component\DependencyInjection\Reference
+     * @return Reference
      */
     private function getConnectionReference($name, array $config, ContainerBuilder $container)
     {
@@ -46,16 +44,16 @@ class MemcachedDefinition extends CacheDefinition
             return new Reference($config['connection_id']);
         }
 
-        $connClass  = '%doctrine_cache.memcached.connection.class%';
-        $connId     = sprintf('doctrine_cache.services.%s.connection', $name);
-        $connDef    = new Definition($connClass);
+        $connClass = '%doctrine_cache.memcached.connection.class%';
+        $connId    = sprintf('doctrine_cache.services.%s.connection', $name);
+        $connDef   = new Definition($connClass);
 
         if (isset($config['persistent_id']) === true) {
             $connDef->addArgument($config['persistent_id']);
         }
 
         foreach ($config['servers'] as $host => $server) {
-            $connDef->addMethodCall('addServer', array($host, $server['port']));
+            $connDef->addMethodCall('addServer', [$host, $server['port']]);
         }
 
         $connDef->setPublic(false);

@@ -1,49 +1,39 @@
 <?php
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Alias;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use function hash;
+use function in_array;
 
 /**
  * Symfony bridge adpter
- *
- * @author Kinn Coelho Julião <kinncj@php.net>
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class SymfonyBridgeAdapter
 {
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader
-     */
+    /** @var CacheProviderLoader */
     private $cacheProviderLoader;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $objectManagerName;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $mappingResourceName;
 
     /**
-     * @param \Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\CacheProviderLoader  $cacheProviderLoader
-     * @param string                                                                        $objectManagerName
-     * @param string                                                                        $mappingResourceName
+     * @param string $objectManagerName
+     * @param string $mappingResourceName
      */
     public function __construct(CacheProviderLoader $cacheProviderLoader, $objectManagerName, $mappingResourceName)
     {
-        $this->cacheProviderLoader  = $cacheProviderLoader;
-        $this->objectManagerName    = $objectManagerName;
-        $this->mappingResourceName  = $mappingResourceName;
+        $this->cacheProviderLoader = $cacheProviderLoader;
+        $this->objectManagerName   = $objectManagerName;
+        $this->mappingResourceName = $mappingResourceName;
     }
 
-    /**
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder $container
-     */
     public function loadServicesConfiguration(ContainerBuilder $container)
     {
         $locator = new FileLocator(__DIR__ . '/../Resources/config/');
@@ -53,78 +43,77 @@ class SymfonyBridgeAdapter
     }
 
     /**
-     * @param string                                                    $cacheName
-     * @param string                                                    $objectManagerName
-     * @param array                                                     $cacheDriver
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $cacheName
+     * @param string $objectManagerName
+     * @param array  $cacheDriver
      *
      * @return string
      */
     public function loadCacheDriver($cacheName, $objectManagerName, array $cacheDriver, ContainerBuilder $container)
     {
         $id       = $this->getObjectManagerElementName($objectManagerName . '_' . $cacheName);
-        $host     = isset($cacheDriver['host']) ? $cacheDriver['host'] : null;
-        $port     = isset($cacheDriver['port']) ? $cacheDriver['port'] : null;
-        $password = isset($cacheDriver['password']) ? $cacheDriver['password'] : null;
-        $database = isset($cacheDriver['database']) ? $cacheDriver['database'] : null;
+        $host     = $cacheDriver['host'] ?? null;
+        $port     = $cacheDriver['port'] ?? null;
+        $password = $cacheDriver['password'] ?? null;
+        $database = $cacheDriver['database'] ?? null;
         $type     = $cacheDriver['type'];
 
-        if ($type == 'service') {
+        if ($type === 'service') {
             $container->setAlias($id, new Alias($cacheDriver['id'], false));
 
             return $id;
         }
 
-        $config = array(
-            'aliases'   => array($id),
-            $type       => array(),
+        $config = [
+            'aliases'   => [$id],
+            $type       => [],
             'type'      => $type,
             'namespace' => null,
-        );
+        ];
 
-        if ( ! isset($cacheDriver['namespace'])) {
+        if (! isset($cacheDriver['namespace'])) {
             // generate a unique namespace for the given application
-            $seed = '_'.$container->getParameter('kernel.root_dir');
+            $seed = '_' . $container->getParameter('kernel.root_dir');
 
             if ($container->hasParameter('cache.prefix.seed')) {
-                $seed = '.'.$container->getParameterBag()->resolveValue($container->getParameter('cache.prefix.seed'));
+                $seed = '.' . $container->getParameterBag()->resolveValue($container->getParameter('cache.prefix.seed'));
             }
 
-            $seed .= '.'.$container->getParameter('kernel.name').'.'.$container->getParameter('kernel.environment');
+            $seed     .= '.' . $container->getParameter('kernel.name') . '.' . $container->getParameter('kernel.environment');
             $hash      = hash('sha256', $seed);
-            $namespace = 'sf_' . $this->mappingResourceName .'_' . $objectManagerName . '_' . $hash;
+            $namespace = 'sf_' . $this->mappingResourceName . '_' . $objectManagerName . '_' . $hash;
 
             $cacheDriver['namespace'] = $namespace;
         }
-        
+
         $config['namespace'] = $cacheDriver['namespace'];
 
-        if (in_array($type, array('memcache', 'memcached'))) {
-            $host = !empty($host) ? $host : 'localhost';
-            $config[$type]['servers'][$host] = array(
+        if (in_array($type, ['memcache', 'memcached'])) {
+            $host                            = ! empty($host) ? $host : 'localhost';
+            $config[$type]['servers'][$host] = [
                 'host' => $host,
-                'port' => !empty($port) ? $port : 11211,
-            );
+                'port' => ! empty($port) ? $port : 11211,
+            ];
         }
 
         if ($type === 'redis') {
-            $config[$type] = array(
-                'host' => !empty($host) ? $host : 'localhost',
-                'port' => !empty($port) ? $port : 6379,
-                'password' => !empty($password) ? $password : null,
-                'database' => !empty($database) ? $database : 0
-            );
+            $config[$type] = [
+                'host' => ! empty($host) ? $host : 'localhost',
+                'port' => ! empty($port) ? $port : 6379,
+                'password' => ! empty($password) ? $password : null,
+                'database' => ! empty($database) ? $database : 0,
+            ];
         }
 
         if ($type === 'predis') {
-            $config[$type] = array(
+            $config[$type] = [
                 'scheme' => 'tcp',
-                'host' => !empty($host) ? $host : 'localhost',
-                'port' => !empty($port) ? $port : 6379,
-                'password' => !empty($password) ? $password : null,
-                'database' => !empty($database) ? $database : 0,
+                'host' => ! empty($host) ? $host : 'localhost',
+                'port' => ! empty($port) ? $port : 6379,
+                'password' => ! empty($password) ? $password : null,
+                'database' => ! empty($database) ? $database : 0,
                 'timeout' => null,
-            );
+            ];
         }
 
         $this->cacheProviderLoader->loadCacheProvider($id, $config, $container);
@@ -133,13 +122,12 @@ class SymfonyBridgeAdapter
     }
 
     /**
-     * @param array                                                     $objectManager
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
-     * @param string                                                    $cacheName
+     * @param array  $objectManager
+     * @param string $cacheName
      */
     public function loadObjectManagerCacheDriver(array $objectManager, ContainerBuilder $container, $cacheName)
     {
-        $this->loadCacheDriver($cacheName, $objectManager['name'], $objectManager[$cacheName.'_driver'], $container);
+        $this->loadCacheDriver($cacheName, $objectManager['name'], $objectManager[$cacheName . '_driver'], $container);
     }
 
     /**

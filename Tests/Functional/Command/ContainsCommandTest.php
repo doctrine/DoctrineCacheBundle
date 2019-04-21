@@ -2,24 +2,18 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Doctrine\Bundle\DoctrineCacheBundle\Command\ContainsCommand;
+use Symfony\Component\Console\Tester\CommandTester;
 
 /**
  * Functional test for delete command.
- *
- * @author Alan Doucette <dragonwize@gmail.com>
  */
 class ContainsCommandTest extends CommandTestCase
 {
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\Command\ContainsCommand
-     */
+    /** @var ContainsCommand */
     protected $command;
 
-    /**
-     * @var \Symfony\Component\Console\Tester\CommandTester
-     */
+    /** @var CommandTester */
     protected $tester;
 
     /**
@@ -38,10 +32,10 @@ class ContainsCommandTest extends CommandTestCase
      */
     public function testContainsFalse()
     {
-        $this->tester->execute(array(
+        $this->tester->execute([
             'cache-name' => $this->cacheName,
             'cache-id'   => $this->cacheId,
-        ));
+        ]);
         $this->assertEquals("FALSE\n", $this->tester->getDisplay());
     }
 
@@ -51,10 +45,10 @@ class ContainsCommandTest extends CommandTestCase
     public function testContainsTrue()
     {
         $this->provider->save($this->cacheId, 'hello world');
-        $this->tester->execute(array(
+        $this->tester->execute([
             'cache-name' => $this->cacheName,
             'cache-id' => $this->cacheId,
-        ));
+        ]);
         $this->assertEquals("TRUE\n", $this->tester->getDisplay());
     }
 }

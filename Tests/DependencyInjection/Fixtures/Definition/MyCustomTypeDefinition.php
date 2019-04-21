@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -23,7 +23,7 @@ class MyCustomTypeDefinition extends CacheDefinition
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
         foreach ($config['custom_provider']['options'] as $name => $value) {
-            $service->addMethodCall('addConfig', array($name, $value));
+            $service->addMethodCall('addConfig', [$name, $value]);
         }
     }
 }

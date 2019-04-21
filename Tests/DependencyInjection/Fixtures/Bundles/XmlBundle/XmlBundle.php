@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Doctrine Bundle
  *
  * The code was originally distributed inside the Symfony framework.

@@ -3,6 +3,8 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use function extension_loaded;
+use function fsockopen;
 
 /**
  * @group Functional
@@ -23,13 +25,15 @@ class MemcachedCacheTest extends BaseCacheTest
     {
         parent::setUp();
 
-        if ( ! extension_loaded('memcached')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the use of memcached');
+        if (! extension_loaded('memcached')) {
+            $this->markTestSkipped('The ' . self::class . ' requires the use of memcached');
         }
 
-        if (@fsockopen('localhost', 11211) === false) {
-            $this->markTestSkipped('The ' . __CLASS__ .' cannot connect to memcached');
+        if (@fsockopen('localhost', 11211) !== false) {
+            return;
         }
+
+        $this->markTestSkipped('The ' . self::class . ' cannot connect to memcached');
     }
 
     protected function overrideContainer(ContainerBuilder $container)
@@ -43,8 +47,7 @@ class MemcachedCacheTest extends BaseCacheTest
     protected function createCacheDriver()
     {
         $container = $this->compileContainer('memcached');
-        $cache     = $container->get('doctrine_cache.providers.my_memcached_cache');
 
-        return $cache;
+        return $container->get('doctrine_cache.providers.my_memcached_cache');
     }
 }

@@ -1,15 +1,20 @@
 <?php
+
 namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\NodeInterface;
+use function array_diff;
+use function array_keys;
+use function in_array;
+use function is_scalar;
+use function key;
+use function method_exists;
+use function reset;
 
 /**
  * Cache Bundle Configuration
- *
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class Configuration implements ConfigurationInterface
 {
@@ -43,14 +48,11 @@ class Configuration implements ConfigurationInterface
     public function resolveNodeType(array $parameters)
     {
         $values = $this->getProviderParameters($parameters);
-        $type   = key($values);
 
-        return $type;
+        return key($values);
     }
 
     /**
-     * @param \Symfony\Component\Config\Definition\NodeInterface $tree
-     *
      * @return array
      */
     public function getProviderNames(NodeInterface $tree)
@@ -60,24 +62,22 @@ class Configuration implements ConfigurationInterface
                 continue;
             }
 
-            $children  = $providers->getPrototype()->getChildren();
-            $providers =  array_diff(array_keys($children), array('type', 'aliases', 'namespace'));
+            $children = $providers->getPrototype()->getChildren();
 
-            return $providers;
+            return array_diff(array_keys($children), ['type', 'aliases', 'namespace']);
         }
 
-        return array();
+        return [];
     }
 
     /**
-     * @param string                                                $type
-     * @param \Symfony\Component\Config\Definition\NodeInterface    $tree
+     * @param string $type
      *
-     * @return boolean
+     * @return bool
      */
     public function isCustomProvider($type, NodeInterface $tree)
     {
-        return ( ! in_array($type, $this->getProviderNames($tree)));
+        return ! in_array($type, $this->getProviderNames($tree));
     }
 
     /**
@@ -85,25 +85,23 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $self            = $this;
-        $builder         = new TreeBuilder('doctrine_cache');
-        $node            = $this->getRootNode($builder, 'doctrine_cache');
-        $normalization   = function ($conf) use ($self, $builder) {
-            $conf['type'] = isset($conf['type'])
-                ? $conf['type']
-                : $self->resolveNodeType($conf);
+        $self          = $this;
+        $builder       = new TreeBuilder('doctrine_cache');
+        $node          = $this->getRootNode($builder, 'doctrine_cache');
+        $normalization = static function ($conf) use ($self, $builder) {
+            $conf['type'] = $conf['type'] ?? $self->resolveNodeType($conf);
 
             if ($self->isCustomProvider($conf['type'], $builder->buildTree())) {
                 $params  = $self->getProviderParameters($conf);
                 $options = reset($params);
-                $conf    = array(
+                $conf    = [
                     'type'            => 'custom_provider',
-                    'namespace' => isset($conf['namespace']) ? $conf['namespace'] : null ,
-                    'custom_provider' => array(
+                    'namespace'       => $conf['namespace'] ?? null,
+                    'custom_provider' => [
                         'type'      => $conf['type'],
                         'options'   => $options ?: null,
-                    )
-                );
+                    ],
+                ];
             }
 
             return $conf;
@@ -114,8 +112,8 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('acl_cache')
                     ->beforeNormalization()
                         ->ifString()
-                        ->then(function ($id) {
-                            return array('id' => $id);
+                        ->then(static function ($id) {
+                            return ['id' => $id];
                         })
                     ->end()
                     ->addDefaultsIfNotSet()
@@ -149,8 +147,8 @@ class Configuration implements ConfigurationInterface
                 ->useAttributeAsKey('name')
                     ->prototype('array')
                         ->beforeNormalization()
-                            ->ifTrue(function ($v) use ($self, $builder) {
-                                return ( ! isset($v['type']) || ! $self->isCustomProvider($v['type'], $builder->buildTree()));
+                            ->ifTrue(static function ($v) use ($self, $builder) {
+                                return ! isset($v['type']) || ! $self->isCustomProvider($v['type'], $builder->buildTree());
                             })
                             ->then($normalization)
                         ->end()
@@ -185,8 +183,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $builder;
     }
@@ -194,20 +191,19 @@ class Configuration implements ConfigurationInterface
     /**
      * @param string $name
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addBasicProviderNode($name)
     {
         $builder = new TreeBuilder($name);
-        $node    = $this->getRootNode($builder, $name);
 
-        return $node;
+        return $this->getRootNode($builder, $name);
     }
 
     /**
      * Build custom node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addCustomProviderNode()
     {
@@ -221,8 +217,7 @@ class Configuration implements ConfigurationInterface
                     ->useAttributeAsKey('name')
                     ->prototype('scalar')->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -230,7 +225,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build chain node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addChainNode()
     {
@@ -243,8 +238,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('providers')
                     ->prototype('scalar')->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -252,7 +246,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build memcache node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addMemcacheNode()
     {
@@ -271,11 +265,11 @@ class Configuration implements ConfigurationInterface
                 ->normalizeKeys(false)
                     ->prototype('array')
                         ->beforeNormalization()
-                            ->ifTrue(function ($v) {
+                            ->ifTrue(static function ($v) {
                                 return is_scalar($v);
                             })
-                            ->then(function ($val) {
-                                return array('port' => $val);
+                            ->then(static function ($val) {
+                                return ['port' => $val];
                             })
                         ->end()
                         ->children()
@@ -283,13 +277,14 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('port')->defaultValue($port)->end()
                         ->end()
                     ->end()
-                    ->defaultValue(array($host => array(
-                        'host' => $host,
-                        'port' => $port
-                    )))
+                    ->defaultValue([
+                        $host => [
+                            'host' => $host,
+                            'port' => $port,
+                        ],
+                    ])
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -297,7 +292,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build memcached node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addMemcachedNode()
     {
@@ -317,11 +312,11 @@ class Configuration implements ConfigurationInterface
                 ->normalizeKeys(false)
                     ->prototype('array')
                         ->beforeNormalization()
-                            ->ifTrue(function ($v) {
+                            ->ifTrue(static function ($v) {
                                 return is_scalar($v);
                             })
-                            ->then(function ($val) {
-                                return array('port' => $val);
+                            ->then(static function ($val) {
+                                return ['port' => $val];
                             })
                         ->end()
                         ->children()
@@ -329,13 +324,14 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('port')->defaultValue($port)->end()
                         ->end()
                     ->end()
-                    ->defaultValue(array($host => array(
-                        'host' => $host,
-                        'port' => $port
-                    )))
+                    ->defaultValue([
+                        $host => [
+                            'host' => $host,
+                            'port' => $port,
+                        ],
+                    ])
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -343,7 +339,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build redis node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addRedisNode()
     {
@@ -360,8 +356,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('timeout')->defaultNull()->end()
                 ->scalarNode('database')->defaultNull()->end()
                 ->booleanNode('persistent')->defaultFalse()->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -369,7 +364,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build predis node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addPredisNode()
     {
@@ -390,8 +385,7 @@ class Configuration implements ConfigurationInterface
                   ->useAttributeAsKey('name')
                   ->prototype('scalar')->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -399,7 +393,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build riak node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addRiakNode()
     {
@@ -420,8 +414,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('n_value')->defaultNull()->end()
                     ->end()
                 ->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -429,7 +422,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build couchbase node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addCouchbaseNode()
     {
@@ -443,13 +436,12 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('connection_id')->defaultNull()->end()
                 ->arrayNode('hostnames')
                     ->prototype('scalar')->end()
-                    ->defaultValue(array('%doctrine_cache.couchbase.hostnames%'))
+                    ->defaultValue(['%doctrine_cache.couchbase.hostnames%'])
                 ->end()
                 ->scalarNode('username')->defaultNull()->end()
                 ->scalarNode('password')->defaultNull()->end()
                 ->scalarNode('bucket_name')->defaultValue('doctrine_cache')->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -457,7 +449,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build mongodb node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addMongoNode()
     {
@@ -472,8 +464,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('database_name')->defaultValue('doctrine_cache')->end()
                 ->scalarNode('collection_name')->defaultValue('doctrine_cache')->end()
                 ->scalarNode('server')->defaultValue('%doctrine_cache.mongodb.server%')->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -481,7 +472,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build php_file node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addPhpFileNode()
     {
@@ -494,8 +485,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/phpfile')->end()
                 ->scalarNode('extension')->defaultNull()->end()
                 ->integerNode('umask')->defaultValue(0002)->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -503,7 +493,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build file_system node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addFileSystemNode()
     {
@@ -516,8 +506,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('directory')->defaultValue('%kernel.cache_dir%/doctrine/cache/file_system')->end()
                 ->scalarNode('extension')->defaultNull()->end()
                 ->integerNode('umask')->defaultValue(0002)->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -525,7 +514,7 @@ class Configuration implements ConfigurationInterface
     /**
      * Build sqlite3 node configuration definition
      *
-     * @return \Symfony\Component\Config\Definition\Builder\TreeBuilder
+     * @return TreeBuilder
      */
     private function addSqlite3Node()
     {
@@ -538,8 +527,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('connection_id')->defaultNull()->end()
                 ->scalarNode('file_name')->defaultNull()->end()
                 ->scalarNode('table_name')->defaultNull()->end()
-            ->end()
-        ;
+            ->end();
 
         return $node;
     }
@@ -547,7 +535,7 @@ class Configuration implements ConfigurationInterface
     private function getRootNode(TreeBuilder $treeBuilder, $name)
     {
         // BC layer for symfony/config 4.1 and older
-        if ( ! \method_exists($treeBuilder, 'getRootNode')) {
+        if (! method_exists($treeBuilder, 'getRootNode')) {
             return $treeBuilder->root($name);
         }
 

@@ -2,28 +2,23 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Acl\Domain;
 
-use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
-use Symfony\Component\Security\Acl\Domain\Acl;
 use Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache;
 use Doctrine\Common\Cache\ArrayCache;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Security\Acl\Domain\Acl;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy;
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
-class AclCacheTest extends \PHPUnit\Framework\TestCase
+class AclCacheTest extends TestCase
 {
-    /**
-     * @var \Doctrine\Common\Cache\ArrayCache
-     */
+    /** @var ArrayCache */
     private $cacheProvider;
 
-    /**
-     * @var \Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy
-     */
+    /** @var PermissionGrantingStrategy */
     private $permissionGrantingStrategy;
 
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\Acl\Model\AclCache
-     */
+    /** @var AclCache */
     private $aclCache;
 
     public function setUp()
@@ -56,10 +51,10 @@ class AclCacheTest extends \PHPUnit\Framework\TestCase
 
     public function provideDataForEvictFromCacheById()
     {
-        return array(
-            array(false, 'bar'),
-            array(true, 'test'),
-        );
+        return [
+            [false, 'bar'],
+            [true, 'test'],
+        ];
     }
 
     /**
@@ -76,9 +71,9 @@ class AclCacheTest extends \PHPUnit\Framework\TestCase
 
     public function provideDataForEvictFromCacheByIdentity()
     {
-        return array(
-            array(false, new ObjectIdentity(1, 'foo')),
-        );
+        return [
+            [false, new ObjectIdentity(1, 'foo')],
+        ];
     }
 
     /**
@@ -86,7 +81,7 @@ class AclCacheTest extends \PHPUnit\Framework\TestCase
      */
     public function testPutInCacheWithoutId()
     {
-        $acl = new Acl(null, new ObjectIdentity(1, 'foo'), $this->permissionGrantingStrategy, array(), false);
+        $acl = new Acl(null, new ObjectIdentity(1, 'foo'), $this->permissionGrantingStrategy, [], false);
 
         $this->aclCache->putInCache($acl);
     }
@@ -171,7 +166,7 @@ class AclCacheTest extends \PHPUnit\Framework\TestCase
             'oid' . $id,
             new ObjectIdentity('class', 'foo' . $id),
             $this->permissionGrantingStrategy,
-            array(),
+            [],
             $depth > 0
         );
 

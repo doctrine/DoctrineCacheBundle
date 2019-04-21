@@ -14,8 +14,7 @@ class FileSystemCacheTest extends BaseCacheTest
     protected function createCacheDriver()
     {
         $container = $this->compileContainer('file_system');
-        $cache     = $container->get('doctrine_cache.providers.my_filesystem_cache');
 
-        return $cache;
+        return $container->get('doctrine_cache.providers.my_filesystem_cache');
     }
 }

@@ -2,14 +2,16 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Command;
 
+use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function get_class;
+use function method_exists;
+use function sprintf;
 
 /**
  * Flush a cache provider.
- *
- * @author Alan Doucette <dragonwize@gmail.com>
  */
 class FlushCommand extends CacheCommand
 {
@@ -19,7 +21,7 @@ class FlushCommand extends CacheCommand
     protected function configure()
     {
         $this->setName('doctrine:cache:flush')
-            ->setAliases(array('doctrine:cache:clear'))
+            ->setAliases(['doctrine:cache:clear'])
             ->setDescription('Flush a given cache')
             ->addArgument('cache-name', InputArgument::REQUIRED, 'Which cache provider to flush?');
     }
@@ -32,8 +34,8 @@ class FlushCommand extends CacheCommand
         $cacheName     = $input->getArgument('cache-name');
         $cacheProvider = $this->getCacheProvider($cacheName);
 
-        if ( ! method_exists($cacheProvider, 'flushAll')) {
-            throw new \RuntimeException('Cache provider does not implement a flushAll method.');
+        if (! method_exists($cacheProvider, 'flushAll')) {
+            throw new RuntimeException('Cache provider does not implement a flushAll method.');
         }
 
         $cacheProviderName = get_class($cacheProvider);

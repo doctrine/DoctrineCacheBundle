@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -14,11 +14,12 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use const SQLITE3_OPEN_CREATE;
+use const SQLITE3_OPEN_READWRITE;
+use function sprintf;
 
 /**
  * Sqlite3 definition.
- *
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
 class Sqlite3Definition extends CacheDefinition
 {
@@ -31,15 +32,14 @@ class Sqlite3Definition extends CacheDefinition
         $tableName     = $sqlite3Conf['table_name'];
         $connectionRef = $this->getConnectionReference($name, $sqlite3Conf, $container);
 
-        $service->setArguments(array($connectionRef, $tableName));
+        $service->setArguments([$connectionRef, $tableName]);
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      *
-     * @return \Symfony\Component\DependencyInjection\Reference
+     * @return Reference
      */
     private function getConnectionReference($name, array $config, ContainerBuilder $container)
     {
@@ -50,7 +50,7 @@ class Sqlite3Definition extends CacheDefinition
         $fileName  = $config['file_name'];
         $connClass = '%doctrine_cache.sqlite3.connection.class%';
         $connId    = sprintf('doctrine_cache.services.%s.connection', $name);
-        $connDef   = new Definition($connClass, array($fileName, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE));
+        $connDef   = new Definition($connClass, [$fileName, SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE]);
 
         $connDef->setPublic(false);
         $container->setDefinition($connId, $connDef);

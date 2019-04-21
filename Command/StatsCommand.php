@@ -5,11 +5,11 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use function get_class;
+use function sprintf;
 
 /**
  * Get stats from cache provider.
- *
- * @author Alan Doucette <dragonwize@gmail.com>
  */
 class StatsCommand extends CacheCommand
 {
@@ -28,8 +28,8 @@ class StatsCommand extends CacheCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $cacheName     = $input->getArgument('cache-name');
-        $cacheProvider = $this->getCacheProvider($cacheName);
+        $cacheName         = $input->getArgument('cache-name');
+        $cacheProvider     = $this->getCacheProvider($cacheName);
         $cacheProviderName = get_class($cacheProvider);
 
         $stats = $cacheProvider->getStats();
@@ -42,7 +42,7 @@ class StatsCommand extends CacheCommand
 
         $formatter = $this->getHelperSet()->get('formatter');
 
-        $lines = array();
+        $lines = [];
         foreach ($stats as $key => $stat) {
             $lines[] = $formatter->formatSection($key, $stat);
         }

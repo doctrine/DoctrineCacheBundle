@@ -4,13 +4,10 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Check if a cache entry exists.
- *
- * @author Alan Doucette <dragonwize@gmail.com>
  */
 class ContainsCommand extends CacheCommand
 {

@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -16,8 +16,6 @@ use Symfony\Component\DependencyInjection\Definition;
 
 /**
  * PhpFile definition.
- *
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class PhpFileDefinition extends CacheDefinition
 {
@@ -26,10 +24,10 @@ class PhpFileDefinition extends CacheDefinition
      */
     public function configure($name, array $config, Definition $service, ContainerBuilder $container)
     {
-        $service->setArguments(array(
+        $service->setArguments([
             $config['php_file']['directory'],
             $config['php_file']['extension'],
-            $config['php_file']['umask']
-        ));
+            $config['php_file']['umask'],
+        ]);
     }
 }

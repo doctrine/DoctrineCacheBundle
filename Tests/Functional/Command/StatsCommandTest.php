@@ -2,24 +2,19 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Doctrine\Bundle\DoctrineCacheBundle\Command\StatsCommand;
+use Symfony\Component\Console\Tester\CommandTester;
+use function strpos;
 
 /**
  * Functional test for delete command.
- *
- * @author Alan Doucette <dragonwize@gmail.com>
  */
 class StatsCommandTest extends CommandTestCase
 {
-    /**
-     * @var \Doctrine\Bundle\DoctrineCacheBundle\Command\StatsCommand
-     */
+    /** @var StatsCommand */
     protected $command;
 
-    /**
-     * @var \Symfony\Component\Console\Tester\CommandTester
-     */
+    /** @var CommandTester */
     protected $tester;
 
     /**
@@ -38,9 +33,9 @@ class StatsCommandTest extends CommandTestCase
      */
     public function testStats()
     {
-        $this->tester->execute(array(
+        $this->tester->execute([
             'cache-name' => $this->cacheName,
-        ));
+        ]);
 
         $stats = $this->tester->getDisplay();
 

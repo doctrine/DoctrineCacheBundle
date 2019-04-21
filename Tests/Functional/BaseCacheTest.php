@@ -3,6 +3,7 @@
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\FunctionalTestCase;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * @group Functional
@@ -10,7 +11,7 @@ use Doctrine\Bundle\DoctrineCacheBundle\Tests\FunctionalTestCase;
 abstract class BaseCacheTest extends FunctionalTestCase
 {
     /**
-     * @return \Doctrine\Common\Cache\Cache
+     * @return Cache
      */
     abstract protected function createCacheDriver();
 

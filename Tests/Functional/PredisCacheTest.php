@@ -2,12 +2,13 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
+use function class_exists;
+
 /**
  * Predis Driver Test
  *
  * @group Functional
  * @group Predis
- * @author Ivo Bathke <ivo.bathke@gmail.com>
  */
 class PredisCacheTest extends BaseCacheTest
 {
@@ -18,9 +19,11 @@ class PredisCacheTest extends BaseCacheTest
     {
         parent::setUp();
 
-        if ( ! class_exists('Doctrine\Common\Cache\PredisCache')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the use of PredisCache available in doctrine/cache since 1.4');
+        if (class_exists('Doctrine\Common\Cache\PredisCache')) {
+            return;
         }
+
+        $this->markTestSkipped('The ' . self::class . ' requires the use of PredisCache available in doctrine/cache since 1.4');
     }
 
     /**
@@ -29,8 +32,7 @@ class PredisCacheTest extends BaseCacheTest
     protected function createCacheDriver()
     {
         $container = $this->compileContainer('predis');
-        $cache     = $container->get('doctrine_cache.providers.my_predis_cache');
 
-        return $cache;
+        return $container->get('doctrine_cache.providers.my_predis_cache');
     }
 }

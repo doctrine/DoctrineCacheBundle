@@ -2,6 +2,9 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional;
 
+use function extension_loaded;
+use function fsockopen;
+
 /**
  * @group Functional
  * @group MongoDB
@@ -15,13 +18,15 @@ class MongoDBCacheTest extends BaseCacheTest
     {
         parent::setUp();
 
-        if ( ! extension_loaded('mongo')) {
-            $this->markTestSkipped('The ' . __CLASS__ .' requires the use of mongo >= 1.3.0');
+        if (! extension_loaded('mongo')) {
+            $this->markTestSkipped('The ' . self::class . ' requires the use of mongo >= 1.3.0');
         }
 
-        if (@fsockopen('localhost', 27017) === false) {
-            $this->markTestSkipped('The ' . __CLASS__ .' cannot connect to mongo');
+        if (@fsockopen('localhost', 27017) !== false) {
+            return;
         }
+
+        $this->markTestSkipped('The ' . self::class . ' cannot connect to mongo');
     }
 
     /**
@@ -30,8 +35,7 @@ class MongoDBCacheTest extends BaseCacheTest
     protected function createCacheDriver()
     {
         $container = $this->compileContainer('mongodb');
-        $cache     = $container->get('doctrine_cache.providers.my_mongodb_cache');
 
-        return $cache;
+        return $container->get('doctrine_cache.providers.my_mongodb_cache');
     }
 }

@@ -2,15 +2,17 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Command;
 
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use function method_exists;
+use function sprintf;
 
 /**
  * Delete cache entries.
- *
- * @author Alan Doucette <dragonwize@gmail.com>
  */
 class DeleteCommand extends CacheCommand
 {
@@ -37,11 +39,11 @@ class DeleteCommand extends CacheCommand
         $all           = $input->getOption('all');
 
         if ($all && ! method_exists($cacheProvider, 'deleteAll')) {
-            throw new \RuntimeException('Cache provider does not implement a deleteAll method.');
+            throw new RuntimeException('Cache provider does not implement a deleteAll method.');
         }
 
-        if ( ! $all && ! $cacheId) {
-            throw new \InvalidArgumentException('Missing cache ID');
+        if (! $all && ! $cacheId) {
+            throw new InvalidArgumentException('Missing cache ID');
         }
 
         $success = $all ? $cacheProvider->deleteAll() : $cacheProvider->delete($cacheId);
@@ -49,7 +51,7 @@ class DeleteCommand extends CacheCommand
         $success = $success ? 'succeeded' : 'failed';
         $message = null;
 
-        if ( ! $all) {
+        if (! $all) {
             $message = "Deletion of <$color>%s</$color> in <$color>%s</$color> has <$color>%s</$color>";
             $message = sprintf($message, $cacheId, $cacheName, $success, true);
         }

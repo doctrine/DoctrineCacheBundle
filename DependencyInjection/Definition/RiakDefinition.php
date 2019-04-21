@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -14,11 +14,10 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use function sprintf;
 
 /**
  * Riak definition.
- *
- * @author Fabio B. Silva <fabio.bat.silva@gmail.com>
  */
 class RiakDefinition extends CacheDefinition
 {
@@ -30,15 +29,14 @@ class RiakDefinition extends CacheDefinition
         $riakConf  = $config['riak'];
         $bucketRef = $this->getBucketReference($name, $riakConf, $container);
 
-        $service->setArguments(array($bucketRef));
+        $service->setArguments([$bucketRef]);
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      *
-     * @return \Symfony\Component\DependencyInjection\Reference
+     * @return Reference
      */
     private function getBucketReference($name, array $config, ContainerBuilder $container)
     {
@@ -50,12 +48,12 @@ class RiakDefinition extends CacheDefinition
         $bucketClass = '%doctrine_cache.riak.bucket.class%';
         $bucketId    = sprintf('doctrine_cache.services.%s.bucket', $name);
         $connDef     = $this->getConnectionReference($name, $config, $container);
-        $bucketDef   = new Definition($bucketClass, array($connDef, $bucketName));
+        $bucketDef   = new Definition($bucketClass, [$connDef, $bucketName]);
 
         $bucketDef->setPublic(false);
         $container->setDefinition($bucketId, $bucketDef);
 
-        if ( ! empty($config['bucket_property_list'])) {
+        if (! empty($config['bucket_property_list'])) {
             $this->configureBucketPropertyList($name, $config['bucket_property_list'], $bucketDef, $container);
         }
 
@@ -63,11 +61,10 @@ class RiakDefinition extends CacheDefinition
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      *
-     * @return \Symfony\Component\DependencyInjection\Reference
+     * @return Reference
      */
     private function getConnectionReference($name, array $config, ContainerBuilder $container)
     {
@@ -79,7 +76,7 @@ class RiakDefinition extends CacheDefinition
         $port      = $config['port'];
         $connClass = '%doctrine_cache.riak.connection.class%';
         $connId    = sprintf('doctrine_cache.services.%s.connection', $name);
-        $connDef   = new Definition($connClass, array($host, $port));
+        $connDef   = new Definition($connClass, [$host, $port]);
 
         $connDef->setPublic(false);
         $container->setDefinition($connId, $connDef);
@@ -88,22 +85,20 @@ class RiakDefinition extends CacheDefinition
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\Definition         $bucketDefinition
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      */
     private function configureBucketPropertyList($name, array $config, Definition $bucketDefinition, ContainerBuilder $container)
     {
         $propertyListClass      = '%doctrine_cache.riak.bucket_property_list.class%';
         $propertyListServiceId  = sprintf('doctrine_cache.services.%s.bucket_property_list', $name);
         $propertyListReference  = new Reference($propertyListServiceId);
-        $propertyListDefinition = new Definition($propertyListClass, array(
+        $propertyListDefinition = new Definition($propertyListClass, [
             $config['n_value'],
-            $config['allow_multiple']
-        ));
+            $config['allow_multiple'],
+        ]);
 
         $container->setDefinition($propertyListServiceId, $propertyListDefinition);
-        $bucketDefinition->addMethodCall('setPropertyList', array($propertyListReference));
+        $bucketDefinition->addMethodCall('setPropertyList', [$propertyListReference]);
     }
 }

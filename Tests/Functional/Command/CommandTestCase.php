@@ -2,47 +2,35 @@
 
 namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
-use Doctrine\Bundle\DoctrineCacheBundle\Tests\FunctionalTestCase;
-use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Bundle\DoctrineCacheBundle\Command\CacheCommand;
+use Doctrine\Bundle\DoctrineCacheBundle\Tests\FunctionalTestCase;
+use Doctrine\Common\Cache\Cache;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Util\Filesystem;
+use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\HttpKernel\Kernel;
 
 class CommandTestCase extends FunctionalTestCase
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $cacheProviderClass = 'Doctrine\Common\Cache\ArrayCache';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $cacheName = 'my_array_cache';
 
-    /**
-     * @var string
-     */
-    protected $cacheId   = 'test_cache_id';
+    /** @var string */
+    protected $cacheId = 'test_cache_id';
 
-    /**
-     * @var
-     */
+    /** @var */
     protected $container;
 
-    /**
-     * @var \Doctrine\Common\Cache\Cache
-     */
+    /** @var Cache */
     protected $provider;
 
-    /**
-     * @var \Symfony\Component\HttpKernel\Kernel
-     */
+    /** @var Kernel */
     protected $kernel;
 
-    /**
-     * @var \Symfony\Bundle\FrameworkBundle\Console\Application
-     */
+    /** @var Application */
     protected $app;
 
     public function setUp()
@@ -54,9 +42,7 @@ class CommandTestCase extends FunctionalTestCase
     }
 
     /**
-     * @param \Doctrine\Bundle\DoctrineCacheBundle\Command\CacheCommand $command
-     *
-     * @return \Symfony\Component\Console\Tester\CommandTester
+     * @return CommandTester
      */
     protected function getTester(CacheCommand $command)
     {
@@ -69,7 +55,7 @@ class CommandTestCase extends FunctionalTestCase
     /**
      * Gets Kernel mock instance
      *
-     * @return \Symfony\Component\HttpKernel\Kernel
+     * @return Kernel
      */
     private function getMockKernel()
     {
@@ -77,15 +63,16 @@ class CommandTestCase extends FunctionalTestCase
                      ->disableOriginalConstructor()
                      ->disableOriginalClone()
                      ->getMock();
-        $mock->method('getBundles')->willReturn(array());
+        $mock->method('getBundles')->willReturn([]);
         $mock->method('getContainer')->willReturn($this->container);
+
         return $mock;
     }
 
     /**
      * Gets Filesystem mock instance
      *
-     * @return \Symfony\Bundle\FrameworkBundle\Util\Filesystem
+     * @return Filesystem
      */
     private function getMockFilesystem()
     {

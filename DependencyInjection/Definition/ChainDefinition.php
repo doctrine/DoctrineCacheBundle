@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Symfony package.
  *
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -14,11 +14,11 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
+use function sprintf;
+use function strpos;
 
 /**
  * Chain definition.
- *
- * @author Guilherme Blanco <guilhermeblanco@hotmail.com>
  */
 class ChainDefinition extends CacheDefinition
 {
@@ -30,19 +30,18 @@ class ChainDefinition extends CacheDefinition
         $providersConf = $config['chain'];
         $providers     = $this->getProviders($name, $providersConf, $container);
 
-        $service->setArguments(array($providers));
+        $service->setArguments([$providers]);
     }
 
     /**
-     * @param string                                                    $name
-     * @param array                                                     $config
-     * @param \Symfony\Component\DependencyInjection\ContainerBuilder   $container
+     * @param string $name
+     * @param array  $config
      *
      * @return array
      */
     private function getProviders($name, array $config, ContainerBuilder $container)
     {
-        $providers = array();
+        $providers = [];
 
         foreach ($config['providers'] as $provider) {
             if (strpos($provider, 'doctrine_cache.providers.') === false) {
