@@ -36,7 +36,7 @@ jobs:
     - stage: Code Quality
       php: 7.1
       script:
-        - ./vendor/bin/phpcs -np --extensions=php --ignore=vendor/*,Tests/* --standard=ruleset.xml .
+        - ./vendor/bin/phpcs
       after_script:
 
 before_install:
