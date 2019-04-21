@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
 use Doctrine\Bundle\DoctrineCacheBundle\Command\StatsCommand;
 use Symfony\Component\Console\Tester\CommandTester;
+use function sprintf;
 use function strpos;
 
 /**
@@ -42,7 +43,7 @@ class StatsCommandTest extends CommandTestCase
         if (strpos($stats, 'Stats were not') === false) {
             // This test is for Doctrine/Cache >= 1.6.0 only
             $this->assertStringStartsWith(
-                "Stats for the {$this->cacheName} provider of type Doctrine\\Common\\Cache\\ArrayCache:",
+                sprintf('Stats for the %s provider of type Doctrine\\Common\\Cache\\ArrayCache:', $this->cacheName),
                 $stats
             );
             $this->assertContains("[hits] 0\n", $stats);
@@ -52,7 +53,7 @@ class StatsCommandTest extends CommandTestCase
             $this->assertContains("[memory_available] \n", $stats);
         } else {
             // This test is for Doctrine/Cache < 1.6.0 only
-            $this->assertEquals("Stats were not provided for the {$this->cacheName} provider of type Doctrine\\Common\\Cache\\ArrayCache\n", $this->tester->getDisplay());
+            $this->assertEquals(sprintf("Stats were not provided for the %s provider of type Doctrine\\Common\\Cache\\ArrayCache\n", $this->cacheName), $this->tester->getDisplay());
         }
     }
 }

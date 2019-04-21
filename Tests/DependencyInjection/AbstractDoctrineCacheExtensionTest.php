@@ -270,7 +270,7 @@ abstract class AbstractDoctrineCacheExtensionTest extends TestCase
 
     public function assertCacheResource(ContainerBuilder $container, $name, $class, array $expectedCalls = [])
     {
-        $service = "doctrine_cache.services.$name";
+        $service = 'doctrine_cache.services.' . $name;
 
         $this->assertTrue($container->hasDefinition($service));
 

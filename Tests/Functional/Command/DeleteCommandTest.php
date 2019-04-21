@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
 use Doctrine\Bundle\DoctrineCacheBundle\Command\DeleteCommand;
 use Symfony\Component\Console\Tester\CommandTester;
+use function sprintf;
 
 /**
  * Functional test for delete command.
@@ -37,7 +38,7 @@ class DeleteCommandTest extends CommandTestCase
             'cache-name' => $this->cacheName,
             'cache-id' => $this->cacheId,
         ]);
-        $this->assertEquals("Deletion of {$this->cacheId} in {$this->cacheName} has succeeded\n", $this->tester->getDisplay());
+        $this->assertEquals(sprintf("Deletion of %s in %s has succeeded\n", $this->cacheId, $this->cacheName), $this->tester->getDisplay());
     }
 
     /**
@@ -50,6 +51,6 @@ class DeleteCommandTest extends CommandTestCase
             'cache-id'   => $this->cacheId,
             '--all'      => true,
         ]);
-        $this->assertEquals("Deletion of all entries in {$this->cacheName} has succeeded\n", $this->tester->getDisplay());
+        $this->assertEquals(sprintf("Deletion of all entries in %s has succeeded\n", $this->cacheName), $this->tester->getDisplay());
     }
 }

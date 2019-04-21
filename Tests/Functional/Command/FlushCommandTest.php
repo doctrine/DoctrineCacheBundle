@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Command;
 
 use Doctrine\Bundle\DoctrineCacheBundle\Command\FlushCommand;
 use Symfony\Component\Console\Tester\CommandTester;
+use function sprintf;
 
 /**
  * Functional test for delete command.
@@ -35,6 +36,6 @@ class FlushCommandTest extends CommandTestCase
         $this->tester->execute([
             'cache-name' => $this->cacheName,
         ]);
-        $this->assertEquals("Clearing the cache for the {$this->cacheName} provider of type {$this->cacheProviderClass}\n", $this->tester->getDisplay());
+        $this->assertEquals(sprintf("Clearing the cache for the %s provider of type %s\n", $this->cacheName, $this->cacheProviderClass), $this->tester->getDisplay());
     }
 }

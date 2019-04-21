@@ -15,6 +15,7 @@ use Doctrine\Common\Cache\ArrayCache;
 
 class MyCustomType extends ArrayCache
 {
+    /** @var string[] */
     public $configs;
 
     public function addConfig($name, $value)

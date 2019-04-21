@@ -4,6 +4,7 @@ namespace Doctrine\Bundle\DoctrineCacheBundle\Tests\Functional\Fixtures;
 
 class Memcached extends \Memcached
 {
+    /** @var int */
     protected $persistentId;
 
     public function __construct($persistent_id = null, $callback = null)

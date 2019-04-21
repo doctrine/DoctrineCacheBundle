@@ -6,7 +6,6 @@ use Doctrine\Bundle\DoctrineCacheBundle\Command\CacheCommand;
 use Doctrine\Bundle\DoctrineCacheBundle\Tests\FunctionalTestCase;
 use Doctrine\Common\Cache\Cache;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Bundle\FrameworkBundle\Util\Filesystem;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -67,18 +66,5 @@ class CommandTestCase extends FunctionalTestCase
         $mock->method('getContainer')->willReturn($this->container);
 
         return $mock;
-    }
-
-    /**
-     * Gets Filesystem mock instance
-     *
-     * @return Filesystem
-     */
-    private function getMockFilesystem()
-    {
-        return $this->getMockBuilder('\Symfony\Bundle\FrameworkBundle\Util\Filesystem')
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->getMock();
     }
 }
