@@ -38,8 +38,7 @@ class RedisUrlParser
         }
 
         if (isset($url['path']) && strlen($url['path']) >= 2) {
-            $database = substr($url['path'], 1);
-            $config['database'] = $database;
+            $config['database'] = substr($url['path'], 1);
         }
 
         return $config;
