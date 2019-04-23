@@ -47,7 +47,13 @@ class RedisDefinition extends CacheDefinition
             return new Reference($config['connection_id']);
         }
 
-        $config = RedisUrlParser::parse($config);
+        if (array_key_exists('url', $config)) {
+            if (method_exists($container, 'resolveEnvPlaceholders')) {
+                $config['url'] = $container->resolveEnvPlaceholders($config['url'], true);
+            }
+
+            $config = RedisUrlParser::parse($config);
+        }
 
         $host       = $config['host'];
         $port       = $config['port'];
