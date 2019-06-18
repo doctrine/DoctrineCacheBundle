@@ -115,6 +115,14 @@ class SymfonyBridgeAdapter
                 'database' => !empty($database) ? $database : 0
             );
         }
+        
+        if ($type === 'php_file') {
+            $config[$type] = array(
+                'directory' => '%kernel.cache_dir%/doctrine/cache/phpfile',
+                'extension' => null,
+                'umask' => 0002
+            );
+        }
 
         if ($type === 'predis') {
             $config[$type] = array(
