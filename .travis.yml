@@ -7,16 +7,12 @@ php:
   - 7.2
   - 7.3
   - 7.4snapshot
-  - nightly
 
 env:
   global:
     - SYMFONY_DEPRECATIONS_HELPER=weak
 
 matrix:
-  allow_failures:
-    - php: nightly
-
 cache:
   directories:
     - $HOME/.composer/cache
