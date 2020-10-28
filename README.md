@@ -9,7 +9,7 @@ Master: [![Coverage Status](https://coveralls.io/repos/doctrine/DoctrineCacheBun
 
 ## Deprecation warning
 
-This bundle is deprecated; it will not be updated for Symfony 5. If you want to
+This bundle is abandoned and will no longer be updated. If you want to
 use doctrine/cache in Symfony, please configure the services manually. When
 using Symfony, we no longer recommend configuring doctrine/cache through this
 bundle. Instead, you should use symfony/cache for your cache needs. However, the
